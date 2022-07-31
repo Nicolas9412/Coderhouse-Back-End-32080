@@ -49,6 +49,7 @@ class Contenedor {
       return productos;
     } catch (error) {
       console.log("Algo salió mal!");
+      console.log(error);
     }
   }
   async deleteById(id) {
@@ -69,29 +70,13 @@ class Contenedor {
   async deleteAll() {
     await fs.promises.writeFile(this.name, "[]");
   }
+
+  async getProductRandom() {
+    let productos = await fs.promises.readFile(this.name, "utf-8");
+    productos = JSON.parse(productos);
+    const rand = Math.floor(Math.random() * productos.length);
+    return productos[rand];
+  }
 }
 
-async function main() {
-  const contenedor = new Contenedor("productos.json");
-  const res1 = await contenedor.save({
-    title: "clavo",
-    price: 3,
-    trumbnail:
-      "https://th.bing.com/th/id/OIP.XCvliWdXi0jou7_BxJn2iwHaHa?w=186&h=186&c=7&r=0&o=5&pid=1.7",
-  });
-  const res2 = await contenedor.getAll();
-  const res3 = await contenedor.getById(1);
-  const res4 = await contenedor.getById(10);
-  await contenedor.deleteById(1);
-  const res5 = await contenedor.getAll();
-  await contenedor.deleteAll();
-  const res6 = await contenedor.getAll();
-  console.log("Resultado de guardar un producto en el archivo", res1);
-  console.log("Lista de productos con el producto agregado !!!", res2);
-  console.log("Producto encontrado!!!", res3);
-  console.log(res4 === null && "No se encontro ese producto");
-  console.log("Lista de productos con el producto eliminado !!!", res5);
-  console.log("Lista sin productos", res6);
-}
-
-main();
+module.exports = Contenedor;
