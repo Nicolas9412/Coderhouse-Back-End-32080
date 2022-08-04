@@ -81,6 +81,27 @@ class Contenedor {
       console.log("Algo salió mal!");
     }
   }
+
+  async modifyProduct(id, reemplazo) {
+    try {
+      let productos = await fs.promises.readFile(this.name, "utf-8");
+      productos = JSON.parse(productos);
+      const productoAModificar = await this.getById(id);
+      if (productoAModificar !== null) {
+        await this.deleteById(id);
+        productos = await fs.promises.readFile(this.name, "utf-8");
+        productos = JSON.parse(productos);
+        const newProduct = { ...productoAModificar, ...reemplazo };
+        productos.push(newProduct);
+        productos.sort((a, b) => a.id - b.id);
+        await fs.promises.writeFile(this.name, JSON.stringify(productos));
+        return newProduct;
+      }
+      return null;
+    } catch (error) {
+      console.log("Algo salió mal!");
+    }
+  }
 }
 
 module.exports = Contenedor;
