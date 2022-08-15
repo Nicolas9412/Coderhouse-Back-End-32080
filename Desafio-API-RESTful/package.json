@@ -1,7 +1,7 @@
 {
   "name": "desafio_api_rest_ful",
   "version": "0.0.0",
-  "description": "desarrollo un servidor con las operaciones de get, post, put, delete para hacer el crud de productos",
+  "description": "desarrollo un servidor en express con una api rest ful del productos con operaciones get,post,put y delete",
   "main": "servidor.js",
   "scripts": {
     "start": "nodemon servidor.js"
