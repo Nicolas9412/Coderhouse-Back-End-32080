@@ -1,2 +1,0 @@
-De los tres motores prefiero Ejs. Se me hace lo más parecido posible a javascript y la forma de estructurar
-es básicamente la misma que html, se me hace más fácil leer el código y voy más rápido resolviendo bugs.
