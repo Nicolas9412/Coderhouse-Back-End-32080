@@ -16,6 +16,9 @@ class Contenedor {
         });
         const idAsignado = productos[0].id + 1;
         productos.push({ ...obj, id: idAsignado });
+        productos.sort((a, b) => {
+          return a.id - b.id;
+        });
         await fs.promises.writeFile(
           this.name,
           JSON.stringify(productos, null, 2)
@@ -52,6 +55,9 @@ class Contenedor {
     try {
       let productos = await fs.promises.readFile(this.name, "utf-8");
       productos = JSON.parse(productos);
+      productos.sort((a, b) => {
+        return a.id - b.id;
+      });
       return productos;
     } catch (error) {
       console.log("Algo salió mal!");
