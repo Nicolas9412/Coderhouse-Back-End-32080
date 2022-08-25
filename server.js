@@ -21,8 +21,6 @@ app.use("/api/productos", routerProductos);
 app.use("/api/carrito", routerCarrito);
 
 app.all("*", (req, res) => {
-  const { url } = req.route;
-  const { method } = req.method;
   res.json({
     error: -2,
     descripcion: `ruta '${req.url}' método '${req.method}' no implementado`,
