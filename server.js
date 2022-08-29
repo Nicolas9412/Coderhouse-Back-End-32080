@@ -60,11 +60,11 @@ routerProductos.post(
       descripcion,
       codigo,
       foto,
-      precio: parseInt(precio),
+      precio: parseFloat(precio),
       stock: parseInt(stock),
     };
     await productosBD.save(productoNuevo);
-    res.json(`success`);
+    res.json("success");
   }
 );
 
@@ -88,14 +88,14 @@ routerProductos.put(
     body = {
       timestamp,
       ...body,
-      precio: parseInt(precio),
+      precio: parseFloat(precio),
       stock: parseInt(stock),
     };
     const productoModificado = await productosBD.modifyProduct(
       parseInt(id),
       body
     );
-    res.json(`success, ${productoModificado}`);
+    res.json("success");
   }
 );
 
