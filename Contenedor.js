@@ -1,124 +1,60 @@
-const fs = require("fs");
-
 class Contenedor {
-  constructor(name) {
-    this.name = name;
+  constructor(knex, tabla) {
+    this.knex = knex;
+    this.tabla = tabla;
   }
-
-  // Recibe un objeto, lo guarda en el archivo, devuelve el id asignado
-  async save(obj) {
-    try {
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      if (productos.length !== 0) {
-        productos.sort((a, b) => {
-          return b.id - a.id;
-        });
-        const idAsignado = productos[0].id + 1;
-        productos.push({ ...obj, id: idAsignado });
-        productos.sort((a, b) => {
-          return a.id - b.id;
-        });
-        await fs.promises.writeFile(
-          this.name,
-          JSON.stringify(productos, null, 2)
-        );
-        return idAsignado;
-      } else {
-        productos.push({ ...obj, id: 1 });
-        await fs.promises.writeFile(
-          this.name,
-          JSON.stringify(productos, null, 2)
-        );
-        return 1;
-      }
-    } catch (error) {
-      console.log("Algo salió mal!");
-    }
-  }
-  async getById(id) {
-    try {
-      let productoCapturado;
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      productos.forEach((prod) => {
-        if (prod.id === id) {
-          productoCapturado = prod;
-        }
+  async insert(obj) {
+    await this.knex(this.tabla)
+      .insert(obj)
+      .then(() => console.log("data inserted"))
+      .catch((e) => {
+        console.log(e);
+        throw e;
       });
-      return productoCapturado || null;
-    } catch (error) {
-      console.log("Algo salió mal!");
-    }
   }
-  async getAll() {
-    try {
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      productos.sort((a, b) => {
-        return a.id - b.id;
+  async update(id, obj) {
+    await this.knex(this.tabla)
+      .where("id", id)
+      .update(obj)
+      .then(() => console.log("data updated"))
+      .catch((e) => {
+        console.log(e);
+        throw e;
       });
-      return productos;
-    } catch (error) {
-      console.log("Algo salió mal!");
-      console.log(error);
-    }
   }
-  async deleteById(id) {
-    try {
-      let newProducts = [];
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      productos.forEach((prod) => {
-        if (prod.id !== id) {
-          newProducts.push(prod);
-        }
+  async delete(id) {
+    await this.knex(this.tabla)
+      .where("id", id)
+      .del()
+      .then(() => console.log("data deleted"))
+      .catch((e) => {
+        console.log(e);
+        throw e;
       });
-      await fs.promises.writeFile(
-        this.name,
-        JSON.stringify(newProducts, null, 2)
-      );
-    } catch (error) {
-      console.log("Algo salió mal!");
-    }
   }
-  async deleteAll() {
-    await fs.promises.writeFile(this.name, "[]");
+  async selectAll() {
+    let result = [];
+    await this.knex(this.tabla)
+      .select("*")
+      .then((res) => (result = [...res]))
+      .catch((e) => {
+        console.log(e);
+        throw e;
+      });
+    return result;
   }
-
-  async getProductRandom() {
-    try {
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      const rand = Math.floor(Math.random() * productos.length);
-      return productos[rand];
-    } catch (error) {
-      console.log("Algo salió mal!");
-    }
-  }
-
-  async modifyProduct(id, reemplazo) {
-    try {
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      const productoAModificar = await this.getById(id);
-      if (productoAModificar !== null) {
-        await this.deleteById(id);
-        productos = await fs.promises.readFile(this.name, "utf-8");
-        productos = JSON.parse(productos);
-        const newProduct = { ...productoAModificar, ...reemplazo };
-        productos.push(newProduct);
-        productos.sort((a, b) => a.id - b.id);
-        await fs.promises.writeFile(
-          this.name,
-          JSON.stringify(productos, null, 2)
-        );
-        return newProduct;
-      }
-      return null;
-    } catch (error) {
-      console.log("Algo salió mal!");
-    }
+  async selectOne(id) {
+    let result;
+    await this.knex
+      .from(this.tabla)
+      .select("*")
+      .where("id", id)
+      .then((res) => (result = res))
+      .catch((e) => {
+        console.log(e);
+        throw e;
+      });
+    return result;
   }
 }
 

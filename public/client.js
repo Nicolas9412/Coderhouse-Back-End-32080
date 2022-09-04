@@ -11,7 +11,7 @@ function submitProduct(e) {
 
   let newProduct = {
     title: document.getElementById("title").value,
-    price: parseInt(document.getElementById("price").value),
+    price: parseFloat(document.getElementById("price").value),
     thumbnail: document.getElementById("thumbnail").value,
   };
 

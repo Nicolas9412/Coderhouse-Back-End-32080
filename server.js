@@ -1,14 +1,22 @@
 const express = require("express");
 const { engine } = require("express-handlebars");
 const PORT = 8080;
+const { optionsSQLite3 } = require("./options/SQLite3.js");
+const { optionsMariaDB } = require("./options/MariaDB.js");
+const knexSQLite3 = require("knex")(optionsSQLite3);
+const knexMariaDB = require("knex")(optionsMariaDB);
 const Contenedor = require("./Contenedor");
-const productosBD = new Contenedor("productos.json");
-const chatBD = new Contenedor("chat.json");
 
+//
+const productosBD = new Contenedor(knexMariaDB, "productos");
+const chatBD = new Contenedor(knexSQLite3, "mensajes");
+
+//
 const app = express();
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer);
 
+//
 httpServer.listen(process.env.PORT || PORT, () => console.log("SERVER ON"));
 httpServer.on("error", (error) => console.log(`Error en el servidor ${error}`));
 
@@ -34,21 +42,21 @@ let productos = [];
 let chat = [];
 
 app.get("/", async (req, res) => {
-  productos = await productosBD.getAll();
-  chat = await chatBD.getAll();
+  productos = await productosBD.selectAll();
+  chat = await chatBD.selectAll();
   res.render("form-list-chat", { productos, chat });
 });
 
 io.on("connection", (socket) => {
   console.log("Usuario Conectado" + socket.id);
   socket.on("producto", async (data) => {
-    await productosBD.save(data);
-    productos = await productosBD.getAll();
+    await productosBD.insert(data);
+    productos = await productosBD.selectAll();
     io.sockets.emit("producto-row", data);
   });
   socket.on("mensaje", async (data) => {
-    await chatBD.save(data);
-    chat = await chatBD.getAll();
+    await chatBD.insert(data);
+    chat = await chatBD.selectAll();
     io.sockets.emit("chat", chat);
   });
 });
