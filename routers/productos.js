@@ -3,6 +3,7 @@ const { productosDaos: Producto } = require("../daos/mainDaos");
 const routerProductos = express.Router();
 
 const prod = new Producto();
+const isAdmin = true;
 
 routerProductos.get("/", async (req, res) => {
   try {
@@ -111,13 +112,10 @@ routerProductos.put(
     try {
       const { id } = req.params;
       let { body } = req;
-      const { precio, stock } = body;
       const timestamp = Date.now();
       body = {
         ...body,
         timestamp,
-        precio: parseFloat(precio),
-        stock: parseInt(stock),
       };
       await prod.modifyProduct(id, body);
       res.status(200).send({
