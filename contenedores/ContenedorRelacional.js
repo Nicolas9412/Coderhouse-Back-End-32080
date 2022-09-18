@@ -3,7 +3,7 @@ class ContenedorRelacional {
     this.knex = knex;
     this.tabla = tabla;
   }
-  async insert(obj) {
+  async save(obj) {
     await this.knex(this.tabla)
       .insert(obj)
       .then(() => console.log("data inserted"))
@@ -12,7 +12,7 @@ class ContenedorRelacional {
         throw e;
       });
   }
-  async update(id, obj) {
+  async modify(id, obj) {
     await this.knex(this.tabla)
       .where("id", id)
       .update(obj)
@@ -22,7 +22,7 @@ class ContenedorRelacional {
         throw e;
       });
   }
-  async delete(id) {
+  async deleteById(id) {
     await this.knex(this.tabla)
       .where("id", id)
       .del()
@@ -32,7 +32,7 @@ class ContenedorRelacional {
         throw e;
       });
   }
-  async selectAll() {
+  async getAll() {
     let result = [];
     await this.knex(this.tabla)
       .select("*")
@@ -43,7 +43,7 @@ class ContenedorRelacional {
       });
     return result;
   }
-  async selectOne(id) {
+  async getById(id) {
     let result;
     await this.knex
       .from(this.tabla)

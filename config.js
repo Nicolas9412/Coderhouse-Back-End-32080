@@ -8,6 +8,8 @@ const optionsMariaDB = {
   },
 };
 
+const knexMariaDB = require("knex")(optionsMariaDB);
+
 // Config Sqlite3
 const optionsSQLite3 = {
   client: "sqlite3",
@@ -16,6 +18,8 @@ const optionsSQLite3 = {
   },
   userNullAsDefault: true,
 };
+
+const knexSQLite3 = require("knex")(optionsSQLite3);
 
 // Config Mongo DB Atlas
 const mongoose = require("mongoose");
@@ -55,4 +59,6 @@ module.exports = {
   DB_FIREBASE,
   connectMDB,
   disconnectMDB,
+  knexMariaDB,
+  knexSQLite3,
 };
