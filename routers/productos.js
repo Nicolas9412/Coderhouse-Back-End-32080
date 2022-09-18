@@ -55,32 +55,45 @@ routerProductos.get("/:id", async (req, res) => {
   }
 });
 
-routerProductos.post("/", async (req, res) => {
-  try {
-    const { body } = req;
-    const { nombre, descripcion, codigo, foto, precio, stock } = body;
-    const timestamp = Date.now();
-    const productoNuevo = {
-      timestamp,
-      nombre,
-      descripcion,
-      codigo,
-      foto,
-      precio: parseFloat(precio),
-      stock: parseInt(stock),
-    };
-    await prod.save(productoNuevo);
-    res.status(200).send({
-      status: 200,
-      message: "producto agregado",
-    });
-  } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: error.message,
-    });
+routerProductos.post(
+  "/",
+  (req, res, next) => {
+    if (!isAdmin) {
+      res.send({
+        error: -1,
+        descripcion: "ruta '/api/productos' método 'post' no autorizado",
+      });
+    } else {
+      next();
+    }
+  },
+  async (req, res) => {
+    try {
+      const { body } = req;
+      const { nombre, descripcion, codigo, foto, precio, stock } = body;
+      const timestamp = Date.now();
+      const productoNuevo = {
+        timestamp,
+        nombre,
+        descripcion,
+        codigo,
+        foto,
+        precio: parseFloat(precio),
+        stock: parseInt(stock),
+      };
+      await prod.save(productoNuevo);
+      res.status(200).send({
+        status: 200,
+        message: "producto agregado",
+      });
+    } catch (error) {
+      res.status(500).send({
+        status: 500,
+        message: error.message,
+      });
+    }
   }
-});
+);
 
 routerProductos.put(
   "/:id",
@@ -120,20 +133,33 @@ routerProductos.put(
   }
 );
 
-routerProductos.delete("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    await prod.deleteById(id);
-    res.status(200).send({
-      status: 200,
-      message: "producto eleminado",
-    });
-  } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: error.message,
-    });
+routerProductos.delete(
+  "/:id",
+  (req, res, next) => {
+    if (!isAdmin) {
+      res.send({
+        error: -1,
+        descripcion: "ruta '/api/productos' método 'delete' no autorizado",
+      });
+    } else {
+      next();
+    }
+  },
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      await prod.deleteById(id);
+      res.status(200).send({
+        status: 200,
+        message: "producto eleminado",
+      });
+    } catch (error) {
+      res.status(500).send({
+        status: 500,
+        message: error.message,
+      });
+    }
   }
-});
+);
 
 module.exports = routerProductos;
