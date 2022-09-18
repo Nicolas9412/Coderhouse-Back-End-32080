@@ -1,9 +1,9 @@
-const ProductoSchema = require("../modelsMDB/schemaProducto");
+const schemaProducto = require("../../../utils/modelsMDB/schemaProducto");
 const ContenedorMongoDb = require("../../contenedores/ContenedorMongoDb");
 
 class ProductosDaoMongoDb extends ContenedorMongoDb {
   constructor() {
-    super(ProductoSchema);
+    super(schemaProducto);
   }
 }
 

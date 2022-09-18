@@ -2,7 +2,7 @@ const express = require("express");
 const { carritoDaos: Carrito } = require("../daos/mainDaos");
 const { productosDaos: Producto } = require("../daos/mainDaos");
 const {
-  ProductosCarritosDaos: ProductosCarritos,
+  productosCarritosDaos: ProductosCarritos,
 } = require("../daos/mainDaos");
 const routerCarrito = express.Router();
 
@@ -24,7 +24,12 @@ routerCarrito.post("/", async (req, res) => {
   try {
     const timestamp = Date.now();
     const productos = [];
-    const idAsignado = await carritosBD.save({ timestamp, productos });
+    let idAsignado;
+    if (classNameCarrito != "ContenedorRelacional") {
+      idAsignado = await carritosBD.save({ timestamp, productos });
+    } else {
+      idAsignado = await carritosBD.save({ timestamp });
+    }
     res.status(200).send({
       status: 200,
       data: {
@@ -155,6 +160,15 @@ routerCarrito.post("/:id/productos", async (req, res) => {
       if (carrito) {
         if (classNameCarrito !== "ContenedorRelacional") {
           const productosEnCarrito = carrito.productos;
+          for (const prod of productosEnCarrito) {
+            if (prod.id == body.id) {
+              res.status(200).send({
+                status: 200,
+                message: "Este producto ya está en el carro",
+              });
+              return;
+            }
+          }
           productosEnCarrito.push(productoAgregarParseado);
           await carritosBD.modify(id, {
             productos: productosEnCarrito,
@@ -167,17 +181,38 @@ routerCarrito.post("/:id/productos", async (req, res) => {
             message: "Agregaste un producto a tu carrito",
           });
         } else {
-          await productosCarritosBD.save({
-            idCarrito: carrito[0].id,
-            idProducto: productoAgregarParseado[0].id,
-          });
-          res.status(200).send({
-            status: 200,
-            data: {
-              productoAgregado: productoAgregarParseado[0],
-            },
-            message: "Agregaste un producto a tu carrito",
-          });
+          if (productoAgregar.length !== 0) {
+            const productosEnCarrito = await productosCarritosBD.getByProp(
+              "idCarrito",
+              id
+            );
+            for (const prod of productosEnCarrito) {
+              if (prod.idProducto == body.id) {
+                res.status(200).send({
+                  status: 200,
+                  message: "Este producto ya está en el carro",
+                });
+                return;
+              }
+            }
+            await productosCarritosBD.save({
+              idCarrito: carrito[0].id,
+              idProducto: productoAgregarParseado[0].id,
+            });
+            res.status(200).send({
+              status: 200,
+              data: {
+                productoAgregado: productoAgregarParseado[0],
+              },
+              message: "Agregaste un producto a tu carrito",
+            });
+          } else {
+            res.status(200).send({
+              status: 200,
+              message: "Este producto no existe",
+            });
+            return;
+          }
         }
       } else {
         res.status(200).send({

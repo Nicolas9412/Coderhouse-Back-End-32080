@@ -41,7 +41,7 @@ class ContenedorArchivos {
       let productos = await fs.promises.readFile(this.name, "utf-8");
       productos = JSON.parse(productos);
       productos.forEach((prod) => {
-        if (prod.id === id) {
+        if (prod.id === parseInt(id)) {
           productoCapturado = prod;
         }
       });
@@ -69,7 +69,7 @@ class ContenedorArchivos {
       let productos = await fs.promises.readFile(this.name, "utf-8");
       productos = JSON.parse(productos);
       productos.forEach((prod) => {
-        if (prod.id !== id) {
+        if (prod.id !== parseInt(id)) {
           newProducts.push(prod);
         }
       });
@@ -81,28 +81,14 @@ class ContenedorArchivos {
       console.log("Algo salió mal!");
     }
   }
-  async deleteAll() {
-    await fs.promises.writeFile(this.name, "[]");
-  }
 
-  async getProductRandom() {
+  async modify(id, reemplazo) {
     try {
       let productos = await fs.promises.readFile(this.name, "utf-8");
       productos = JSON.parse(productos);
-      const rand = Math.floor(Math.random() * productos.length);
-      return productos[rand];
-    } catch (error) {
-      console.log("Algo salió mal!");
-    }
-  }
-
-  async modifyProduct(id, reemplazo) {
-    try {
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      const productoAModificar = await this.getById(id);
+      const productoAModificar = await this.getById(parseInt(id));
       if (productoAModificar !== null) {
-        await this.deleteById(id);
+        await this.deleteById(parseInt(id));
         productos = await fs.promises.readFile(this.name, "utf-8");
         productos = JSON.parse(productos);
         const newProduct = { ...productoAModificar, ...reemplazo };

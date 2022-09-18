@@ -14,7 +14,7 @@ const knexMariaDB = require("knex")(optionsMariaDB);
 const optionsSQLite3 = {
   client: "sqlite3",
   connection: {
-    filename: "./daos/db/ecommerce.sqlite",
+    filename: "./db/ecommerce.sqlite",
   },
   userNullAsDefault: true,
 };
@@ -44,7 +44,7 @@ const disconnectMDB = () => {
 // Config Firebase
 const admin = require("firebase-admin");
 
-const serviceAccount = require("./daos/db/segunda-entrega-proyecto-final-firebase-adminsdk-172da-d1b8a77230.json");
+const serviceAccount = require("./db/segunda-entrega-proyecto-final-firebase-adminsdk-172da-d1b8a77230.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -54,9 +54,9 @@ const DB_FIREBASE = admin.firestore();
 
 // config.js
 module.exports = {
-  PERSIST_CARRITOS: "./carritos/CarritosDaoSQLite",
-  PERSIST_PRODUCTOS: "./productos/ProductosDaoSQLite",
-  PERSIST_PRODUCTOSCARRITOS: "./productosCarritos/ProductosCarritosDaoSQLite",
+  PERSIST_CARRITOS: "./carritos/CarritosDaoArchivo",
+  PERSIST_PRODUCTOS: "./productos/ProductosDaoArchivo",
+  PERSIST_PRODUCTOSCARRITOS: "./productosCarritos/ProductosCarritosDaoMariaDB",
   DB_FIREBASE,
   connectMDB,
   disconnectMDB,

@@ -1,5 +1,5 @@
-const { knexMariaDB } = require("./config");
-const { knexSQLite3 } = require("./config");
+const { knexMariaDB } = require("../config");
+const { knexSQLite3 } = require("../config");
 
 knexMariaDB.schema
   .createTableIfNotExists("productos", function (table) {

@@ -1,5 +1,5 @@
 const ContenedorRelacional = require("../../contenedores/ContenedorRelacional");
-const { knexMariaDB } = require("../../config");
+const { knexMariaDB } = require("../../../config");
 
 class CarritosDaoMariaDB extends ContenedorRelacional {
   constructor() {

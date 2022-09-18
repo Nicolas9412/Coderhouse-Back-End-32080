@@ -4,7 +4,7 @@
   "description": "api de ecommerce con carritos y productos",
   "main": "server.js",
   "scripts": {
-    "start": "node createTables.js && nodemon server.js"
+    "start": "node ./utils/createTables.js && nodemon server.js"
   },
   "repository": {
     "type": "git",

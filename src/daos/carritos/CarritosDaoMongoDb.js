@@ -1,9 +1,9 @@
-const CarritoSchema = require("../modelsMDB/schemaCarrito");
+const schemaCarrito = require("../../../utils/modelsMDB/schemaCarrito");
 const ContenedorMongoDb = require("../../contenedores/ContenedorMongoDb");
 
 class CarritosDaoMongoDb extends ContenedorMongoDb {
   constructor() {
-    super(CarritoSchema);
+    super(schemaCarrito);
   }
 }
 

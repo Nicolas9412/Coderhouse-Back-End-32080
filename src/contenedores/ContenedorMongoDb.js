@@ -1,4 +1,4 @@
-const { connectMDB, disconnectMDB } = require("../config");
+const { connectMDB, disconnectMDB } = require("../../config");
 
 class ContenedorMongoDb {
   constructor(name) {

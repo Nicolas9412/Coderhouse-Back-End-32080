@@ -1,10 +1,10 @@
 const ContenedorRelacional = require("../../contenedores/ContenedorRelacional");
-const { knexSQLite3 } = require("../../config");
+const { knexSQLite3 } = require("../../../config");
 
-class CarritosDaoSQLite3 extends ContenedorRelacional {
+class CarritosDaoSQLite extends ContenedorRelacional {
   constructor() {
     super(knexSQLite3, "carritos");
   }
 }
 
-module.exports = CarritosDaoSQLite3;
+module.exports = CarritosDaoSQLite;

@@ -1,4 +1,4 @@
-const { DB_FIREBASE: db } = require("../config");
+const { DB_FIREBASE: db } = require("../../config");
 
 class ContenedorFirebase {
   constructor(name) {
