@@ -4,7 +4,7 @@ const optionsMariaDB = {
   connection: {
     host: "127.0.0.1",
     user: "root",
-    database: "test",
+    database: "ecommerce",
   },
 };
 
@@ -55,7 +55,7 @@ const DB_FIREBASE = admin.firestore();
 // config.js
 module.exports = {
   PERSIST_CARRITOS: "./carritos/CarritosDaoFirebase",
-  PERSIST_PRODUCTOS: "./productos/ProductosDaoMongoDb",
+  PERSIST_PRODUCTOS: "./productos/ProductosDaoSQLite",
   DB_FIREBASE,
   connectMDB,
   disconnectMDB,
