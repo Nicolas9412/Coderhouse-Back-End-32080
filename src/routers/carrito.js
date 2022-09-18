@@ -154,7 +154,7 @@ routerCarrito.post("/:id/productos", async (req, res) => {
           stock: productoAgregar.stock,
         };
       } else {
-        productoAgregarParseado = [...productoAgregar];
+        productoAgregarParseado = { ...productoAgregar };
       }
       const carrito = await carritosBD.getById(id);
       if (carrito) {
