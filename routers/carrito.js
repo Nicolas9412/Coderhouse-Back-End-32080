@@ -89,7 +89,7 @@ routerCarrito.post("/:id/productos", async (req, res) => {
       if (carrito) {
         const productosEnCarrito = carrito.productos;
         productosEnCarrito.push(productoAgregarParseado);
-        await carritosBD.modifyProduct(id, {
+        await carritosBD.modify(id, {
           productos: productosEnCarrito,
         });
         res.status(200).send({
@@ -133,7 +133,7 @@ routerCarrito.delete("/:id/productos/:id_prod", async (req, res) => {
     }
     if (productoExisteEnCarro) {
       const newArray = productosCarrito.filter((e) => e.id != id_prod);
-      await carritosBD.modifyProduct(id, { productos: newArray });
+      await carritosBD.modify(id, { productos: newArray });
       res.status(200).send({
         status: 200,
         message: "Producto eliminado",

@@ -1,22 +1,14 @@
-const admin = require("firebase-admin");
+const { DB_FIREBASE: db } = require("../config");
 
-const serviceAccount = require("./db/segunda-entrega-proyecto-final-firebase-adminsdk-172da-d1b8a77230.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-
-const db = admin.firestore();
-
-class Carrito {
+class ContenedorFirebase {
   constructor(name) {
     this.name = name;
   }
-  async save(cart) {
+  async save(obj) {
     try {
       const docRef = await db.collection(this.name).doc();
       const id = docRef.id;
-      await docRef.set(cart);
+      await docRef.set(obj);
       return id;
     } catch (error) {
       console.log(error);
@@ -26,11 +18,11 @@ class Carrito {
     try {
       const res = await db.collection(this.name).doc(id).get();
       if (res.data()) {
-        const carritoFormateado = {
+        const objFormateado = {
           id: res.id,
           ...res.data(),
         };
-        return carritoFormateado;
+        return objFormateado;
       }
     } catch (error) {
       console.log(error);
@@ -39,11 +31,11 @@ class Carrito {
   async getAll() {
     try {
       const res = await db.collection(coleccion).get();
-      const carritosFormateado = res.docs.map((doc) => ({
+      const objsFormateado = res.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      return carritosFormateado;
+      return objsFormateado;
     } catch (error) {
       console.log(error);
     }
@@ -55,13 +47,13 @@ class Carrito {
       console.log(error);
     }
   }
-  async modifyProduct(id, cart) {
+  async modify(id, replace) {
     try {
-      await db.collection(this.name).doc(id).update(cart);
+      await db.collection(this.name).doc(id).update(replace);
     } catch (error) {
       console.log(error);
     }
   }
 }
 
-module.exports = Carrito;
+module.exports = ContenedorFirebase;

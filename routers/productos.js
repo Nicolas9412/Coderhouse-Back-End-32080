@@ -117,7 +117,7 @@ routerProductos.put(
         ...body,
         timestamp,
       };
-      await prod.modifyProduct(id, body);
+      await prod.modify(id, body);
       res.status(200).send({
         status: 200,
         message: "producto modificado",
