@@ -82,30 +82,43 @@ routerProductos.post("/", async (req, res) => {
   }
 });
 
-routerProductos.put("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    let { body } = req;
-    const { precio, stock } = body;
-    const timestamp = Date.now();
-    body = {
-      ...body,
-      timestamp,
-      precio: parseFloat(precio),
-      stock: parseInt(stock),
-    };
-    await prod.modifyProduct(id, body);
-    res.status(200).send({
-      status: 200,
-      message: "producto modificado",
-    });
-  } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: error.message,
-    });
+routerProductos.put(
+  "/:id",
+  (req, res, next) => {
+    if (!isAdmin) {
+      res.send({
+        error: -1,
+        descripcion: "ruta '/api/productos' método 'put' no autorizado",
+      });
+    } else {
+      next();
+    }
+  },
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      let { body } = req;
+      const { precio, stock } = body;
+      const timestamp = Date.now();
+      body = {
+        ...body,
+        timestamp,
+        precio: parseFloat(precio),
+        stock: parseInt(stock),
+      };
+      await prod.modifyProduct(id, body);
+      res.status(200).send({
+        status: 200,
+        message: "producto modificado",
+      });
+    } catch (error) {
+      res.status(500).send({
+        status: 500,
+        message: error.message,
+      });
+    }
   }
-});
+);
 
 routerProductos.delete("/:id", async (req, res) => {
   try {
