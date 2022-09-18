@@ -56,6 +56,19 @@ class ContenedorRelacional {
       });
     return result;
   }
+  async getByProp(prop, value) {
+    let result;
+    await this.knex
+      .from(this.tabla)
+      .select("*")
+      .where(`${prop}`, value)
+      .then((res) => (result = res))
+      .catch((e) => {
+        console.log(e);
+        throw e;
+      });
+    return result;
+  }
 }
 
 module.exports = ContenedorRelacional;

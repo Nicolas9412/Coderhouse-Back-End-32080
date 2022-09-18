@@ -74,7 +74,7 @@ routerProductos.post(
       const { nombre, descripcion, codigo, foto, precio, stock } = body;
       const timestamp = Date.now();
       const productoNuevo = {
-        timestamp,
+        timestamp: parseInt(timestamp),
         nombre,
         descripcion,
         codigo,
