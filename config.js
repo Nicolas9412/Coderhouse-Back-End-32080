@@ -1,3 +1,22 @@
+// Config MariaDB
+const optionsMariaDB = {
+  client: "mysql",
+  connection: {
+    host: "127.0.0.1",
+    user: "root",
+    database: "test",
+  },
+};
+
+// Config Sqlite3
+const optionsSQLite3 = {
+  client: "sqlite3",
+  connection: {
+    filename: "./daos/db/ecommerce.sqlite",
+  },
+  userNullAsDefault: true,
+};
+
 // Config Mongo DB Atlas
 const mongoose = require("mongoose");
 
