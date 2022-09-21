@@ -1,7 +1,7 @@
 {
-  "name": "primera_entrega_proyecto_final",
+  "name": "segunda_entrega_proyecto_final",
   "version": "0.0.0",
-  "description": "api de ecommerce con carritos y productos",
+  "description": "api de ecommerce con carritos y productos con persistencia en memoria, filesystem, SQLite3, MariaDB, MongoDB y Firebase",
   "main": "server.js",
   "scripts": {
     "start": "node ./utils/createTables.js && nodemon server.js"
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/Nicolas9412/Coderhouse-Back-End-32080.git"
   },
-  "author": "Leandro Olmos",
+  "author": "Leandro Nicolas Olmos Gomez",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.1",

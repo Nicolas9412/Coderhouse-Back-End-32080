@@ -4,33 +4,49 @@ class ContenedorRelacional {
     this.tabla = tabla;
   }
   async save(obj) {
+    let result;
     await this.knex(this.tabla)
+      .returning("id")
       .insert(obj)
-      .then(() => console.log("data inserted"))
+      .then((res) => {
+        result = res;
+        console.log("data inserted");
+      })
       .catch((e) => {
         console.log(e);
         throw e;
       });
+    return result[0];
   }
   async modify(id, obj) {
-    await this.knex(this.tabla)
-      .where("id", id)
-      .update(obj)
-      .then(() => console.log("data updated"))
-      .catch((e) => {
-        console.log(e);
-        throw e;
-      });
+    if (await this.getById(id)) {
+      await this.knex(this.tabla)
+        .where("id", id)
+        .update(obj)
+        .then(() => console.log("data updated"))
+        .catch((e) => {
+          console.log(e);
+          throw e;
+        });
+      return 1;
+    } else {
+      return null;
+    }
   }
   async deleteById(id) {
-    await this.knex(this.tabla)
-      .where("id", id)
-      .del()
-      .then(() => console.log("data deleted"))
-      .catch((e) => {
-        console.log(e);
-        throw e;
-      });
+    if (await this.getById(id)) {
+      await this.knex(this.tabla)
+        .where("id", id)
+        .del()
+        .then(() => console.log("data deleted"))
+        .catch((e) => {
+          console.log(e);
+          throw e;
+        });
+      return 1;
+    } else {
+      return null;
+    }
   }
   async getAll() {
     let result = [];
@@ -54,7 +70,7 @@ class ContenedorRelacional {
         console.log(e);
         throw e;
       });
-    return result;
+    return result.length != 0 ? result : null;
   }
   async getByProp(prop, value) {
     let result;

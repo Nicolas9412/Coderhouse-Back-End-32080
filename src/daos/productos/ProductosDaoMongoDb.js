@@ -1,4 +1,4 @@
-const schemaProducto = require("../../../utils/modelsMDB/schemaProducto");
+const schemaProducto = require("../../modelsMDB/schemaProducto");
 const ContenedorMongoDb = require("../../contenedores/ContenedorMongoDb");
 
 class ProductosDaoMongoDb extends ContenedorMongoDb {

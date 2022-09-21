@@ -1,5 +1,5 @@
 const express = require("express");
-const routerProductos = require("./src/routers/productos");
+const { routerProductos } = require("./src/routers/productos");
 const routerCarrito = require("./src/routers/carrito");
 
 const app = express();

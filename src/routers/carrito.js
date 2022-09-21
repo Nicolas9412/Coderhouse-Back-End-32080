@@ -1,13 +1,12 @@
 const express = require("express");
 const { carritoDaos: Carrito } = require("../daos/mainDaos");
-const { productosDaos: Producto } = require("../daos/mainDaos");
 const {
   productosCarritosDaos: ProductosCarritos,
 } = require("../daos/mainDaos");
 const routerCarrito = express.Router();
 
 const carritosBD = new Carrito();
-const productosBD = new Producto();
+const { productosBD } = require("./productos");
 const productosCarritosBD = new ProductosCarritos();
 
 const findClassName = (clase) => {
@@ -104,8 +103,18 @@ routerCarrito.get("/:id/productos", async (req, res) => {
           );
           for (const prod of productosEnCarro) {
             const res = await productosBD.getById(prod.idProducto);
-            productosDelCarrito.push(res);
+            productosDelCarrito.push(res[0]);
           }
+          res.status(200).send({
+            status: 200,
+            data: {
+              id: carrito[0].id,
+              timestamp: carrito[0].timestamp,
+              productos: productosDelCarrito,
+            },
+            message: "Productos del carrito encontrados",
+          });
+          return;
         } else {
           res.status(200).send({
             status: 200,
@@ -117,7 +126,7 @@ routerCarrito.get("/:id/productos", async (req, res) => {
       res.status(200).send({
         status: 200,
         data: {
-          productosDelCarrito,
+          carrito,
         },
         message: "Productos del carrito encontrados",
       });
@@ -238,43 +247,59 @@ routerCarrito.delete("/:id/productos/:id_prod", async (req, res) => {
   try {
     const { id, id_prod } = req.params;
     const carrito = await carritosBD.getById(id);
-    let productosCarrito = carrito.productos;
-    let productoExisteEnCarro;
-    let productosAEliminar;
-    if (classNameCarrito !== "ContenedorRelacional") {
-      for (const prod of productosCarrito) {
-        if (prod.id == id_prod) {
-          productoExisteEnCarro = true;
-          break;
-        }
-      }
-    } else {
-      productosAEliminar = await productosCarritosBD.getByProp("idCarrito", id);
-      productoExisteEnCarro = productosAEliminar.length != 0;
-    }
-    if (productoExisteEnCarro) {
+    if (carrito) {
+      let productosCarrito = carrito.productos;
+      let productoExisteEnCarro;
+      let productosAEliminar;
       if (classNameCarrito !== "ContenedorRelacional") {
-        const newArray = productosCarrito.filter((e) => e.id != id_prod);
-        await carritosBD.modify(id, { productos: newArray });
-        res.status(200).send({
-          status: 200,
-          message: "Producto eliminado",
-        });
-      } else {
-        for (const prod of productosAEliminar) {
-          if (prod.idProducto == id_prod) {
-            await productosCarritosBD.deleteById(prod.id);
+        for (const prod of productosCarrito) {
+          if (prod.id == id_prod) {
+            productoExisteEnCarro = true;
+            break;
           }
         }
+      } else {
+        let parsedProductosAEliminar = [];
+        productosAEliminar = await productosCarritosBD.getByProp(
+          "idCarrito",
+          id
+        );
+        productosAEliminar.map((item) =>
+          parsedProductosAEliminar.push({ ...item })
+        );
+        productoExisteEnCarro = parsedProductosAEliminar.find(
+          (item) => item.idProducto == id_prod
+        );
+      }
+      if (productoExisteEnCarro) {
+        if (classNameCarrito !== "ContenedorRelacional") {
+          const newArray = productosCarrito.filter((e) => e.id != id_prod);
+          await carritosBD.modify(id, { productos: newArray });
+          res.status(200).send({
+            status: 200,
+            message: "Producto eliminado del carro",
+          });
+        } else {
+          for (const prod of productosAEliminar) {
+            if (prod.idProducto == id_prod) {
+              await productosCarritosBD.deleteById(prod.id);
+            }
+          }
+          res.status(200).send({
+            status: 200,
+            message: "Producto eliminado del carro",
+          });
+        }
+      } else {
         res.status(200).send({
           status: 200,
-          message: "Producto eliminado",
+          message: "Este producto no existe en el carro",
         });
       }
     } else {
       res.status(200).send({
         status: 200,
-        message: "Este producto no existe en el carro",
+        message: "Este carrito no existe",
       });
     }
   } catch (error) {

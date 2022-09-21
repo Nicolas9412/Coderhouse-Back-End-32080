@@ -9,8 +9,9 @@ class ContenedorMongoDb {
     try {
       await connectMDB();
       const objNuevo = new this.name({ ...obj });
-      await objNuevo.save();
+      const objCreado = await objNuevo.save();
       disconnectMDB();
+      return objCreado._id;
     } catch (error) {
       console.log(error);
     }
@@ -41,8 +42,10 @@ class ContenedorMongoDb {
   async deleteById(id) {
     try {
       await connectMDB();
+      const objEncontrado = await this.name.findById(id);
       await this.name.findByIdAndDelete(id);
       disconnectMDB();
+      return objEncontrado;
     } catch (error) {
       console.log(error);
     }

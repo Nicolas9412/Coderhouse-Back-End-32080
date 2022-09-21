@@ -2,12 +2,12 @@ const express = require("express");
 const { productosDaos: Producto } = require("../daos/mainDaos");
 const routerProductos = express.Router();
 
-const prod = new Producto();
+const productosBD = new Producto();
 const isAdmin = true;
 
 routerProductos.get("/", async (req, res) => {
   try {
-    const productos = await prod.getAll();
+    const productos = await productosBD.getAll();
     if (productos.length !== 0) {
       res.status(200).send({
         status: 200,
@@ -33,7 +33,7 @@ routerProductos.get("/", async (req, res) => {
 routerProductos.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const unProducto = await prod.getById(id);
+    const unProducto = await productosBD.getById(id);
     if (unProducto) {
       res.status(200).send({
         status: 200,
@@ -45,7 +45,7 @@ routerProductos.get("/:id", async (req, res) => {
     } else {
       res.status(200).send({
         status: 200,
-        message: "No se encontró el producto",
+        message: "El producto no existe",
       });
     }
   } catch (error) {
@@ -82,7 +82,7 @@ routerProductos.post(
         precio: parseFloat(precio),
         stock: parseInt(stock),
       };
-      await prod.save(productoNuevo);
+      await productosBD.save(productoNuevo);
       res.status(200).send({
         status: 200,
         message: "producto agregado",
@@ -117,11 +117,18 @@ routerProductos.put(
         ...body,
         timestamp,
       };
-      await prod.modify(id, body);
-      res.status(200).send({
-        status: 200,
-        message: "producto modificado",
-      });
+      const result = await productosBD.modify(id, body);
+      if (result) {
+        res.status(200).send({
+          status: 200,
+          message: "producto modificado",
+        });
+      } else {
+        res.status(200).send({
+          status: 200,
+          message: "El producto no existe",
+        });
+      }
     } catch (error) {
       res.status(500).send({
         status: 500,
@@ -146,11 +153,18 @@ routerProductos.delete(
   async (req, res) => {
     try {
       const { id } = req.params;
-      await prod.deleteById(id);
-      res.status(200).send({
-        status: 200,
-        message: "producto eleminado",
-      });
+      const result = await productosBD.deleteById(id);
+      if (result) {
+        res.status(200).send({
+          status: 200,
+          message: "producto eliminado",
+        });
+      } else {
+        res.status(200).send({
+          status: 200,
+          message: "El producto no existe",
+        });
+      }
     } catch (error) {
       res.status(500).send({
         status: 500,
@@ -160,4 +174,4 @@ routerProductos.delete(
   }
 );
 
-module.exports = routerProductos;
+module.exports = { routerProductos, productosBD };

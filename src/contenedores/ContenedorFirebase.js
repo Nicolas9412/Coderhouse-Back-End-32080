@@ -30,7 +30,7 @@ class ContenedorFirebase {
   }
   async getAll() {
     try {
-      const res = await db.collection(coleccion).get();
+      const res = await db.collection(this.name).get();
       const objsFormateado = res.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -42,14 +42,18 @@ class ContenedorFirebase {
   }
   async deleteById(id) {
     try {
+      const result = await this.getById(id);
       await db.collection(this.name).doc(id).delete();
+      return result;
     } catch (error) {
       console.log(error);
     }
   }
   async modify(id, replace) {
     try {
+      const result = await this.getById(id);
       await db.collection(this.name).doc(id).update(replace);
+      return result;
     } catch (error) {
       console.log(error);
     }
