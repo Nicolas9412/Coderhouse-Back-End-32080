@@ -54,8 +54,8 @@ const DB_FIREBASE = admin.firestore();
 
 // config.js
 module.exports = {
-  PERSIST_CARRITOS: "./carritos/CarritosDaoMariaDB",
-  PERSIST_PRODUCTOS: "./productos/ProductosDaoFirebase",
+  PERSIST_CARRITOS: "./carritos/CarritosDaoFirebase",
+  PERSIST_PRODUCTOS: "./productos/ProductosDaoMongoDb",
   PERSIST_PRODUCTOSCARRITOS: "./productosCarritos/ProductosCarritosDaoMariaDB",
   DB_FIREBASE,
   connectMDB,
