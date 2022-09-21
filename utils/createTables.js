@@ -1,10 +1,6 @@
 const { knexMariaDB } = require("../config");
 const { knexSQLite3 } = require("../config");
-const {
-  PERSIST_PRODUCTOS,
-  PERSIST_CARRITOS,
-  PERSIST_PRODUCTOSCARRITOS,
-} = require("../config");
+const { PERSIST_PRODUCTOS, PERSIST_CARRITOS } = require("../config");
 
 if (
   PERSIST_PRODUCTOS.includes("DaoSQLite") ||
@@ -19,7 +15,7 @@ if (
       table.string("descripcion");
       table.string("codigo");
       table.string("foto");
-      table.integer("precio");
+      table.float("precio");
       table.integer("stock");
       table.integer("timestamp");
     })
@@ -62,7 +58,7 @@ if (
       table.string("descripcion");
       table.string("codigo");
       table.string("foto");
-      table.integer("precio");
+      table.float("precio");
       table.integer("stock");
       table.integer("timestamp");
     })

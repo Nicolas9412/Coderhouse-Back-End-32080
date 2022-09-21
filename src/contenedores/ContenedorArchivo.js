@@ -65,18 +65,24 @@ class ContenedorArchivos {
   }
   async deleteById(id) {
     try {
-      let newProducts = [];
-      let productos = await fs.promises.readFile(this.name, "utf-8");
-      productos = JSON.parse(productos);
-      productos.forEach((prod) => {
-        if (prod.id !== parseInt(id)) {
-          newProducts.push(prod);
-        }
-      });
-      await fs.promises.writeFile(
-        this.name,
-        JSON.stringify(newProducts, null, 2)
-      );
+      const productoAEliminar = await this.getById(parseInt(id));
+      if (productoAEliminar !== null) {
+        let newProducts = [];
+        let productos = await fs.promises.readFile(this.name, "utf-8");
+        productos = JSON.parse(productos);
+        productos.forEach((prod) => {
+          if (prod.id !== parseInt(id)) {
+            newProducts.push(prod);
+          }
+        });
+        await fs.promises.writeFile(
+          this.name,
+          JSON.stringify(newProducts, null, 2)
+        );
+        return 1;
+      } else {
+        return null;
+      }
     } catch (error) {
       console.log("Algo salió mal!");
     }
@@ -99,8 +105,9 @@ class ContenedorArchivos {
           JSON.stringify(productos, null, 2)
         );
         return newProduct;
+      } else {
+        return null;
       }
-      return null;
     } catch (error) {
       console.log("Algo salió mal!");
     }

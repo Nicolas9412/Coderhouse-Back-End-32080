@@ -62,7 +62,7 @@ routerCarrito.delete("/:id", async (req, res) => {
         } else {
           res.status(200).send({
             status: 200,
-            message: "Este carrito no existe",
+            message: "este carrito no existe",
           });
           return;
         }
@@ -76,7 +76,7 @@ routerCarrito.delete("/:id", async (req, res) => {
     } else {
       res.status(200).send({
         status: 200,
-        message: "Este carrito no existe",
+        message: "este carrito no existe",
       });
     }
   } catch (error) {
@@ -112,13 +112,13 @@ routerCarrito.get("/:id/productos", async (req, res) => {
               timestamp: carrito[0].timestamp,
               productos: productosDelCarrito,
             },
-            message: "Productos del carrito encontrados",
+            message: "productos del carrito encontrados",
           });
           return;
         } else {
           res.status(200).send({
             status: 200,
-            message: "Este carrito no existe",
+            message: "este carrito no existe",
           });
           return;
         }
@@ -128,12 +128,12 @@ routerCarrito.get("/:id/productos", async (req, res) => {
         data: {
           carrito,
         },
-        message: "Productos del carrito encontrados",
+        message: "productos del carrito encontrados",
       });
     } else {
       res.status(200).send({
         status: 200,
-        message: "Este carrito no existe",
+        message: "este carrito no existe",
       });
     }
   } catch (error) {
@@ -173,7 +173,7 @@ routerCarrito.post("/:id/productos", async (req, res) => {
             if (prod.id == body.id) {
               res.status(200).send({
                 status: 200,
-                message: "Este producto ya está en el carro",
+                message: "este producto ya está en el carro",
               });
               return;
             }
@@ -187,7 +187,7 @@ routerCarrito.post("/:id/productos", async (req, res) => {
             data: {
               productoAgregado: productoAgregarParseado,
             },
-            message: "Agregaste un producto a tu carrito",
+            message: "agregaste un producto a tu carrito",
           });
         } else {
           if (productoAgregar.length !== 0) {
@@ -199,7 +199,7 @@ routerCarrito.post("/:id/productos", async (req, res) => {
               if (prod.idProducto == body.id) {
                 res.status(200).send({
                   status: 200,
-                  message: "Este producto ya está en el carro",
+                  message: "este producto ya está en el carro",
                 });
                 return;
               }
@@ -213,12 +213,12 @@ routerCarrito.post("/:id/productos", async (req, res) => {
               data: {
                 productoAgregado: productoAgregarParseado[0],
               },
-              message: "Agregaste un producto a tu carrito",
+              message: "agregaste un producto a tu carrito",
             });
           } else {
             res.status(200).send({
               status: 200,
-              message: "Este producto no existe",
+              message: "este producto no existe",
             });
             return;
           }
@@ -226,13 +226,13 @@ routerCarrito.post("/:id/productos", async (req, res) => {
       } else {
         res.status(200).send({
           status: 200,
-          message: "Este carrito no existe",
+          message: "este carrito no existe",
         });
       }
     } else {
       res.status(200).send({
         status: 200,
-        message: "Este producto no existe",
+        message: "este producto no existe",
       });
     }
   } catch (error) {
@@ -277,7 +277,7 @@ routerCarrito.delete("/:id/productos/:id_prod", async (req, res) => {
           await carritosBD.modify(id, { productos: newArray });
           res.status(200).send({
             status: 200,
-            message: "Producto eliminado del carro",
+            message: "producto eliminado del carro",
           });
         } else {
           for (const prod of productosAEliminar) {
@@ -287,19 +287,19 @@ routerCarrito.delete("/:id/productos/:id_prod", async (req, res) => {
           }
           res.status(200).send({
             status: 200,
-            message: "Producto eliminado del carro",
+            message: "producto eliminado del carro",
           });
         }
       } else {
         res.status(200).send({
           status: 200,
-          message: "Este producto no existe en el carro",
+          message: "este producto no existe en el carro",
         });
       }
     } else {
       res.status(200).send({
         status: 200,
-        message: "Este carrito no existe",
+        message: "este carrito no existe",
       });
     }
   } catch (error) {

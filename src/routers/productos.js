@@ -19,7 +19,7 @@ routerProductos.get("/", async (req, res) => {
     } else {
       res.status(200).send({
         status: 200,
-        message: "No hay productos",
+        message: "no hay productos",
       });
     }
   } catch (error) {
@@ -45,7 +45,7 @@ routerProductos.get("/:id", async (req, res) => {
     } else {
       res.status(200).send({
         status: 200,
-        message: "El producto no existe",
+        message: "el producto no existe",
       });
     }
   } catch (error) {
@@ -126,7 +126,7 @@ routerProductos.put(
       } else {
         res.status(200).send({
           status: 200,
-          message: "El producto no existe",
+          message: "el producto no existe",
         });
       }
     } catch (error) {
@@ -162,7 +162,7 @@ routerProductos.delete(
       } else {
         res.status(200).send({
           status: 200,
-          message: "El producto no existe",
+          message: "el producto no existe",
         });
       }
     } catch (error) {

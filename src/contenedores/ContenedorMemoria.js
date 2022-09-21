@@ -24,7 +24,7 @@ class ContenedorMemoria {
   }
   modify(id, replace) {
     const index = this.memoria.findIndex((item) => item.id == id);
-    if (index) return;
+    if (!this.getById(id)) return;
     return (this.memoria[index] = { ...this.memoria[index], ...replace });
   }
 }
