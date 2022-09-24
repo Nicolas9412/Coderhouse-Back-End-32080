@@ -1,5 +1,5 @@
 const express = require("express");
-const { routerProductos } = require("./src/routers/productos");
+const routerProductos = require("./src/routers/productos");
 const routerCarrito = require("./src/routers/carrito");
 
 const app = express();
@@ -20,6 +20,6 @@ app.all("*", (req, res) => {
 /* Server Listen */
 const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, () =>
-  console.log(`servidor Levantado ${PORT}`)
+  console.log(`servidor Levantado http://localhost:${PORT}`)
 );
 server.on("error", (error) => console.log(`Error en servidor ${error}`));
