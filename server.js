@@ -1,16 +1,11 @@
 const express = require("express");
 const { engine } = require("express-handlebars");
 const PORT = 8080;
-const { optionsSQLite3 } = require("./options/SQLite3.js");
-const { optionsMariaDB } = require("./options/MariaDB.js");
-const knexSQLite3 = require("knex")(optionsSQLite3);
-const knexMariaDB = require("knex")(optionsMariaDB);
-const Contenedor = require("./Contenedor");
 const ApiProductosMock = require("./api/productos");
+const { chatsDaos: Chats } = require("./src/daos/mainDaos");
 
 //
-const productosBD = new Contenedor(knexMariaDB, "productos");
-const chatBD = new Contenedor(knexSQLite3, "mensajes");
+const chatBD = new Chats();
 const apiProductos = new ApiProductosMock();
 
 //
@@ -44,14 +39,12 @@ let productos = [];
 let chat = [];
 
 app.get("/", async (req, res) => {
-  productos = await productosBD.selectAll();
-  chat = await chatBD.selectAll();
-  res.render("form-list-chat", { productos, chat });
+  chat = await chatBD.getAll();
+  res.render("form-list-chat", { chat });
 });
 
 app.get("/api/productos-test", async (req, res) => {
   productos = apiProductos.popular();
-  console.log(productos);
   res.render("table-productos", { productos });
 });
 
@@ -63,8 +56,8 @@ io.on("connection", (socket) => {
     io.sockets.emit("producto-row", data);
   });
   socket.on("mensaje", async (data) => {
-    await chatBD.insert(data);
-    chat = await chatBD.selectAll();
+    await chatBD.save(data);
+    chat = await chatBD.getAll();
     io.sockets.emit("chat", chat);
   });
 });
