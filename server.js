@@ -6,10 +6,12 @@ const { optionsMariaDB } = require("./options/MariaDB.js");
 const knexSQLite3 = require("knex")(optionsSQLite3);
 const knexMariaDB = require("knex")(optionsMariaDB);
 const Contenedor = require("./Contenedor");
+const ApiProductosMock = require("./api/productos");
 
 //
 const productosBD = new Contenedor(knexMariaDB, "productos");
 const chatBD = new Contenedor(knexSQLite3, "mensajes");
+const apiProductos = new ApiProductosMock();
 
 //
 const app = express();
@@ -45,6 +47,12 @@ app.get("/", async (req, res) => {
   productos = await productosBD.selectAll();
   chat = await chatBD.selectAll();
   res.render("form-list-chat", { productos, chat });
+});
+
+app.get("/api/productos-test", async (req, res) => {
+  productos = apiProductos.popular();
+  console.log(productos);
+  res.render("table-productos", { productos });
 });
 
 io.on("connection", (socket) => {

@@ -4,7 +4,7 @@
   "description": "Implementacion de base de datos SQLite3 y MariaDB",
   "main": "server.js",
   "scripts": {
-    "start": "node createTables.js && nodemon server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "sqlite3": "^5.0.11"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.5.0",
     "nodemon": "^2.0.19"
   }
 }

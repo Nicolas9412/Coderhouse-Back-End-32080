@@ -25,6 +25,11 @@ function submitMenssage(e) {
   e.preventDefault();
   const form = document.getElementById("form-chat");
   const email = document.getElementById("email").value;
+  const nombre = document.getElementById("nombre").value;
+  const apellido = document.getElementById("apellido").value;
+  const edad = document.getElementById("edad").value;
+  const alias = document.getElementById("alias").value;
+  const avatar = document.getElementById("avatar").value;
   const mensaje = document.getElementById("mensaje").value;
   let fecha = new Date();
   fecha = `${fecha.getDate()}/${
@@ -38,6 +43,11 @@ function submitMenssage(e) {
       ? `0${fecha.getSeconds()}`
       : fecha.getSeconds()
   }`;
+  const mensajeCompleto = {
+    author: { id: email, nombre, apellido, edad, alias, avatar },
+    text: mensaje,
+    fecha,
+  };
   const mensajeCompleto = { email, fecha, mensaje };
   socket.emit("mensaje", mensajeCompleto);
   form.reset();
