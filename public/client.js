@@ -48,7 +48,6 @@ function submitMenssage(e) {
     text: mensaje,
     fecha,
   };
-  const mensajeCompleto = { email, fecha, mensaje };
   socket.emit("mensaje", mensajeCompleto);
   form.reset();
   return false;
