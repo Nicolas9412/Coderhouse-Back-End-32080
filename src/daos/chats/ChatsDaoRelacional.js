@@ -6,4 +6,4 @@ class ChatsDaoRelacional extends ContenedorRelacional {
   }
 }
 
-module.exports = { ChatsDaoRelacional };
+module.exports = ChatsDaoRelacional;

@@ -7,4 +7,4 @@ class ChatsDaoMongoDb extends ContenedorMongoDb {
   }
 }
 
-module.exports = { ChatsDaoMongoDb };
+module.exports = ChatsDaoMongoDb;

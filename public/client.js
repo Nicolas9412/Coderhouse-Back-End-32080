@@ -1,37 +1,16 @@
+const schema = normalizr.schema;
+const denormalize = normalizr.denormalize;
+//
+const author = new schema.Entity("authors", {}, { idAttribute: "email" });
+const message = new schema.Entity("messages", {
+  author: author,
+});
+const chats = new schema.Entity("chats", { chats: [message] });
+
 const socket = io();
 
-socket.on("connect", () => {
-  console.log("Te has conectado");
-});
-
-//Envio de Form
-function submitProduct(e) {
-  e.preventDefault();
-  const form = document.getElementById("form");
-
-  let newProduct = {
-    title: document.getElementById("title").value,
-    price: parseFloat(document.getElementById("price").value),
-    thumbnail: document.getElementById("thumbnail").value,
-  };
-
-  socket.emit("producto", newProduct);
-
-  form.reset();
-  return false;
-}
-
-function submitMenssage(e) {
-  e.preventDefault();
-  const form = document.getElementById("form-chat");
-  const email = document.getElementById("email").value;
-  const nombre = document.getElementById("nombre").value;
-  const apellido = document.getElementById("apellido").value;
-  const edad = document.getElementById("edad").value;
-  const alias = document.getElementById("alias").value;
-  const avatar = document.getElementById("avatar").value;
-  const mensaje = document.getElementById("mensaje").value;
-  let fecha = new Date();
+function convertirFecha(timestamp) {
+  let fecha = new Date(timestamp);
   fecha = `${fecha.getDate()}/${
     fecha.getMonth() + 1
   }/${fecha.getFullYear()} ${fecha.getHours()}:${
@@ -43,49 +22,58 @@ function submitMenssage(e) {
       ? `0${fecha.getSeconds()}`
       : fecha.getSeconds()
   }`;
+  return fecha;
+}
+
+function pintarChat(data) {
+  const divchat = document.getElementById("chat");
+  const dataD = denormalize(data.result, chats, data.entities);
+  const chat = dataD.chats.reduce(
+    (acu, act) =>
+      (acu += `<p style="margin:5px;"><span class="fw-bold" style="color:blue;">${
+        act.author.email
+      }</span><span style="color:brown;"> [${convertirFecha(
+        act.timestamp
+      )}]</span><span class="fst-italic" style="color:green;"> : ${
+        act.text
+      }</span><img style="width: 35px; height: 35px;" src="${
+        act.author.avatar
+      }"/></p>`),
+    ""
+  );
+  divchat.innerHTML = chat;
+
+  let porcentaje =
+    (JSON.stringify(data).length / JSON.stringify(dataD).length) * 100;
+
+  document.getElementById("compresion").textContent = `Compresión: ${Math.trunc(
+    porcentaje
+  )}%`;
+}
+
+document.getElementById("form-chat").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const form = document.getElementById("form-chat");
+  const email = document.getElementById("email").value;
+  const nombre = document.getElementById("nombre").value;
+  const apellido = document.getElementById("apellido").value;
+  const edad = document.getElementById("edad").value;
+  const alias = document.getElementById("alias").value;
+  const avatar = document.getElementById("avatar").value;
+  const mensaje = document.getElementById("mensaje").value;
+  const timestamp = Date.now();
   const mensajeCompleto = {
-    author: { id: email, nombre, apellido, edad, alias, avatar },
+    author: { email, nombre, apellido, edad, alias, avatar },
     text: mensaje,
-    fecha,
+    timestamp,
   };
   socket.emit("mensaje", mensajeCompleto);
   form.reset();
   return false;
-}
-
-socket.on("producto-row", (data) => {
-  const tbody = document.querySelector("tbody");
-  const tr = document.createElement("tr");
-  // td title
-  const tdTitle = document.createElement("td");
-  tdTitle.classList.add("text-center");
-  tdTitle.textContent = data.title;
-  // td price
-  const tdPrice = document.createElement("td");
-  tdPrice.classList.add("text-center");
-  tdPrice.textContent = data.price;
-  // td thumbnail
-  const tdThumbnail = document.createElement("td");
-  tdThumbnail.classList.add("text-center");
-  const imgThumbnail = document.createElement("img");
-  imgThumbnail.classList.add("img-thumbnail", "size-thumbnail");
-  imgThumbnail.setAttribute("src", data.thumbnail);
-  imgThumbnail.setAttribute("alt", data.title);
-  tdThumbnail.appendChild(imgThumbnail);
-  // append child
-  tr.appendChild(tdTitle);
-  tr.appendChild(tdPrice);
-  tr.appendChild(tdThumbnail);
-  tbody.appendChild(tr);
 });
 
 socket.on("chat", (data) => {
-  const divchat = document.getElementById("chat");
-  console.log(data);
-  const chat = data.reduce(
-    (acu, act) =>
-      (acu += `<p style="margin:5px;"><span class="fw-bold" style="color:blue;">${act.email}</span><span style="color:brown;"> [${act.fecha}]</span><span class="fst-italic" style="color:green;"> : ${act.mensaje}</span></p>`),
-    ""
-  );
-  divchat.innerHTML = chat;
+  pintarChat(data);
 });
+
+pintarChat(dataN);

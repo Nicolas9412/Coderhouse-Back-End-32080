@@ -1,8 +1,14 @@
 const express = require("express");
 const { engine } = require("express-handlebars");
+const normalizr = require("normalizr");
+const normalize = normalizr.normalize;
+const schema = normalizr.schema;
+const denormalize = normalizr.denormalize;
 const PORT = 8080;
 const ApiProductosMock = require("./api/productos");
 const { chatsDaos: Chats } = require("./src/daos/mainDaos");
+const { generarId } = require("./utils/generadorDeIds");
+const mongoose = require("mongoose");
 
 //
 const chatBD = new Chats();
@@ -32,6 +38,10 @@ app.engine(
     defaultLayout: "index.hbs",
     layoutsDir: __dirname + "/views/layouts",
     partialsDir: __dirname + "/views/partials",
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true,
+    },
   })
 );
 
@@ -40,7 +50,27 @@ let chat = [];
 
 app.get("/", async (req, res) => {
   chat = await chatBD.getAll();
-  res.render("form-list-chat", { chat });
+  let chatParseado = [];
+  chat.forEach((item) =>
+    chatParseado.push({
+      id: item._id.toString(),
+      author: item.author,
+      text: item.text,
+      timestamp: item.timestamp,
+    })
+  );
+  //
+  const author = new schema.Entity("authors", {}, { idAttribute: "email" });
+  const message = new schema.Entity("messages", {
+    author: author,
+  });
+  const chats = new schema.Entity("chats", { chats: [message] });
+  //
+  const originalData = { id: "999", chats: [...chatParseado] };
+  const dataN = normalize(originalData, chats);
+  res.render("form-list-chat", {
+    encodedJson: encodeURIComponent(JSON.stringify(dataN)),
+  });
 });
 
 app.get("/api/productos-test", async (req, res) => {
@@ -50,14 +80,30 @@ app.get("/api/productos-test", async (req, res) => {
 
 io.on("connection", (socket) => {
   console.log("Usuario Conectado" + socket.id);
-  socket.on("producto", async (data) => {
-    await productosBD.insert(data);
-    productos = await productosBD.selectAll();
-    io.sockets.emit("producto-row", data);
-  });
   socket.on("mensaje", async (data) => {
-    await chatBD.save(data);
+    await chatBD.save({
+      ...data,
+      author: { ...data.author, id: new mongoose.Types.ObjectId() },
+    });
     chat = await chatBD.getAll();
-    io.sockets.emit("chat", chat);
+    let chatParseado = [];
+    chat.forEach((item) =>
+      chatParseado.push({
+        id: item._id.toString(),
+        author: item.author,
+        text: item.text,
+        timestamp: item.timestamp,
+      })
+    );
+    //
+    const author = new schema.Entity("authors", {}, { idAttribute: "email" });
+    const message = new schema.Entity("messages", {
+      author: author,
+    });
+    const chats = new schema.Entity("chats", { chats: [message] });
+    //
+    const originalData = { id: "999", chats: [...chatParseado] };
+    const dataN = normalize(originalData, chats);
+    io.sockets.emit("chat", dataN);
   });
 });
