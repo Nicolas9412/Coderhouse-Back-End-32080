@@ -1,7 +1,7 @@
 {
-  "name": "desafio_mi_primera_base_de_datos",
+  "name": "desafio_mocks_normalizr",
   "version": "0.0.0",
-  "description": "Implementacion de base de datos SQLite3 y MariaDB",
+  "description": "Implementacion de mocks con fakerjs y normalizacion de los mensajes con normalizr",
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js"
