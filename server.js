@@ -30,16 +30,23 @@ app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 const server = app.listen(PORT, () => {
-  console.log(`Servidor levantado http://localhost:${server.address().port}`);
+  console.log(
+    `Servidor levantado http://localhost:${server.address().port}/login`
+  );
 });
 server.on("error", (error) => {
   console.log(`Error en el servidor ${error}`);
 });
-app.get("/login", (req, res) => {
-  res.render("pages/login.ejs");
-});
 
 let usuario = "";
+
+app.get("/login", (req, res) => {
+  if (req.session[usuario]) {
+    usuario = req.session[usuario].usuario;
+    return res.render("pages/vistaProductos.ejs", { usuario });
+  }
+  return res.render("pages/login.ejs");
+});
 
 app.post("/login", (req, res) => {
   const { body } = req;
