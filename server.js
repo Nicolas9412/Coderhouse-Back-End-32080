@@ -8,7 +8,8 @@ const PORT = 8080;
 app.use(
   session({
     store: MongoStore.create({
-      mongoUrl: "",
+      mongoUrl:
+        "mongodb+srv://Nicolas9412:admin123@cluster0.x4k71fz.mongodb.net/ecommerce?retryWrites=true&w=majority",
       mongoOptions: advancedOptions,
     }),
     secret: "top secret",
@@ -16,6 +17,12 @@ app.use(
     saveUninitialized: false,
   })
 );
+
+/*app.use(function (req, res, next) {
+  req.session._garbage = Date();
+  req.session.touch();
+  next();
+});*/
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,15 +44,18 @@ let usuario = "";
 app.post("/login", (req, res) => {
   const { body } = req;
   usuario = body.usuario;
-  console.log(body.usuario);
+  if (!req.session[usuario]) {
+    req.session[usuario] = {};
+    req.session[usuario].usuario = usuario;
+  }
   res.render("pages/vistaProductos.ejs", { usuario });
 });
 
 app.get("/logout", (req, res) => {
-  //req.session.destroy((err) => {
-  //  if (err) {
-  //    return res.json({ status: "Logout ERROR", body: err });
-  //  }
-  res.render("pages/logout.ejs", { usuario });
+  req.session.destroy((err) => {
+    if (err) {
+      return res.json({ status: "Logout ERROR", body: err });
+    }
+    res.render("pages/logout.ejs", { usuario });
+  });
 });
-//});
