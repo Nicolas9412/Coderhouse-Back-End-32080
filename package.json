@@ -1,17 +1,18 @@
 {
-  "name": "coderhouse-back-end-32080",
+  "name": "Desafio_loginin_formulario",
   "version": "1.0.0",
-  "description": "",
+  "description": "Utilizando session y mongoDB Atlas para persistir las sessiones de login",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Nicolas9412/Coderhouse-Back-End-32080.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Leandro Nicolas Olmos Gomez",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Nicolas9412/Coderhouse-Back-End-32080/issues"
@@ -22,5 +23,8 @@
     "ejs": "^3.1.8",
     "express": "^4.18.1",
     "express-session": "^1.17.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }

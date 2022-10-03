@@ -15,14 +15,16 @@ app.use(
     secret: "top secret",
     resave: false,
     saveUninitialized: false,
+    cookie: { maxAge: 600000 },
   })
 );
 
-/*app.use(function (req, res, next) {
+app.use(function (req, res, next) {
+  console.log(req.session);
   req.session._garbage = Date();
   req.session.touch();
-  next();
-});*/
+  return next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -40,25 +42,29 @@ server.on("error", (error) => {
 
 let usuario = "";
 
-app.get("/login", (req, res) => {
-  if (req.session[usuario]) {
-    usuario = req.session[usuario].usuario;
-    return res.render("pages/vistaProductos.ejs", { usuario });
+function checkLogin(req, res, next) {
+  if (!req.session["login"]) {
+    return res.render("pages/login.ejs");
   }
-  return res.render("pages/login.ejs");
+  return next();
+}
+
+app.get("/login", checkLogin, (req, res) => {
+  usuario = req.session["login"].usuario;
+  return res.render("pages/vistaProductos.ejs", { usuario });
 });
 
 app.post("/login", (req, res) => {
   const { body } = req;
   usuario = body.usuario;
-  if (!req.session[usuario]) {
-    req.session[usuario] = {};
-    req.session[usuario].usuario = usuario;
+  if (!req.session["login"]) {
+    req.session["login"] = {};
+    req.session["login"].usuario = usuario;
   }
   res.render("pages/vistaProductos.ejs", { usuario });
 });
 
-app.get("/logout", (req, res) => {
+app.get("/logout", checkLogin, (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       return res.json({ status: "Logout ERROR", body: err });
