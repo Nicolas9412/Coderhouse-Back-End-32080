@@ -15,15 +15,15 @@
   <body class="w-100 h-100 px-5 py-5 d-flex justify-content-center">
     <div class="w-25 shadow py-5 px-5">
       <h1 class="fw-bold text-center" style="color: blue">Registro de Usuario</h1>
-      <form class="px-5 mt-4" id="form-login" action="http://localhost:8080/login" method="post">
+      <form class="px-5 mt-4" id="form-signup" action="http://localhost:8080/signup" method="post">
         <p class="fw-bold">Ingrese su mail</p>
         <div class="mb-4">
           <input
             style="width: 300px"
             class="form-control"
             type="text"
-            name="usuario"
-            id="usuario"
+            name="username"
+            id="username"
           />
         </div>
         <p class="fw-bold">Ingrese su contraseña</p>
@@ -31,7 +31,7 @@
           <input
             style="width: 300px"
             class="form-control"
-            type="text"
+            type="password"
             name="password"
             id="password"
           />

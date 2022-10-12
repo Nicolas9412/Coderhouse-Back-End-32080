@@ -7,6 +7,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const Usuarios = require("./models/usuarios");
 
 const bcrypt = require("bcrypt");
+const routes = require("./routes");
 const mongoose = require("mongoose");
 
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
@@ -135,39 +136,35 @@ server.on("error", (error) => {
   console.log(`Error en el servidor ${error}`);
 });
 
-let usuario = "";
+app.get("/", routes.getRoot);
+app.get("/login", routes.getLogin);
+app.post(
+  "/login",
+  passport.authenticate("login", { failureRedirect: "/faillogin" }),
+  routes.postLogin
+);
+app.get("/faillogin", routes.getFaillogin);
+app.get("/signup", routes.getSignup);
+app.post(
+  "/signup",
+  passport.authenticate("signup", { failureRedirect: "/failsignup" }),
+  routes.postSignup
+);
+app.get("/failsignup", routes.getFailsignup);
+app.get("/logout", routes.getLogout);
 
-function checkLogin(req, res, next) {
-  if (!req.session["login"]) {
-    return res.render("pages/login.ejs");
+function checkAuthentication(req, res, next) {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res.redirect("/login");
   }
-  return next();
 }
 
-app.get("/register", (req, res) => {
-  return res.render("pages/register.ejs");
+app.get("/ruta-protegida", checkAuthentication, (req, res) => {
+  const { username, password } = req.user;
+  const user = { username, password };
+  res.send("<h1>Ruta ok!</h1>");
 });
 
-app.get("/login", checkLogin, (req, res) => {
-  usuario = req.session["login"].usuario;
-  return res.render("pages/vistaProductos.ejs", { usuario });
-});
-
-app.post("/login", (req, res) => {
-  const { body } = req;
-  usuario = body.usuario;
-  if (!req.session["login"]) {
-    req.session["login"] = {};
-    req.session["login"].usuario = usuario;
-  }
-  res.render("pages/vistaProductos.ejs", { usuario });
-});
-
-app.get("/logout", checkLogin, (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.json({ status: "Logout ERROR", body: err });
-    }
-    res.render("pages/logout.ejs", { usuario });
-  });
-});
+app.get("*", routes.failRoute);
