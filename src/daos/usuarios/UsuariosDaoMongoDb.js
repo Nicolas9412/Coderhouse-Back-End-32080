@@ -1,9 +1,10 @@
-const ContenedorFirebase = require("../../contenedores/ContenedorFirebase");
+const schemaUsuario = require("../../../models/usuarios");
+const ContenedorMongoDb = require("../../contenedores/ContenedorMongoDb");
 
-class CarritosDaoFirebase extends ContenedorFirebase {
+class UsuariosDaoMongoDb extends ContenedorMongoDb {
   constructor() {
-    super("carritos");
+    super(schemaUsuario);
   }
 }
 
-module.exports = CarritosDaoFirebase;
+module.exports = UsuariosDaoMongoDb;
