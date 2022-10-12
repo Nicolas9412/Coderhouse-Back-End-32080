@@ -1,11 +1,5 @@
-const {
-  PERSIST_CARRITOS,
-  PERSIST_PRODUCTOS,
-  PERSIST_PRODUCTOSCARRITOS,
-} = require("../../config");
+const { PERSIST_USUARIOS } = require("../../config");
 
-const carritoDaos = require(PERSIST_CARRITOS);
-const productosDaos = require(PERSIST_PRODUCTOS);
-const productosCarritosDaos = require(PERSIST_PRODUCTOSCARRITOS);
+const usuarioDaos = require(PERSIST_USUARIOS);
 
-module.exports = { carritoDaos, productosDaos, productosCarritosDaos };
+module.exports = { usuarioDaos };
