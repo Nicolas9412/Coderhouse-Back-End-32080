@@ -64,6 +64,19 @@ function failRoute(req, res) {
   res.status(404).render("pages/routing-error", {});
 }
 
+function getInfoProcess(req, res) {
+  info = {
+    args: process.argv,
+    cwd: process.cwd(),
+    pid: process.pid,
+    version: process.version,
+    title: process.title,
+    os: process.platform,
+    memoryUsage: process.memoryUsage().rss,
+  };
+  res.render("pages/infoProcess.ejs", { info });
+}
+
 module.exports = {
   getRoot,
   getLogin,
@@ -74,4 +87,5 @@ module.exports = {
   getFailsignup,
   getLogout,
   failRoute,
+  getInfoProcess,
 };

@@ -3,6 +3,11 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+require("dotenv").config();
+const parseArgs = require("minimist");
+
+const options = { default: { port: 8080 } };
+const args = parseArgs(process.argv.slice(2), options);
 
 const Usuarios = require("./models/usuarios");
 
@@ -12,7 +17,7 @@ const mongoose = require("mongoose");
 
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const app = express();
-const PORT = 8080;
+const PORT = args.port;
 
 function isValidPassword(user, password) {
   return bcrypt.compareSync(password, user.password);
@@ -23,9 +28,7 @@ function createHash(password) {
 }
 
 mongoose
-  .connect(
-    "mongodb+srv://Nicolas9412:admin123@cluster0.x4k71fz.mongodb.net/ecommerce?retryWrites=true&w=majority"
-  )
+  .connect(process.env.CONNECTION_MONGO_ATLAS)
   .then(() => console.log("Connected to DB"))
   .catch((e) => {
     console.error(e);
@@ -100,8 +103,7 @@ passport.deserializeUser((id, done) => {
 app.use(
   session({
     store: MongoStore.create({
-      mongoUrl:
-        "mongodb+srv://Nicolas9412:admin123@cluster0.x4k71fz.mongodb.net/ecommerce?retryWrites=true&w=majority",
+      mongoUrl: process.env.CONNECTION_MONGO_ATLAS,
       mongoOptions: advancedOptions,
     }),
     secret: "top secret",
@@ -160,6 +162,8 @@ function checkAuthentication(req, res, next) {
     res.redirect("/login");
   }
 }
+
+app.get("/info", checkAuthentication, routes.getInfoProcess);
 
 app.get("/ruta-protegida", checkAuthentication, (req, res) => {
   const { username, password } = req.user;
