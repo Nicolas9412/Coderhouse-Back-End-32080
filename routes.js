@@ -1,3 +1,5 @@
+const { fork } = require("child_process");
+
 function getRoot(req, res) {
   res.render("index", {});
 }
@@ -77,6 +79,31 @@ function getInfoProcess(req, res) {
   res.render("pages/infoProcess.ejs", { info });
 }
 
+function getInfoProcess(req, res) {
+  info = {
+    args: process.argv,
+    cwd: process.cwd(),
+    pid: process.pid,
+    version: process.version,
+    title: process.title,
+    os: process.platform,
+    memoryUsage: process.memoryUsage().rss,
+  };
+  res.render("pages/infoProcess.ejs", { info });
+}
+
+function getRandoms(req, res) {
+  const { cant = 100000000 } = req.query;
+  const computo = fork("./computo.js");
+  computo.send(cant);
+  computo.on("message", (result) => {
+    res.render("pages/infoRandoms.ejs", {
+      numbers: Object.keys(result),
+      values: Object.values(result),
+    });
+  });
+}
+
 module.exports = {
   getRoot,
   getLogin,
@@ -88,4 +115,5 @@ module.exports = {
   getLogout,
   failRoute,
   getInfoProcess,
+  getRandoms,
 };

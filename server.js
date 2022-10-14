@@ -19,6 +19,8 @@ const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const app = express();
 const PORT = args.port;
 
+const { Router } = express;
+
 function isValidPassword(user, password) {
   return bcrypt.compareSync(password, user.password);
 }
@@ -164,6 +166,8 @@ function checkAuthentication(req, res, next) {
 }
 
 app.get("/info", checkAuthentication, routes.getInfoProcess);
+
+app.get("/api/randoms", checkAuthentication, routes.getRandoms);
 
 app.get("/ruta-protegida", checkAuthentication, (req, res) => {
   const { username, password } = req.user;
