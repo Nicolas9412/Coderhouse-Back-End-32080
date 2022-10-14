@@ -20,6 +20,7 @@ const app = express();
 const PORT = args.port;
 
 const { Router } = express;
+const router = Router();
 
 function isValidPassword(user, password) {
   return bcrypt.compareSync(password, user.password);
