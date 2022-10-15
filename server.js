@@ -18,6 +18,37 @@ const mongoose = require("mongoose");
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const app = express();
 const PORT = args.port;
+const modo = args.modo || "FORK";
+
+const cluster = require("cluster");
+
+if (modo == "CLUSTER") {
+  if (cluster.isMaster) {
+    for (let i = 0; i < routes.numCpu; i++) {
+      cluster.fork();
+    }
+    cluster.on("exit", () => {
+      cluster.fork();
+      console.log(`Se eliminó el worker con PID ${process.pid}`);
+    });
+  } else {
+    const server = app.listen(PORT, () => {
+      console.log(`Worker levantado con PID ${process.pid}`);
+    });
+    server.on("error", (error) => {
+      console.log(`Error en el servidor ${error}`);
+    });
+  }
+} else {
+  const server = app.listen(PORT, () => {
+    console.log(
+      `Servidor levantado http://localhost:${server.address().port}/login`
+    );
+  });
+  server.on("error", (error) => {
+    console.log(`Error en el servidor ${error}`);
+  });
+}
 
 function isValidPassword(user, password) {
   return bcrypt.compareSync(password, user.password);
@@ -128,15 +159,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.set("view engine", "ejs");
-
-const server = app.listen(PORT, () => {
-  console.log(
-    `Servidor levantado http://localhost:${server.address().port}/login`
-  );
-});
-server.on("error", (error) => {
-  console.log(`Error en el servidor ${error}`);
-});
 
 app.get("/", routes.getRoot);
 app.get("/login", routes.getLogin);

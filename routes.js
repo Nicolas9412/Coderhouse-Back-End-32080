@@ -1,4 +1,9 @@
 const { fork } = require("child_process");
+const numCpu = require("os").cpus().length;
+const parseArgs = require("minimist");
+const options = { default: { port: 8080 } };
+const args = parseArgs(process.argv.slice(2), options);
+const modo = args.modo;
 
 function getRoot(req, res) {
   res.render("index", {});
@@ -88,6 +93,7 @@ function getInfoProcess(req, res) {
     title: process.title,
     os: process.platform,
     memoryUsage: process.memoryUsage().rss,
+    numCpu: modo == "CLUSTER" ? numCpu : 1,
   };
   res.render("pages/infoProcess.ejs", { info });
 }
@@ -116,4 +122,5 @@ module.exports = {
   failRoute,
   getInfoProcess,
   getRandoms,
+  numCpu,
 };
