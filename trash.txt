@@ -1,0 +1,5 @@
+nodemon server.js
+nodemon server.js --modo CLUSTER
+forever start server.js --modo CLUSTER
+pm2 start server.js --name="Server FORK" -- PORT
+pm2 start server.js --name="Server CLUSTER" -i max -- PORT
