@@ -99,12 +99,14 @@ function getInfoProcess(req, res) {
 }
 
 function getRandoms(req, res) {
-  const { cant = 1000 } = req.query;
+  const { cant = 100000000 } = req.query;
   const computo = fork("./computo.js");
   computo.send(cant);
   computo.on("message", (result) => {
-    res.send(`Servidor express <span style="color:blueviolet;">(Nginx)</span> en ${PORT} -
-    <b>PID ${process.pid}</b> - ${new Date().toLocaleString()}uuuuuuuuu`);
+    res.render("pages/infoRandoms.ejs", {
+      numbers: Object.keys(result),
+      values: Object.values(result),
+    });
   });
 }
 
