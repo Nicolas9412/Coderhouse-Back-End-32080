@@ -6,8 +6,7 @@ const LocalStrategy = require("passport-local").Strategy;
 require("dotenv").config();
 const parseArgs = require("minimist");
 
-const options = { default: { port: 8080 } };
-const args = parseArgs(process.argv.slice(2), options);
+const PORT = parseInt(process.argv[2]) || 8080;
 
 const Usuarios = require("./models/usuarios");
 
@@ -17,8 +16,8 @@ const mongoose = require("mongoose");
 
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const app = express();
-const PORT = args.port;
-const modo = args.modo || "FORK";
+app.enable("trust proxy");
+const modo = "FORK";
 
 const cluster = require("cluster");
 
@@ -176,6 +175,12 @@ app.post(
 );
 app.get("/failsignup", routes.getFailsignup);
 app.get("/logout", routes.getLogout);
+
+app.get("/datos", (req, res) => {
+  console.log(`port: ${PORT} -> Fyh: ${Date.now()}`);
+  res.send(`Servidor express <span style="color:blueviolet;">(Nginx)</span> en ${PORT} -
+    <b>PID ${process.pid}</b> - ${new Date().toLocaleString()}`);
+});
 
 function checkAuthentication(req, res, next) {
   if (req.isAuthenticated()) {
