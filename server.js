@@ -1,10 +1,12 @@
 const express = require("express");
+const compression = require("compression");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 require("dotenv").config();
 const parseArgs = require("minimist");
+const log4js = require("log4js");
 
 const options = { default: { port: 8080 } };
 const args = parseArgs(process.argv.slice(2), options);
@@ -17,6 +19,7 @@ const mongoose = require("mongoose");
 
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const app = express();
+app.use(compression());
 const PORT = args.port;
 
 function isValidPassword(user, password) {
@@ -34,6 +37,19 @@ mongoose
     console.error(e);
     throw "can not connect to the db";
   });
+
+log4js.configure({
+  appenders: {
+    miLoggerConsole: { type: "console" },
+    miLoggerWarnFile: { type: "file", filename: "warn.log" },
+    miLoggerErrorFile: { type: "file", filename: "error.log" },
+  },
+  categories: {
+    consola: { appenders: ["miLoggerConsole"], level: "info" },
+    archivoWarn: { appenders: ["miLoggerWarnFile"], level: "warn" },
+    archivoError: { appenders: ["miLoggerErrorFile"], level: "error" },
+  },
+});
 
 passport.use(
   "login",
