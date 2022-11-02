@@ -1,15 +1,15 @@
-const { fork } = require("child_process");
+// child_process const { fork } = require("child_process");
 const log4js = require("./logger");
 
-const productosBD = new Contenedor(knexMariaDB, "productos");
-const chatBD = new Contenedor(knexSQLite3, "mensajes");
+const { mensajesDaos: Mensajes } = require("./src/daos/mainDaos");
+const { productosDaos: Productos } = require("./src/daos/mainDaos");
+
+const chatBD = new Mensajes();
+const productosBD = new Productos();
 
 function getRoot(req, res) {
   res.render("index", {});
 }
-
-let productos = [];
-let chat = [];
 
 async function getLogin(req, res) {
   if (req.isAuthenticated()) {
@@ -19,34 +19,40 @@ async function getLogin(req, res) {
       req.session["login"] = {};
       req.session["login"].username = username;
     }
-    productos = await productosBD.selectAll();
-    chat = await chatBD.selectAll();
+    const productos = await productosBD.getAll();
+    const chat = await chatBD.getAll();
     res.render("pages/form-list-chat.ejs", { user, productos, chat });
   } else {
     res.render("pages/login.ejs");
   }
 }
 
-function getSignup(req, res) {
+async function getSignup(req, res) {
   if (req.isAuthenticated()) {
     const { username, password } = req.user;
     const user = { username, password };
-    res.render("pages/form-list-chat.ejs", { user });
+    const productos = await productosBD.getAll();
+    const chat = await chatBD.getAll();
+    res.render("pages/form-list-chat.ejs", { user, productos, chat });
   } else {
     res.render("pages/register.ejs");
   }
 }
 
-function postLogin(req, res) {
+async function postLogin(req, res) {
   const { username, password } = req.user;
   const user = { username, password };
-  res.render("pages/form-list-chat.ejs", { user });
+  const productos = await productosBD.getAll();
+  const chat = await chatBD.getAll();
+  res.render("pages/form-list-chat.ejs", { user, productos, chat });
 }
 
-function postSignup(req, res) {
+async function postSignup(req, res) {
   const { username, password } = req.user;
   const user = { username, password };
-  res.render("pages/form-list-chat.ejs", { user });
+  const productos = await productosBD.getAll();
+  const chat = await chatBD.getAll();
+  res.render("pages/form-list-chat.ejs", { user, productos, chat });
 }
 
 function getFaillogin(req, res) {
@@ -82,12 +88,6 @@ function failRoute(req, res) {
   });
 }
 
-function routesReceived(req, res) {
-  const logger = log4js.getLogger();
-  logger.info(`ruta '${req.url}' método '${req.method}'`);
-  res.end();
-}
-
 function getInfoProcess(req, res) {
   info = {
     args: process.argv,
@@ -101,21 +101,13 @@ function getInfoProcess(req, res) {
   res.render("pages/infoProcess.ejs", { info });
 }
 
-function getInfoProcess(req, res) {
-  info = {
-    args: process.argv,
-    cwd: process.cwd(),
-    pid: process.pid,
-    version: process.version,
-    title: process.title,
-    os: process.platform,
-    memoryUsage: process.memoryUsage().rss,
-  };
-  res.render("pages/infoProcess.ejs", { info });
+function generateRandomInt(min, max) {
+  return Math.floor(Math.random() * (max + 1 - min) + min);
 }
 
 function getRandoms(req, res) {
   const { cant = 100000000 } = req.query;
+  /* child_process
   const computo = fork("./computo.js");
   computo.send(cant);
   computo.on("message", (result) => {
@@ -123,6 +115,30 @@ function getRandoms(req, res) {
       numbers: Object.keys(result),
       values: Object.values(result),
     });
+  });
+  */
+  let result = {};
+  for (let i = 0; i < cant; i++) {
+    const num = generateRandomInt(1, 1000);
+    if (!result.hasOwnProperty(num)) {
+      Object.defineProperty(result, num, {
+        value: 1,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    } else {
+      Object.defineProperty(result, num, {
+        value: result[num] + 1,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+    }
+  }
+  res.render("pages/infoRandoms.ejs", {
+    numbers: Object.keys(result),
+    values: Object.values(result),
   });
 }
 
@@ -138,5 +154,4 @@ module.exports = {
   failRoute,
   getInfoProcess,
   getRandoms,
-  routesReceived,
 };

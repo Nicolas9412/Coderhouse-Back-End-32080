@@ -8,8 +8,14 @@ log4js.configure({
   },
   categories: {
     default: { appenders: ["miLoggerConsole"], level: "info" },
-    archivoWarn: { appenders: ["miLoggerWarnFile"], level: "warn" },
-    archivoError: { appenders: ["miLoggerErrorFile"], level: "error" },
+    archivoWarn: {
+      appenders: ["miLoggerConsole", "miLoggerWarnFile"],
+      level: "warn",
+    },
+    archivoError: {
+      appenders: ["miLoggerConsole", "miLoggerErrorFile"],
+      level: "error",
+    },
   },
 });
 
