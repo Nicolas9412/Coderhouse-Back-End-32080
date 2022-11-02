@@ -45,7 +45,7 @@ log4js.configure({
     miLoggerErrorFile: { type: "file", filename: "error.log" },
   },
   categories: {
-    consola: { appenders: ["miLoggerConsole"], level: "info" },
+    default: { appenders: ["miLoggerConsole"], level: "info" },
     archivoWarn: { appenders: ["miLoggerWarnFile"], level: "warn" },
     archivoError: { appenders: ["miLoggerErrorFile"], level: "error" },
   },
@@ -152,6 +152,17 @@ const server = app.listen(PORT, () => {
 });
 server.on("error", (error) => {
   console.log(`Error en el servidor ${error}`);
+});
+
+app.all("*", (req, res) => {
+  const loggerArchivoWarn = log4js.getLogger("archivoWarn");
+  loggerArchivoWarn.warn(
+    `ruta '${req.url}' método '${req.method}' no implementado`
+  );
+  res.json({
+    error: -2,
+    descripcion: `ruta '${req.url}' método '${req.method}' no implementado`,
+  });
 });
 
 app.get("/", routes.getRoot);
