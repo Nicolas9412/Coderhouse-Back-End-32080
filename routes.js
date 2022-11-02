@@ -5,7 +5,10 @@ function getRoot(req, res) {
   res.render("index", {});
 }
 
-function getLogin(req, res) {
+let productos = [];
+let chat = [];
+
+async function getLogin(req, res) {
   if (req.isAuthenticated()) {
     const { username, password } = req.user;
     const user = { username, password };
@@ -13,7 +16,9 @@ function getLogin(req, res) {
       req.session["login"] = {};
       req.session["login"].username = username;
     }
-    res.render("pages/vistaProductos.ejs", { user });
+    productos = await productosBD.selectAll();
+    chat = await chatBD.selectAll();
+    res.render("pages/form-list-chat.ejs", { user, productos, chat });
   } else {
     res.render("pages/login.ejs");
   }

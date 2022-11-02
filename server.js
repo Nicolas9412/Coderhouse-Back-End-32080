@@ -19,6 +19,8 @@ const mongoose = require("mongoose");
 
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const app = express();
+const httpServer = require("http").createServer(app);
+const io = require("socket.io")(httpServer);
 app.use(compression());
 const PORT = args.port;
 
@@ -132,19 +134,18 @@ app.use((req, res, next) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.set("view engine", "ejs");
 
-const server = app.listen(PORT, () => {
+httpServer.listen(process.env.PORT || PORT, () => {
   console.log(
     `Servidor levantado http://localhost:${server.address().port}/login`
   );
 });
-server.on("error", (error) => {
-  console.log(`Error en el servidor ${error}`);
-});
+httpServer.on("error", (error) => console.log(`Error en el servidor ${error}`));
 
 app.get("/", routes.getRoot);
 app.get("/login", routes.getLogin);
@@ -183,3 +184,17 @@ app.get("/ruta-protegida", checkAuthentication, (req, res) => {
 
 app.all("*", routes.routesReceived);
 app.all("*", routes.failRoute);
+
+io.on("connection", (socket) => {
+  console.log("Usuario Conectado" + socket.id);
+  socket.on("producto", async (data) => {
+    await productosBD.insert(data);
+    productos = await productosBD.selectAll();
+    io.sockets.emit("producto-row", data);
+  });
+  socket.on("mensaje", async (data) => {
+    await chatBD.insert(data);
+    chat = await chatBD.selectAll();
+    io.sockets.emit("chat", chat);
+  });
+});
