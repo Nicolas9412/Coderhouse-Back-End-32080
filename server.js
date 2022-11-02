@@ -142,7 +142,7 @@ app.set("view engine", "ejs");
 
 httpServer.listen(process.env.PORT || PORT, () => {
   console.log(
-    `Servidor levantado http://localhost:${server.address().port}/login`
+    `Servidor levantado http://localhost:${httpServer.address().port}/login`
   );
 });
 httpServer.on("error", (error) => console.log(`Error en el servidor ${error}`));

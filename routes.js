@@ -1,6 +1,9 @@
 const { fork } = require("child_process");
 const log4js = require("./logger");
 
+const productosBD = new Contenedor(knexMariaDB, "productos");
+const chatBD = new Contenedor(knexSQLite3, "mensajes");
+
 function getRoot(req, res) {
   res.render("index", {});
 }
@@ -28,7 +31,7 @@ function getSignup(req, res) {
   if (req.isAuthenticated()) {
     const { username, password } = req.user;
     const user = { username, password };
-    res.render("pages/vistaProductos.ejs", { user });
+    res.render("pages/form-list-chat.ejs", { user });
   } else {
     res.render("pages/register.ejs");
   }
@@ -37,13 +40,13 @@ function getSignup(req, res) {
 function postLogin(req, res) {
   const { username, password } = req.user;
   const user = { username, password };
-  res.render("pages/vistaProductos.ejs", { user });
+  res.render("pages/form-list-chat.ejs", { user });
 }
 
 function postSignup(req, res) {
   const { username, password } = req.user;
   const user = { username, password };
-  res.render("pages/vistaProductos.ejs", { user });
+  res.render("pages/form-list-chat.ejs", { user });
 }
 
 function getFaillogin(req, res) {
