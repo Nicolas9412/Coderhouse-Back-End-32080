@@ -1,4 +1,5 @@
 const { fork } = require("child_process");
+const log4js = require("./logger");
 
 function getRoot(req, res) {
   res.render("index", {});
@@ -63,7 +64,20 @@ function getLogout(req, res) {
 }
 
 function failRoute(req, res) {
-  res.status(404).render("pages/routing-error", {});
+  const loggerArchivoWarn = log4js.getLogger("archivoWarn");
+  loggerArchivoWarn.warn(
+    `ruta '${req.url}' método '${req.method}' no implementado`
+  );
+  res.status(404).json({
+    error: -2,
+    descripcion: `ruta '${req.url}' método '${req.method}' no implementado`,
+  });
+}
+
+function routesReceived(req, res) {
+  const logger = log4js.getLogger();
+  logger.info(`ruta '${req.url}' método '${req.method}'`);
+  res.end();
 }
 
 function getInfoProcess(req, res) {
@@ -116,4 +130,5 @@ module.exports = {
   failRoute,
   getInfoProcess,
   getRandoms,
+  routesReceived,
 };

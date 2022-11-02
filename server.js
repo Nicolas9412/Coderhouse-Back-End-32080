@@ -6,7 +6,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 require("dotenv").config();
 const parseArgs = require("minimist");
-const log4js = require("log4js");
+const log4js = require("./logger");
 
 const options = { default: { port: 8080 } };
 const args = parseArgs(process.argv.slice(2), options);
@@ -37,19 +37,6 @@ mongoose
     console.error(e);
     throw "can not connect to the db";
   });
-
-log4js.configure({
-  appenders: {
-    miLoggerConsole: { type: "console" },
-    miLoggerWarnFile: { type: "file", filename: "warn.log" },
-    miLoggerErrorFile: { type: "file", filename: "error.log" },
-  },
-  categories: {
-    default: { appenders: ["miLoggerConsole"], level: "info" },
-    archivoWarn: { appenders: ["miLoggerWarnFile"], level: "warn" },
-    archivoError: { appenders: ["miLoggerErrorFile"], level: "error" },
-  },
-});
 
 passport.use(
   "login",
@@ -131,10 +118,15 @@ app.use(
 );
 
 app.use(function (req, res, next) {
-  console.log(req.session);
   req.session._garbage = Date();
   req.session.touch();
   return next();
+});
+
+app.use((req, res, next) => {
+  const logger = log4js.getLogger();
+  logger.info(`ruta '${req.url}' método '${req.method}'`);
+  next();
 });
 
 app.use(passport.initialize());
@@ -152,17 +144,6 @@ const server = app.listen(PORT, () => {
 });
 server.on("error", (error) => {
   console.log(`Error en el servidor ${error}`);
-});
-
-app.all("*", (req, res) => {
-  const loggerArchivoWarn = log4js.getLogger("archivoWarn");
-  loggerArchivoWarn.warn(
-    `ruta '${req.url}' método '${req.method}' no implementado`
-  );
-  res.json({
-    error: -2,
-    descripcion: `ruta '${req.url}' método '${req.method}' no implementado`,
-  });
 });
 
 app.get("/", routes.getRoot);
@@ -200,4 +181,5 @@ app.get("/ruta-protegida", checkAuthentication, (req, res) => {
   res.send("<h1>Ruta ok!</h1>");
 });
 
-app.get("*", routes.failRoute);
+app.all("*", routes.routesReceived);
+app.all("*", routes.failRoute);
