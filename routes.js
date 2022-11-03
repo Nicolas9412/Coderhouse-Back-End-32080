@@ -1,4 +1,4 @@
-// child_process const { fork } = require("child_process");
+// (child_process) const { fork } = require("child_process");
 const log4js = require("./logger");
 
 const { mensajesDaos: Mensajes } = require("./src/daos/mainDaos");
@@ -88,7 +88,21 @@ function failRoute(req, res) {
   });
 }
 
-function getInfoProcess(req, res) {
+function getInfoProcessBloq(req, res) {
+  info = {
+    args: process.argv,
+    cwd: process.cwd(),
+    pid: process.pid,
+    version: process.version,
+    title: process.title,
+    os: process.platform,
+    memoryUsage: process.memoryUsage().rss,
+  };
+  console.log(info);
+  res.render("pages/infoProcess.ejs", { info });
+}
+
+function getInfoProcessNoBloq(req, res) {
   info = {
     args: process.argv,
     cwd: process.cwd(),
@@ -152,6 +166,7 @@ module.exports = {
   getFailsignup,
   getLogout,
   failRoute,
-  getInfoProcess,
+  getInfoProcessBloq,
+  getInfoProcessNoBloq,
   getRandoms,
 };

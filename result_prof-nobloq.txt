@@ -1,0 +1,253 @@
+Statistical profiling result from nobloq-v8.log, (5160 ticks, 1 unaccounted, 0 excluded).
+
+ [Shared libraries]:
+   ticks  total  nonlib   name
+   4358   84.5%          C:\Windows\SYSTEM32\ntdll.dll
+    726   14.1%          C:\Program Files\nodejs\node.exe
+      4    0.1%          C:\Windows\System32\KERNELBASE.dll
+      4    0.1%          C:\Windows\System32\KERNEL32.DLL
+
+ [JavaScript]:
+   ticks  total  nonlib   name
+      5    0.1%    7.4%  LazyCompile: *resolve node:path:158:10
+      4    0.1%    5.9%  LazyCompile: *serializeInto C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\bson\lib\parser\serializer.js:553:23
+      3    0.1%    4.4%  LazyCompile: *emit node:events:475:44
+      3    0.1%    4.4%  LazyCompile: *deserializeObject C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\bson\lib\parser\deserializer.js:65:27
+      2    0.0%    2.9%  LazyCompile: *serializeObject C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\bson\lib\parser\serializer.js:260:25
+      2    0.0%    2.9%  LazyCompile: *nextTick node:internal/process/task_queues:104:18
+      2    0.0%    2.9%  LazyCompile: *next C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:177:16
+      1    0.0%    1.5%  RegExp: ^\$ref$|^\$id$|^\$db$
+      1    0.0%    1.5%  RegExp: [|\\{}()[\]^$+*?.]
+      1    0.0%    1.5%  RegExp: [ \t]*<%_
+      1    0.0%    1.5%  RegExp: ;\s*charset\s*=
+      1    0.0%    1.5%  RegExp: (<%%|%%>|<%=|<%-|<%_|<%#|<%|%>|-%>|_%>)
+      1    0.0%    1.5%  LazyCompile: *write_ node:_http_outgoing:730:16
+      1    0.0%    1.5%  LazyCompile: *trim_prefix C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:293:23
+      1    0.0%    1.5%  LazyCompile: *subarray node:buffer:1116:46
+      1    0.0%    1.5%  LazyCompile: *selectServer C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\sdam\topology.js:254:17
+      1    0.0%    1.5%  LazyCompile: *remove node:internal/linkedlist:16:16
+      1    0.0%    1.5%  LazyCompile: *processTicksAndRejections node:internal/process/task_queues:68:35
+      1    0.0%    1.5%  LazyCompile: *parse C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\commands.js:426:10
+      1    0.0%    1.5%  LazyCompile: *onwrite node:internal/streams/writable:425:17
+      1    0.0%    1.5%  LazyCompile: *noop node:internal/util/debuglog:47:14
+      1    0.0%    1.5%  LazyCompile: *matchKnownFields node:_http_incoming:231:26
+      1    0.0%    1.5%  LazyCompile: *get node:internal/streams/writable:787:8
+      1    0.0%    1.5%  LazyCompile: *get node:internal/streams/duplex:94:8
+      1    0.0%    1.5%  LazyCompile: *get node:_http_incoming:108:16
+      1    0.0%    1.5%  LazyCompile: *get data C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express-session\session\cookie.js:117:11
+      1    0.0%    1.5%  LazyCompile: *executeOperationAsync C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\execute_operation.js:15:37
+      1    0.0%    1.5%  LazyCompile: *_write node:internal/streams/writable:283:16
+      1    0.0%    1.5%  LazyCompile: *_storeHeader node:_http_outgoing:374:22
+      1    0.0%    1.5%  LazyCompile: *_copy node:buffer:201:15
+      1    0.0%    1.5%  LazyCompile: *Readable.read node:internal/streams/readable:394:35
+      1    0.0%    1.5%  LazyCompile: *Long C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\bson\lib\long.js:59:18
+      1    0.0%    1.5%  LazyCompile: *CommandOperation C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\command.js:13:16
+      1    0.0%    1.5%  LazyCompile: *BinMsg C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\commands.js:394:16
+      1    0.0%    1.5%  LazyCompile: *AbstractCursor C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cursor\abstract_cursor.js:53:16
+      1    0.0%    1.5%  LazyCompile: *<anonymous> C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\connect-mongo\build\main\lib\MongoStore.js:236:10
+      1    0.0%    1.5%  Function: ^value node:internal/console/constructor:258:20
+      1    0.0%    1.5%  Function: ^parse C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\vary\index.js:96:16
+      1    0.0%    1.5%  Function: ^onstat C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\send\index.js:717:33
+      1    0.0%    1.5%  Function: ^markAsUntransferable node:internal/buffer:1048:30
+      1    0.0%    1.5%  Function: ^makeUpdateStatement C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\update.js:144:29
+      1    0.0%    1.5%  Function: ^makeFindCommand C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\find.js:45:25
+      1    0.0%    1.5%  Function: ^isValid C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\read_preference.js:133:19
+      1    0.0%    1.5%  Function: ^inflate C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express-session\index.js:371:22
+      1    0.0%    1.5%  Function: ^getColorDepth node:internal/tty:106:23
+      1    0.0%    1.5%  Function: ^get node:internal/bootstrap/pre_execution:370:8
+      1    0.0%    1.5%  Function: ^fromOptions C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\read_concern.js:36:23
+      1    0.0%    1.5%  Function: ^fresh C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\parseurl\index.js:153:16
+      1    0.0%    1.5%  Function: ^batchSize C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cursor\abstract_cursor.js:349:14
+      1    0.0%    1.5%  Function: ^afterWrite node:internal/streams/writable:487:20
+      1    0.0%    1.5%  Function: ^ObjectId C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\bson\lib\objectid.js:24:22
+      1    0.0%    1.5%  Function: ^Long.isLong C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\bson\lib\long.js:236:28
+      1    0.0%    1.5%  Function: ^Hmac node:internal/crypto/hash:127:14
+
+ [C++]:
+   ticks  total  nonlib   name
+
+ [Summary]:
+   ticks  total  nonlib   name
+     67    1.3%   98.5%  JavaScript
+      0    0.0%    0.0%  C++
+     30    0.6%   44.1%  GC
+   5092   98.7%          Shared libraries
+      1    0.0%          Unaccounted
+
+ [C++ entry points]:
+   ticks    cpp   total   name
+
+ [Bottom up (heavy) profile]:
+  Note: percentage shows a share of a particular caller in the total
+  amount of its parent calls.
+  Callers occupying less than 1.0% are not shown.
+
+   ticks parent  name
+   4358   84.5%  C:\Windows\SYSTEM32\ntdll.dll
+
+    726   14.1%  C:\Program Files\nodejs\node.exe
+    355   48.9%    C:\Program Files\nodejs\node.exe
+     33    9.3%      Function: ^compileFunction node:vm:308:25
+     32   97.0%        Function: ^wrapSafe node:internal/modules/cjs/loader:1017:18
+     32  100.0%          Function: ^Module._compile node:internal/modules/cjs/loader:1059:37
+     32  100.0%            Function: ^Module._extensions..js node:internal/modules/cjs/loader:1114:37
+      1    3.0%        LazyCompile: ~wrapSafe node:internal/modules/cjs/loader:1017:18
+      1  100.0%          LazyCompile: ~Module._compile node:internal/modules/cjs/loader:1059:37
+      1  100.0%            LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1114:37
+     18    5.1%      C:\Program Files\nodejs\node.exe
+      4   22.2%        Function: ^databaseNamespace C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\utils.js:353:27
+      4  100.0%          Function: ^Msg C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\commands.js:317:16
+      3   75.0%            Function: ^command C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\connection.js:251:12
+      1   25.0%            LazyCompile: *command C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\connection.js:251:12
+      3   16.7%        Function: ^_addOutput C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\ejs\lib\ejs.js:788:24
+      3  100.0%          Function: ^scanLine C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\ejs\lib\ejs.js:815:22
+      3  100.0%            Function: ^<anonymous> C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\ejs\lib\ejs.js:742:32
+      2   11.1%        Function: ^scanLine C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\ejs\lib\ejs.js:815:22
+      2  100.0%          Function: ^<anonymous> C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\ejs\lib\ejs.js:742:32
+      2  100.0%            C:\Program Files\nodejs\node.exe
+      1    5.6%        LazyCompile: *setHeader node:_http_outgoing:574:57
+      1  100.0%          Function: ^setcookie C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express-session\index.js:655:19
+      1  100.0%            Function: ^<anonymous> C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express-session\index.js:220:28
+      1    5.6%        LazyCompile: *header C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\response.js:777:29
+      1  100.0%          Function: ^contentType C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\response.js:619:32
+      1  100.0%            Function: ^send C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\response.js:111:25
+      1    5.6%        Function: ^session C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express-session\index.js:179:26
+      1  100.0%          LazyCompile: *trim_prefix C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:293:23
+      1  100.0%            LazyCompile: *next C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:177:16
+      1    5.6%        Function: ^pipe C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\send\index.js:506:43
+      1  100.0%          Function: ^serveStatic C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\serve-static\index.js:72:31
+      1  100.0%            LazyCompile: *trim_prefix C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:293:23
+      1    5.6%        Function: ^parseAcceptEncoding C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\negotiator\lib\encoding.js:31:29
+      1  100.0%          Function: ^preferredEncodings C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\negotiator\lib\encoding.js:138:28
+      1  100.0%            Function: ^encodings C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\negotiator\index.js:52:52
+      1    5.6%        Function: ^parse C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express-session\node_modules\cookie\index.js:48:15
+      1  100.0%          Function: ^getcookie C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express-session\index.js:529:19
+      1  100.0%            Function: ^session C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express-session\index.js:179:26
+      1    5.6%        Function: ^header C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\response.js:777:29
+      1  100.0%          Function: ^send C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\response.js:111:25
+      1  100.0%            Function: ^done C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\response.js:1033:27
+      1    5.6%        Function: ^expressInit C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\middleware\init.js:29:30
+      1  100.0%          LazyCompile: *trim_prefix C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:293:23
+      1  100.0%            LazyCompile: *next C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:177:16
+      1    5.6%        C:\Program Files\nodejs\node.exe
+      1  100.0%          LazyCompile: *<anonymous> C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\connect-mongo\build\main\lib\MongoStore.js:236:10
+      1  100.0%            Function: ^set C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\connect-mongo\build\main\lib\MongoStore.js:234:8
+     15    4.2%      Function: ^initialize C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\passport\lib\middleware\initialize.js:51:29
+     11   73.3%        LazyCompile: *trim_prefix C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:293:23
+     11  100.0%          LazyCompile: *next C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:177:16
+     11  100.0%            Function: ^<anonymous> C:\Users\nicol\Coderhouse-Back-End-32080\server.js:130:9
+      4   26.7%        Function: ^handle C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\layer.js:86:49
+      4  100.0%          Function: ^trim_prefix C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:293:23
+      2   50.0%            LazyCompile: *next C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:177:16
+      2   50.0%            Function: ^<anonymous> C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:280:64
+     15    4.2%      Function: ^handleWriteReq node:internal/stream_base_commons:45:24
+     15  100.0%        Function: ^writeGeneric node:internal/stream_base_commons:147:22
+     15  100.0%          Function: ^Socket._writeGeneric node:net:791:42
+     15  100.0%            Function: ^Socket._write node:net:828:35
+     14    3.9%      Function: ^statSync node:fs:1543:18
+     14  100.0%        Function: ^tryStat C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\view.js:174:17
+     14  100.0%          Function: ^resolve C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\view.js:146:42
+     14  100.0%            Function: ^lookup C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\view.js:104:40
+     11    3.1%      LazyCompile: *deserializeObject C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\bson\lib\parser\deserializer.js:65:27
+      6   54.5%        LazyCompile: *deserializeObject C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\bson\lib\parser\deserializer.js:65:27
+      3   50.0%          LazyCompile: *parse C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\commands.js:426:10
+      3  100.0%            LazyCompile: *onMessage C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\connection.js:156:14
+      3   50.0%          LazyCompile: *deserializeObject C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\bson\lib\parser\deserializer.js:65:27
+      3  100.0%            LazyCompile: *parse C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\commands.js:426:10
+      5   45.5%        LazyCompile: *parse C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\commands.js:426:10
+      5  100.0%          LazyCompile: *onMessage C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\connection.js:156:14
+      5  100.0%            Function: ^<anonymous> C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\connection.js:60:44
+     10    2.8%      Function: ^openSync node:fs:576:18
+      9   90.0%        Function: ^readFileSync node:fs:450:22
+      7   77.8%          Function: ^fileLoader C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\ejs\lib\ejs.js:292:20
+      7  100.0%            Function: ^handleCache C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\ejs\lib\ejs.js:210:21
+      1   11.1%          LazyCompile: ~Module._extensions..js node:internal/modules/cjs/loader:1114:37
+      1  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      1   11.1%          Function: ^Module._extensions..js node:internal/modules/cjs/loader:1114:37
+      1  100.0%            Function: ^Module.load node:internal/modules/cjs/loader:969:33
+      1   10.0%        LazyCompile: ~writeFileSync node:fs:2159:23
+      1  100.0%          LazyCompile: ~appendFileSync node:fs:2222:24
+      1  100.0%            LazyCompile: ~_renewWriteStream C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\streamroller\lib\RollingFileWriteStream.js:261:20
+      9    2.5%      Function: ^writevGeneric node:internal/stream_base_commons:122:23
+      9  100.0%        Function: ^Socket._writeGeneric node:net:791:42
+      9  100.0%          Function: ^Socket._writev node:net:823:36
+      8   88.9%            Function: ^doWrite node:internal/streams/writable:398:17
+      1   11.1%            LazyCompile: ~doWrite node:internal/streams/writable:398:17
+      6    1.7%      Function: ^jsonParser C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\body-parser\lib\types\json.js:98:30
+      6  100.0%        LazyCompile: *trim_prefix C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:293:23
+      6  100.0%          LazyCompile: *next C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\express\lib\router\index.js:177:16
+      6  100.0%            Function: ^error C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\serve-static\index.js:115:39
+      6    1.7%      Function: ^compile C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\ejs\lib\ejs.js:571:21
+      6  100.0%        Function: ^compile C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\ejs\lib\ejs.js:381:35
+      6  100.0%          Function: ^handleCache C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\ejs\lib\ejs.js:210:21
+      6  100.0%            Function: ^tryHandleCache C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\ejs\lib\ejs.js:254:24
+      5    1.4%      LazyCompile: *nextTick node:internal/process/task_queues:104:18
+      1   20.0%        LazyCompile: *readableAddChunk node:internal/streams/readable:236:26
+      1  100.0%          LazyCompile: *write C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\connection.js:404:15
+      1  100.0%            LazyCompile: *command C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\connection.js:251:12
+      1   20.0%        LazyCompile: *command C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\sdam\server.js:150:12
+      1  100.0%          Function: ^execute C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\find.js:29:12
+      1  100.0%            Function: ^<anonymous> C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\operation.js:28:51
+      1   20.0%        Function: ^resume node:internal/streams/readable:977:16
+      1  100.0%          Function: ^Readable.resume node:internal/streams/readable:963:37
+      1  100.0%            Function: ^_dump node:_http_incoming:364:49
+      1   20.0%        Function: ^resOnFinish node:_http_server:793:21
+      1  100.0%          LazyCompile: *emit node:events:475:44
+      1  100.0%            Function: ^onFinish node:_http_outgoing:828:18
+      1   20.0%        Function: ^onDestroy node:internal/streams/destroy:73:21
+      1  100.0%          Function: ^onError node:_http_incoming:374:17
+      1  100.0%            Function: ^_destroy node:_http_incoming:176:55
+      5    1.4%      Function: ^promisify node:internal/util:324:19
+      3   60.0%        LazyCompile: *CommandOperation C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\command.js:13:16
+      3  100.0%          Function: ^UpdateOperation C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\update.js:10:16
+      3  100.0%            LazyCompile: *<anonymous> C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\connect-mongo\build\main\lib\MongoStore.js:236:10
+      2   40.0%        Function: ^AbstractOperation C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\operation.js:26:16
+      2  100.0%          Function: ^CommandOperation C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\command.js:13:16
+      2  100.0%            Function: ^UpdateOperation C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\update.js:10:16
+      5    1.4%      Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      4   80.0%        Function: ^nativeModuleRequire node:internal/bootstrap/loaders:332:29
+      1   25.0%          Function: ~<anonymous> node:internal/process/esm_loader:1:1
+      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1   25.0%          Function: ~<anonymous> node:internal/http2/compat:1:1
+      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1   25.0%          Function: ~<anonymous> node:http:1:1
+      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1   25.0%          Function: ~<anonymous> node:_tls_wrap:1:1
+      1  100.0%            Function: ^compileForInternalLoader node:internal/bootstrap/loaders:299:27
+      1   20.0%        Function: ^compileForPublicLoader node:internal/bootstrap/loaders:246:25
+      1  100.0%          Function: ^loadNativeModule node:internal/modules/cjs/helpers:44:26
+      1  100.0%            Function: ^Module._load node:internal/modules/cjs/loader:757:24
+      4    1.1%      LazyCompile: *onwrite node:internal/streams/writable:425:17
+      3   75.0%        Function: ^afterWriteDispatched node:internal/stream_base_commons:155:30
+      2   66.7%          LazyCompile: *Socket._writeGeneric node:net:791:42
+      2  100.0%            LazyCompile: *clearBuffer node:internal/streams/writable:529:21
+      1   33.3%          Function: ^writeGeneric node:internal/stream_base_commons:147:22
+      1  100.0%            Function: ^Socket._writeGeneric node:net:791:42
+      1   25.0%        LazyCompile: *processIncomingData C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\message_stream.js:84:29
+      1  100.0%          Function: ^_write C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cmap\message_stream.js:31:11
+      1  100.0%            LazyCompile: *_write node:internal/streams/writable:283:16
+      4    1.1%      Function: ^writeHead node:_http_server:270:19
+      4  100.0%        Function: ^writeHead C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\on-headers\index.js:28:29
+      4  100.0%          Function: ^writeHead C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\on-headers\index.js:28:29
+      4  100.0%            Function: ^_implicitHeader node:_http_server:265:68
+      4    1.1%      Function: ^closeSync node:fs:526:19
+      4  100.0%        Function: ^closeSync C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\graceful-fs\graceful-fs.js:72:24
+      4  100.0%          Function: ^readFileSync node:fs:450:22
+      4  100.0%            Function: ^fileLoader C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\ejs\lib\ejs.js:292:20
+     13    1.8%    LazyCompile: *Socket._writeGeneric node:net:791:42
+      9   69.2%      Function: ^Socket._write node:net:828:35
+      9  100.0%        LazyCompile: *_write node:internal/streams/writable:283:16
+      9  100.0%          Function: ^Writable.write node:internal/streams/writable:333:36
+      8   88.9%            Function: ^ondata node:internal/streams/readable:752:18
+      1   11.1%            Function: ^value node:internal/console/constructor:258:20
+      3   23.1%      LazyCompile: *clearBuffer node:internal/streams/writable:529:21
+      3  100.0%        Function: ^Writable.uncork node:internal/streams/writable:341:37
+      2   66.7%          Function: ^end node:_http_outgoing:833:45
+      2  100.0%            Function: ^end C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\compression\index.js:92:28
+      1   33.3%          Function: ^connectionCorkNT node:_http_outgoing:796:26
+      1  100.0%            LazyCompile: *processTicksAndRejections node:internal/process/task_queues:68:35
+      1    7.7%      Function: ^Socket._writev node:net:823:36
+      1  100.0%        Function: ^doWrite node:internal/streams/writable:398:17
+      1  100.0%          LazyCompile: *end node:_http_outgoing:833:45
+      1  100.0%            Function: ^end C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\compression\index.js:92:28
+

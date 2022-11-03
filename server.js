@@ -133,7 +133,6 @@ app.use((req, res, next) => {
 });
 
 app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(express.static("public"));
 app.use(express.json());
@@ -175,7 +174,8 @@ function checkAuthentication(req, res, next) {
   }
 }
 
-app.get("/info", checkAuthentication, routes.getInfoProcess);
+app.get("/info-bloq", checkAuthentication, routes.getInfoProcessBloq);
+app.get("/info-nobloq", checkAuthentication, routes.getInfoProcessNoBloq);
 
 app.get("/api/randoms", checkAuthentication, routes.getRandoms);
 
@@ -189,6 +189,7 @@ app.all("*", routes.failRoute);
 
 const { mensajesDaos: Mensajes } = require("./src/daos/mainDaos");
 const { productosDaos: Productos } = require("./src/daos/mainDaos");
+const { run } = require("./utils/autocannon");
 
 const chatBD = new Mensajes();
 const productosBD = new Productos();
@@ -206,3 +207,8 @@ io.on("connection", (socket) => {
     io.sockets.emit("chat", chat);
   });
 });
+
+//logger.info("Running all benchmarks in parallel...");
+
+//run("http://localhost:8080/info-bloq");
+//run("http://localhost:8080/info-nobloq");
