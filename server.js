@@ -174,8 +174,8 @@ function checkAuthentication(req, res, next) {
   }
 }
 
-app.get("/info-bloq", checkAuthentication, routes.getInfoProcessBloq);
-app.get("/info-nobloq", checkAuthentication, routes.getInfoProcessNoBloq);
+app.get("/infoBloq", checkAuthentication, routes.getInfoProcessBloq);
+app.get("/infoNobloq", checkAuthentication, routes.getInfoProcessNoBloq);
 
 app.get("/api/randoms", checkAuthentication, routes.getRandoms);
 
@@ -210,5 +210,5 @@ io.on("connection", (socket) => {
 
 //logger.info("Running all benchmarks in parallel...");
 
-//run("http://localhost:8080/info-bloq");
-//run("http://localhost:8080/info-nobloq");
+//run("http://localhost:8080/infoBloq");
+//run("http://localhost:8080/infoNobloq");
