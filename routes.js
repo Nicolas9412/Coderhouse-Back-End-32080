@@ -40,7 +40,6 @@ async function getSignup(req, res) {
 }
 
 async function postLogin(req, res) {
-  console.log(req.isAuthenticated());
   const { username, password } = req.user;
   const user = { username, password };
   const productos = await productosBD.getAll();

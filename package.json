@@ -1,11 +1,11 @@
 {
-  "name": "Desafio_loginin_formulario",
+  "name": "Desafio_logger_compress",
   "version": "1.0.0",
-  "description": "Utilizando session y mongoDB Atlas para persistir las sessiones de login",
+  "description": "Optimizando el proyecto en producción con compress y logger, sacando estadísticas de rendimiento con artillerym autocannon, 0x",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "test": "node benchmark.js",
+    "start": "0x server.js"
   },
   "repository": {
     "type": "git",
