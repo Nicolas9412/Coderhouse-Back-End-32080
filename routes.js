@@ -1,4 +1,4 @@
-// (child_process) const { fork } = require("child_process");
+const { fork } = require("child_process");
 const log4js = require("./logger");
 
 const { mensajesDaos: Mensajes } = require("./src/daos/mainDaos");
@@ -88,21 +88,7 @@ function failRoute(req, res) {
   });
 }
 
-function getInfoProcessBloq(req, res) {
-  info = {
-    args: process.argv,
-    cwd: process.cwd(),
-    pid: process.pid,
-    version: process.version,
-    title: process.title,
-    os: process.platform,
-    memoryUsage: process.memoryUsage().rss,
-  };
-  console.log(info);
-  res.render("pages/infoProcess.ejs", { info });
-}
-
-function getInfoProcessNoBloq(req, res) {
+function getInfoProcess(req, res) {
   info = {
     args: process.argv,
     cwd: process.cwd(),
@@ -121,7 +107,6 @@ function generateRandomInt(min, max) {
 
 function getRandoms(req, res) {
   const { cant = 100000000 } = req.query;
-  /* child_process
   const computo = fork("./computo.js");
   computo.send(cant);
   computo.on("message", (result) => {
@@ -130,26 +115,6 @@ function getRandoms(req, res) {
       values: Object.values(result),
     });
   });
-  */
-  let result = {};
-  for (let i = 0; i < cant; i++) {
-    const num = generateRandomInt(1, 1000);
-    if (!result.hasOwnProperty(num)) {
-      Object.defineProperty(result, num, {
-        value: 1,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      });
-    } else {
-      Object.defineProperty(result, num, {
-        value: result[num] + 1,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      });
-    }
-  }
   res.render("pages/infoRandoms.ejs", {
     numbers: Object.keys(result),
     values: Object.values(result),
@@ -166,7 +131,6 @@ module.exports = {
   getFailsignup,
   getLogout,
   failRoute,
-  getInfoProcessBloq,
-  getInfoProcessNoBloq,
+  getInfoProcess,
   getRandoms,
 };

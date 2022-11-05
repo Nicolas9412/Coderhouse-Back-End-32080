@@ -175,8 +175,7 @@ function checkAuthentication(req, res, next) {
   }
 }
 
-app.get("/infoBloq", routes.getInfoProcessBloq);
-app.get("/infoNobloq", routes.getInfoProcessNoBloq);
+app.get("/info", routes.getInfoProcess);
 
 app.get("/api/randoms", checkAuthentication, routes.getRandoms);
 
