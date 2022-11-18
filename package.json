@@ -4,7 +4,7 @@
   "description": "api de ecommerce con carritos y productos con persistencia en memoria, filesystem, SQLite3, MariaDB, MongoDB y Firebase",
   "main": "server.js",
   "scripts": {
-    "start": "node ./utils/createTables.js && nodemon server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -13,12 +13,24 @@
   "author": "Leandro Nicolas Olmos Gomez",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "connect-mongo": "^4.6.0",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
     "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "express-validator": "^6.14.2",
     "firebase-admin": "^11.0.1",
     "knex": "^2.3.0",
     "mongoose": "^6.6.1",
+    "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
-    "sqlite3": "^5.1.1"
+    "nodemailer": "^6.8.0",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "sqlite3": "^5.1.1",
+    "twilio": "^3.83.3",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"

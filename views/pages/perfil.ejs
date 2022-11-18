@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vista de Productos</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <!-- Font Awesome 5 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    />
+    <link rel="stylesheet" href="home.css" />
+    <link rel="stylesheet" href="profile.css" />
+  </head>
+
+  <body>
+    <div class="container bg-white">
+      <nav class="navbar navbar-expand-md navbar-light bg-white">
+        <div class="container-fluid p-0">
+          <a class="navbar-brand text-uppercase fw-800" href="/home"
+            ><span class="border-red pe-2">Shop</span>Clothes</a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#myNav"
+            aria-controls="myNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="fas fa-bars"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="myNav">
+            <div class="navbar-nav ms-auto">
+              <a class="nav-link" aria-current="page" href="/home">All</a>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Categories
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">Women's</a></li>
+                  <li><a class="dropdown-item" href="#">Men's</a></li>
+                  <li><a class="dropdown-item" href="#">Kid's</a></li>
+                  <li><a class="dropdown-item" href="#">Accessories</a></li>
+                  <li><a class="dropdown-item" href="#">Cosmetics</a></li>
+                </ul>
+              </li>
+              <a class="nav-link" aria-current="page" href="/cart">Cart</a>
+              <a class="nav-link active" aria-current="page" href="/profile"
+                >Profile</a
+              >
+              <div class="user-profile-container" aria-current="page">
+                <img
+                  class="img-user-profile"
+                  src="uploads/<%= user.imagen %>"
+                  alt="photo profile of <%= user.nombre%>"
+                />
+                <span class="name-profile"><%= user.nombre %></span>
+              </div>
+              <a class="nav-link" aria-current="page" href="/auth/logout"
+                >Logout</a
+              >
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div class="page-content page-container" id="page-content">
+        <div class="padding">
+          <div class="row d-flex justify-content-center">
+            <div class="w-100 col-xl-6 col-md-12">
+              <div class="card user-card-full">
+                <div class="row m-l-0 m-r-0">
+                  <div class="col-sm-4 bg-c-lite-green user-profile">
+                    <div class="card-block text-center text-white">
+                      <div class="m-b-25 img-radius">
+                        <img
+                          src="/uploads/<%= user.imagen %>"
+                          class="img-radius"
+                          id="image-profile"
+                          alt="avatar de <%= user.username %>"
+                        />
+                      </div>
+                      <h6 class="f-w-600 fs-4"><%= user.nombre%></h6>
+                      <p class="f-w-600 fs-6"><%= user.edad%> años</p>
+                      <i
+                        class="mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"
+                      ></i>
+                    </div>
+                  </div>
+                  <div class="col-sm-8">
+                    <div class="card-block">
+                      <h6 class="m-b-20 p-b-5 b-b-default f-w-600 fs-5">
+                        Información
+                      </h6>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <p class="m-b-10 f-w-600 fs-6">Email</p>
+                          <h6 class="text-muted f-w-400 fs-6">
+                            <%= user.username %>
+                          </h6>
+                        </div>
+                        <div class="col-sm-12">
+                          <p class="m-b-10 f-w-600 fs-6">Teléfono</p>
+                          <h6 class="text-muted f-w-400 fs-6">
+                            <%= user.telefono%>
+                          </h6>
+                        </div>
+                        <div class="col-sm-12">
+                          <p class="m-b-10 f-w-600 fs-6">Dirección</p>
+                          <h6 class="text-muted f-w-400 fs-6">
+                            <%= user.direccion%>
+                          </h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap 5 JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

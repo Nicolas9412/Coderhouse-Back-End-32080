@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vista de Productos</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <!-- Font Awesome 5 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    />
+    <link rel="stylesheet" href="home.css" />
+  </head>
+
+  <body>
+    <div class="container bg-white">
+      <nav class="navbar navbar-expand-md navbar-light bg-white">
+        <div class="container-fluid p-0">
+          <a class="navbar-brand text-uppercase fw-800" href="/home"
+            ><span class="border-red pe-2">Shop</span>Clothes</a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#myNav"
+            aria-controls="myNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="fas fa-bars"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="myNav">
+            <div class="navbar-nav ms-auto">
+              <a class="nav-link active" aria-current="page" href="/home"
+                >All</a
+              >
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Categories
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">Women's</a></li>
+                  <li><a class="dropdown-item" href="#">Men's</a></li>
+                  <li><a class="dropdown-item" href="#">Kid's</a></li>
+                  <li><a class="dropdown-item" href="#">Accessories</a></li>
+                  <li><a class="dropdown-item" href="#">Cosmetics</a></li>
+                </ul>
+              </li>
+              <a class="nav-link" aria-current="page" href="/cart">Cart</a>
+              <a class="nav-link" aria-current="page" href="/profile"
+                >Profile</a
+              >
+              <div class="user-profile-container" aria-current="page">
+                <img
+                  class="img-user-profile"
+                  src="uploads/<%= user.imagen %>"
+                  alt="photo profile of <%= user.nombre%>"
+                />
+                <span class="name-profile"><%= user.nombre %></span>
+              </div>
+              <a class="nav-link" aria-current="page" href="/auth/logout"
+                >Logout</a
+              >
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div class="row">
+        <% if (products) { %> <% products.forEach(function(product){%>
+        <div
+          class="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3"
+        >
+          <div class="product">
+            <img
+              src="<%= product.foto %>"
+              alt="Photo of <%= product.nombre %>"
+            />
+            <ul
+              class="d-flex align-items-center justify-content-center list-unstyled icons"
+            >
+              <li class="icon">
+                <span class="fas fa-expand-arrows-alt"></span>
+              </li>
+              <li class="icon mx-3"><span class="far fa-heart"></span></li>
+              <form
+                action="/api/carrito/<%= user.cart_id%>/productos"
+                method="POST"
+              >
+                <input
+                  type="hidden"
+                  name="prod_id"
+                  value="<%= product._id %>"
+                />
+                <input type="hidden" name="currentRoute" value="/home" />
+                <button type="submit" class="icon">
+                  <span class="fas fa-shopping-bag"></span>
+                </button>
+              </form>
+            </ul>
+          </div>
+          <div class="tag bg-red">sale</div>
+          <div class="title pt-4 pb-1"><%= product.nombre %></div>
+          <div class="d-flex align-content-center justify-content-center"></div>
+          <div class="price">$ <%= product.precio %></div>
+        </div>
+        <% }) %> <% } %>
+      </div>
+    </div>
+    <!-- Bootstrap 5 JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

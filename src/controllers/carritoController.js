@@ -1,11 +1,13 @@
-const { carritoDaos: Carrito } = require("../daos/mainDaos");
 const {
-  productosCarritosDaos: ProductosCarritos,
+  carritoDaos: Carrito,
+  usuariosDaos: Usuario,
 } = require("../daos/mainDaos");
-
+const sendMail = require("../utils/sendMail");
+const sendSMS = require("../utils/sendSMS");
+const sendWhatsapp = require("../utils/sendWhatsapp");
 const carritosBD = new Carrito();
+const usuariosBD = new Usuario();
 const { productosBD } = require("./productosController");
-const productosCarritosBD = new ProductosCarritos();
 
 const findClassName = (clase) => {
   const posExtends = clase.indexOf("extends");
@@ -47,7 +49,7 @@ const addProduct = async (req, res) => {
     let productoAgregarParseado;
     const { id } = req.params;
     const { body } = req;
-    const productoAgregar = await productosBD.getById(body.id);
+    const productoAgregar = await productosBD.getById(body.prod_id);
     if (productoAgregar) {
       if (classNameProducto === "ContenedorMongoDb") {
         productoAgregarParseado = {
@@ -68,7 +70,7 @@ const addProduct = async (req, res) => {
         if (classNameCarrito !== "ContenedorRelacional") {
           const productosEnCarrito = carrito.productos;
           for (const prod of productosEnCarrito) {
-            if (prod.id == body.id) {
+            if (prod.id == body.prod_id) {
               res.status(200).send({
                 status: 200,
                 message: "este producto ya está en el carro",
@@ -94,7 +96,7 @@ const addProduct = async (req, res) => {
               id
             );
             for (const prod of productosEnCarrito) {
-              if (prod.idProducto == body.id) {
+              if (prod.idProducto == body.prod_id) {
                 res.status(200).send({
                   status: 200,
                   message: "este producto ya está en el carro",
@@ -308,10 +310,36 @@ const deleteProductById = async (req, res) => {
   }
 };
 
+const sendOrder = async (req, res) => {
+  const user = await usuariosBD.getById(req.user);
+  const cart = await carritosBD.getById(req.params.id);
+  console.log(cart);
+  const formattedProducts = cart.productos.map(
+    (product) =>
+      `Producto: ${product.nombre} <br />
+      Precio: ${product.precio}
+      `
+  );
+  await sendMail(
+    null,
+    `Nuevo pedido de ${user.nombre} - ${user.username}`,
+    `<p>${formattedProducts.join("</p><p>")}</p>`
+  );
+  const newUser = await usuariosBD.deleteCart(cart._id);
+  console.log(newUser);
+  await sendSMS(
+    "La orden fue confirmada y se encuentra en proceso",
+    user.telefono
+  );
+  await sendWhatsapp(`Nuevo pedido de ${user.nombre} - ${user.username}`);
+  return res.redirect("/home");
+};
+
 module.exports = {
   getAllProductsByCartId,
   createCart,
   addProduct,
   deleteCartById,
   deleteProductById,
+  sendOrder,
 };
