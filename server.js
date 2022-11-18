@@ -2,7 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
-const dotenv = require("dotenv");
+require("dotenv").config();
 const initializePassport = require("./src/config/auth");
 const { connectMDB } = require("./config");
 const upload = require("./src/config/multer");
@@ -10,19 +10,22 @@ const routerProductos = require("./src/routers/productos");
 const routerCarrito = require("./src/routers/carrito");
 const routerApp = require("./src/routers/app");
 const routerAuth = require("./src/routers/auth");
+const log4js = require("./logger");
 
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const app = express();
 
 connectMDB();
 
-dotenv.config();
-
 app.set("view engine", "ejs");
 
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+//Logger
+const logger = log4js.getLogger();
+const loggerArchivoError = log4js.getLogger("archivoError");
 
 // Multer
 app.use(upload);
@@ -72,25 +75,29 @@ if (process.env.MODO == "CLUSTER") {
   const numCPUs = require("os").cpus().length;
 
   if (cluster.isMaster) {
-    console.log(`Master ${process.pid} is running`);
+    logger.info(`Master ${process.pid} is running`);
     // fork workers.
     for (let i = 0; i < numCPUs; i++) {
       cluster.fork();
     }
     cluster.on("exit", (worker, code, signal) => {
       cluster.fork();
-      console.log(`worker ${worker.process.pid} died`);
+      logger.info(`worker ${worker.process.pid} died`);
     });
   } else {
     const server = app.listen(PORT, () =>
-      console.log(`Worker ${process.pid} started`)
+      logger.info(`Worker ${process.pid} started`)
     );
-    server.on("error", (error) => console.log(`Error en servidor ${error}`));
+    server.on("error", (error) =>
+      loggerArchivoError.error(`Error en servidor ${error}`)
+    );
   }
 } else {
   /* Server Listen */
   const server = app.listen(PORT, () =>
-    console.log(`servidor Levantado http://localhost:${PORT}`)
+    logger.info(`servidor Levantado http://localhost:${PORT}`)
   );
-  server.on("error", (error) => console.log(`Error en servidor ${error}`));
+  server.on("error", (error) =>
+    loggerArchivoError.error(`Error en servidor ${error}`)
+  );
 }

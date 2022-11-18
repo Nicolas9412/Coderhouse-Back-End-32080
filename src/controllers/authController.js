@@ -37,7 +37,7 @@ async function postSignup(req, res) {
   const { usuariosDaos: Usuario } = require("../daos/mainDaos");
   const usuariosBD = new Usuario();
   const user = await usuariosBD.getById(req.user);
-  res.render("pages/home.ejs", { user });
+  res.redirect("/home");
 }
 
 function getFailLogin(req, res) {

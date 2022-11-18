@@ -1,5 +1,8 @@
-const dotenv = require("dotenv");
-dotenv.config();
+require("dotenv").config();
+const log4js = require("./logger");
+
+//Logger
+const loggerArchivoError = log4js.getLogger("archivoError");
 
 // Config Mongo DB Atlas
 const mongoose = require("mongoose");
@@ -12,7 +15,7 @@ const connectMDB = async () => {
       useUniFiedTopology: true,
     });
   } catch (error) {
-    console.log(error);
+    loggerArchivoError.error(error);
   }
 };
 

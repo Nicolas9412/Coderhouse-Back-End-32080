@@ -8,10 +8,6 @@ const isAuthenticated = (req, res, next) => {
 const isNotAuthenticated = async (req, res, next) => {
   if (!req.isAuthenticated()) return next();
   return res.redirect("/home");
-  /*const { usuariosDaos: Usuario } = require("../daos/mainDaos");
-  const usuariosBD = new Usuario();
-  const user = await usuariosBD.getById(req.user);
-  return res.render("pages/home.ejs", { user });*/
 };
 
 const admin = true;

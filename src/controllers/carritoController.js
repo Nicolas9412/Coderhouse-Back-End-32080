@@ -313,6 +313,7 @@ const deleteProductById = async (req, res) => {
 const sendOrder = async (req, res) => {
   const user = await usuariosBD.getById(req.user);
   const cart = await carritosBD.getById(req.params.id);
+  console.log(cart);
   const formattedProducts = cart.productos.map(
     (product) =>
       `Producto: ${product.nombre} <br />
@@ -325,7 +326,6 @@ const sendOrder = async (req, res) => {
     `<p>${formattedProducts.join("</p><p>")}</p>`
   );
   const newUser = await usuariosBD.deleteCart(cart._id);
-  console.log(newUser);
   await sendSMS(
     "La orden fue confirmada y se encuentra en proceso",
     user.telefono

@@ -1,6 +1,10 @@
+const log4js = require("../../../logger");
 const ContenedorMongoDb = require("../../contenedores/ContenedorMongoDb");
 const schemaUsuario = require("../../modelsMDB/schemaUsuario");
 const { connectMDB, disconnectMDB } = require("../../../config");
+
+//Logger
+const loggerArchivoError = log4js.getLogger("archivoError");
 
 class UsuariosDaoMongoDb extends ContenedorMongoDb {
   constructor() {
@@ -12,22 +16,19 @@ class UsuariosDaoMongoDb extends ContenedorMongoDb {
       const user = await this.name.findOne({ username });
       disconnectMDB();
       return user;
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      loggerArchivoError.error(error);
     }
   }
 
   async addCart(userId, cartId) {
     try {
       await connectMDB();
-      const user = await this.name.findOneAndUpdate(
-        { _id: userId },
-        { cart_id: cartId }
-      );
+      await this.name.findOneAndUpdate({ _id: userId }, { cart_id: cartId });
       disconnectMDB();
       return cartId;
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      loggerArchivoError.error(error);
     }
   }
 
@@ -39,8 +40,8 @@ class UsuariosDaoMongoDb extends ContenedorMongoDb {
         { $unset: { cart_id: 1 } }
       );
       return user;
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      loggerArchivoError.error(error);
     }
   }
 }

@@ -1,4 +1,8 @@
+const log4js = require("../../logger");
 const { createTransport } = require("nodemailer");
+
+//Logger
+const loggerArchivoError = log4js.getLogger("archivoError");
 
 const sendMail = async (to, subject, content) => {
   const transporter = createTransport({
@@ -18,9 +22,9 @@ const sendMail = async (to, subject, content) => {
   };
 
   try {
-    const response = await transporter.sendMail(mailOptions);
-  } catch (e) {
-    console.log(e);
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    loggerArchivoError.error(error);
   }
 };
 
