@@ -1,10 +1,12 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 // Config Mongo DB Atlas
 const mongoose = require("mongoose");
 
 const connectMDB = async () => {
   try {
-    const URL =
-      "mongodb+srv://Nicolas9412:admin123@cluster0.x4k71fz.mongodb.net/ecommerce?retryWrites=true&w=majority";
+    const URL = process.env.MONGODB_URI;
     await mongoose.connect(URL, {
       useNewUrlParser: true,
       useUniFiedTopology: true,

@@ -313,7 +313,6 @@ const deleteProductById = async (req, res) => {
 const sendOrder = async (req, res) => {
   const user = await usuariosBD.getById(req.user);
   const cart = await carritosBD.getById(req.params.id);
-  console.log(cart);
   const formattedProducts = cart.productos.map(
     (product) =>
       `Producto: ${product.nombre} <br />
