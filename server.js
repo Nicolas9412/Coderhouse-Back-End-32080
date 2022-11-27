@@ -9,6 +9,7 @@ const parseArgs = require("minimist");
 const log4js = require("./logger");
 const logger = log4js.getLogger();
 const loggerArchivoError = log4js.getLogger("archivoError");
+const routerAuth = require("./src/routes/auth");
 
 const options = { default: { port: 8080 } };
 const args = parseArgs(process.argv.slice(2), options);
@@ -135,6 +136,8 @@ app.use((req, res, next) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use("/api/auth", routerAuth);
+
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -190,6 +193,7 @@ app.all("*", routes.failRoute);
 
 const { mensajesDaos: Mensajes } = require("./src/daos/mainDaos");
 const { productosDaos: Productos } = require("./src/daos/mainDaos");
+const authRouter = require("./src/routes/auth");
 
 const chatBD = new Mensajes();
 const productosBD = new Productos();
