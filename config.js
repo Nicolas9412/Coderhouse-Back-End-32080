@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 const connectMDB = async () => {
   try {
-    const URL = process.env.CONNECTION_MONGO_ATLAS;
+    const URL = process.env.MONGODB_URI;
     await mongoose.connect(URL, {
       useNewUrlParser: true,
       useUniFiedTopology: true,

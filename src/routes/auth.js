@@ -15,14 +15,14 @@ const routerAuth = new Router();
 routerAuth.get("/login", getLogin);
 routerAuth.post(
   "/login",
-  passport.authenticate("login", { failureRedirect: "/faillogin" }),
+  passport.authenticate("login", { failureRedirect: "/auth/faillogin" }),
   postLogin
 );
 routerAuth.get("/faillogin", getFaillogin);
 routerAuth.get("/signup", getSignup);
 routerAuth.post(
   "/signup",
-  passport.authenticate("signup", { failureRedirect: "/failsignup" }),
+  passport.authenticate("signup", { failureRedirect: "/auth/faillogin" }),
   postSignup
 );
 routerAuth.get("/failsignup", getFailsignup);

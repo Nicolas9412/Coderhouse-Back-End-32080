@@ -10,38 +10,31 @@ const logger = log4js.getLogger();
 const loggerArchivoError = log4js.getLogger("archivoError");
 const routerAuth = require("./src/routes/auth");
 const initializeAuth = require("./src/config/auth");
+const { connectMDB } = require("./config");
 
 const options = { default: { port: 8080 } };
 const args = parseArgs(process.argv.slice(2), options);
-
-const routes = require("./routes");
-const mongoose = require("mongoose");
-
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const app = express();
+
+connectMDB();
+
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer);
-app.use(compression());
 const PORT = args.port;
 
-mongoose
-  .connect(process.env.CONNECTION_MONGO_ATLAS)
-  .then(() => logger.info("Connected to DB"))
-  .catch((e) => {
-    loggerArchivoError.error(e);
-    throw "can not connect to the db";
-  });
+app.use(compression());
 
 app.use(
   session({
     store: MongoStore.create({
-      mongoUrl: process.env.CONNECTION_MONGO_ATLAS,
+      mongoUrl: process.env.MONGODB_URI,
       mongoOptions: advancedOptions,
     }),
-    secret: "top secret",
+    secret: process.env.SESSION_SECRET,
     resave: true,
     rolling: true,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: { maxAge: 600000, httpOnly: false, secure: false },
   })
 );
@@ -61,7 +54,7 @@ initializeAuth(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/api/auth", routerAuth);
+app.use("/auth", routerAuth);
 
 app.use(express.static("public"));
 app.use(express.json());
@@ -71,7 +64,9 @@ app.set("view engine", "ejs");
 
 httpServer.listen(process.env.PORT || PORT, () => {
   logger.info(
-    `Servidor levantado http://localhost:${httpServer.address().port}/login`
+    `Servidor levantado http://localhost:${
+      httpServer.address().port
+    }/auth/login`
   );
 });
 httpServer.on("error", (error) =>
@@ -82,14 +77,14 @@ function checkAuthentication(req, res, next) {
   if (req.isAuthenticated()) {
     next();
   } else {
-    res.redirect("/login");
+    res.redirect("/auth/login");
   }
 }
 
-app.get("/api/info/Bloq", routes.getInfoProcessBloq);
-app.get("/api/info/Nobloq", routes.getInfoProcessNoBloq);
+//app.get("/api/info/Bloq", routes.getInfoProcessBloq);
+//app.get("/api/info/Nobloq", routes.getInfoProcessNoBloq);
 
-app.get("/api/randoms", checkAuthentication, routes.getRandoms);
+//app.get("/api/randoms", checkAuthentication, routes.getRandoms);
 
 app.get("/ruta-protegida", checkAuthentication, (req, res) => {
   const { username, password } = req.user;
@@ -97,7 +92,7 @@ app.get("/ruta-protegida", checkAuthentication, (req, res) => {
   res.send("<h1>Ruta ok!</h1>");
 });
 
-app.all("*", routes.failRoute);
+//app.all("*", routes.failRoute);
 
 const { mensajesDaos: Mensajes } = require("./src/daos/mainDaos");
 const { productosDaos: Productos } = require("./src/daos/mainDaos");
