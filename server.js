@@ -9,7 +9,7 @@ const log4js = require("./logger");
 const logger = log4js.getLogger();
 const loggerArchivoError = log4js.getLogger("archivoError");
 const routerAuth = require("./src/routes/auth");
-const { initAuth } = require("./src/middlewares/mainMiddlewares");
+const initializeAuth = require("./src/config/auth");
 
 const options = { default: { port: 8080 } };
 const args = parseArgs(process.argv.slice(2), options);
@@ -57,7 +57,7 @@ app.use((req, res, next) => {
   next();
 });
 
-initAuth(passport);
+initializeAuth(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
