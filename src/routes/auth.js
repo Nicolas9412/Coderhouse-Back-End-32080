@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const passport = require("passport");
+const { isNotAuthenticated } = require("../middlewares/auth");
 const {
   getLogin,
   getSignup,
@@ -12,14 +13,15 @@ const {
 
 const routerAuth = new Router();
 
-routerAuth.get("/login", getLogin);
+//routerAuth.get("/", isNotAuthenticated, getRoot);
+routerAuth.get("/login", isNotAuthenticated, getLogin);
 routerAuth.post(
   "/login",
   passport.authenticate("login", { failureRedirect: "/auth/faillogin" }),
   postLogin
 );
 routerAuth.get("/faillogin", getFaillogin);
-routerAuth.get("/signup", getSignup);
+routerAuth.get("/signup", isNotAuthenticated, getSignup);
 routerAuth.post(
   "/signup",
   passport.authenticate("signup", { failureRedirect: "/auth/faillogin" }),

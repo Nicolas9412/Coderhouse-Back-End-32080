@@ -31,6 +31,7 @@ async function getSignup(req, res) {
 
 async function postLogin(req, res) {
   const { username, password } = req.user;
+  console.log("vista de usuario", username);
   const user = { username, password };
   const productos = await productosBD.getAll();
   const chat = await chatBD.getAll();

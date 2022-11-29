@@ -9,7 +9,8 @@ const initializeAuth = (passport) => {
     "login",
     new LocalStrategy(async (username, password, done) => {
       try {
-        const user = await usuariosBD.getById(username);
+        console.log(username);
+        const user = await usuariosBD.getById({ username });
         console.log("El usuario encontrado es ", user);
         if (!user)
           return done(null, false, {
@@ -36,7 +37,8 @@ const initializeAuth = (passport) => {
       },
       async (req, username, password, done) => {
         try {
-          const user = await usuariosBD.getById(username);
+          console.log(username);
+          const user = await usuariosBD.getById({ username });
           if (user)
             return done(null, false, {
               message: "El nombre de usuario ya esta en uso.",
