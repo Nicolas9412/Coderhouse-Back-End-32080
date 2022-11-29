@@ -153,23 +153,6 @@ httpServer.on("error", (error) =>
   loggerArchivoError.error(`Error en el servidor ${error}`)
 );
 
-app.get("/", routes.getRoot);
-app.get("/login", routes.getLogin);
-app.post(
-  "/login",
-  passport.authenticate("login", { failureRedirect: "/faillogin" }),
-  routes.postLogin
-);
-app.get("/faillogin", routes.getFaillogin);
-app.get("/signup", routes.getSignup);
-app.post(
-  "/signup",
-  passport.authenticate("signup", { failureRedirect: "/failsignup" }),
-  routes.postSignup
-);
-app.get("/failsignup", routes.getFailsignup);
-app.get("/logout", routes.getLogout);
-
 function checkAuthentication(req, res, next) {
   if (req.isAuthenticated()) {
     next();
@@ -178,8 +161,8 @@ function checkAuthentication(req, res, next) {
   }
 }
 
-app.get("/infoBloq", routes.getInfoProcessBloq);
-app.get("/infoNobloq", routes.getInfoProcessNoBloq);
+app.get("/api/info/Bloq", routes.getInfoProcessBloq);
+app.get("/api/info/Nobloq", routes.getInfoProcessNoBloq);
 
 app.get("/api/randoms", checkAuthentication, routes.getRandoms);
 
@@ -193,7 +176,6 @@ app.all("*", routes.failRoute);
 
 const { mensajesDaos: Mensajes } = require("./src/daos/mainDaos");
 const { productosDaos: Productos } = require("./src/daos/mainDaos");
-const authRouter = require("./src/routes/auth");
 
 const chatBD = new Mensajes();
 const productosBD = new Productos();
