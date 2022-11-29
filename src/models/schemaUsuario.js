@@ -7,5 +7,4 @@ const UsuarioSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
-const Usuarios = mongoose.model("usuarios", UsuarioSchema);
-module.exports = Usuarios;
+module.exports = mongoose.model("usuarios", UsuarioSchema);

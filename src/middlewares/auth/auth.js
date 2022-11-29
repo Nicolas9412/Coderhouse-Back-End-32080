@@ -1,11 +1,14 @@
-const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const MongoStore = require("connect-mongo");
 const log4js = require("./logger");
 const logger = log4js.getLogger();
 const loggerArchivoError = log4js.getLogger("archivoError");
+const Usuarios = require("../../models/schemaUsuario");
+const {
+  createHash,
+  isValidPassword,
+} = require("../../helpers/auth/helperAuth");
 
-const initializeAuth = () => {
+const initializeAuth = (passport) => {
   passport.use(
     "login",
     new LocalStrategy((username, password, done) => {

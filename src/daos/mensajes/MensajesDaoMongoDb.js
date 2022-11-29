@@ -1,5 +1,5 @@
 const schemaMensaje = require("../../models/schemaMensaje");
-const ContenedorMongoDb = require("../../Contenedores/ContenedorMongoDb");
+const ContenedorMongoDb = require("../../contenedores/ContenedorMongoDb");
 
 class MensajesDaoMongoDb extends ContenedorMongoDb {
   constructor() {

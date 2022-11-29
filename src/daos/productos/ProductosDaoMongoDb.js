@@ -1,5 +1,5 @@
 const schemaProducto = require("../../models/schemaProducto");
-const ContenedorMongoDb = require("../../Contenedores/ContenedorMongoDb");
+const ContenedorMongoDb = require("../../contenedores/ContenedorMongoDb");
 
 class ProductosDaoMongoDb extends ContenedorMongoDb {
   constructor() {

@@ -22,6 +22,7 @@ const disconnectMDB = () => {
 module.exports = {
   PERSIST_PRODUCTOS: "./productos/ProductosDaoMongoDb",
   PERSIST_MENSAJES: "./mensajes/MensajesDaoMongoDb",
+  PERSIST_USUARIOS: "./usuarios/UsuariosDaoMongoDb",
   connectMDB,
   disconnectMDB,
 };

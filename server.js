@@ -9,13 +9,11 @@ const log4js = require("./logger");
 const logger = log4js.getLogger();
 const loggerArchivoError = log4js.getLogger("archivoError");
 const routerAuth = require("./src/routes/auth");
+const { initAuth } = require("./src/middlewares/mainMiddlewares");
 
 const options = { default: { port: 8080 } };
 const args = parseArgs(process.argv.slice(2), options);
 
-const Usuarios = require("./models/usuarios");
-
-const bcrypt = require("bcrypt");
 const routes = require("./routes");
 const mongoose = require("mongoose");
 
@@ -25,14 +23,6 @@ const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer);
 app.use(compression());
 const PORT = args.port;
-
-function isValidPassword(user, password) {
-  return bcrypt.compareSync(password, user.password);
-}
-
-function createHash(password) {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
-}
 
 mongoose
   .connect(process.env.CONNECTION_MONGO_ATLAS)
@@ -67,6 +57,7 @@ app.use((req, res, next) => {
   next();
 });
 
+initAuth(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
