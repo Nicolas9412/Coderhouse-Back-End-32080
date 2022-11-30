@@ -24,7 +24,7 @@ routerAuth.get("/faillogin", getFaillogin);
 routerAuth.get("/signup", isNotAuthenticated, getSignup);
 routerAuth.post(
   "/signup",
-  passport.authenticate("signup", { failureRedirect: "/auth/faillogin" }),
+  passport.authenticate("signup", { failureRedirect: "/auth/failsignup" }),
   postSignup
 );
 routerAuth.get("/failsignup", getFailsignup);
