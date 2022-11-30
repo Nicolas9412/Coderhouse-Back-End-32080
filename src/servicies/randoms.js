@@ -1,8 +1,6 @@
-function generateRandomInt(min, max) {
-  return Math.floor(Math.random() * (max + 1 - min) + min);
-}
+const { generateRandomInt } = require("../utils/generateRandomInt");
 
-process.on("message", (cant) => {
+function getRandomsService(cant) {
   let result = {};
   for (let i = 0; i < cant; i++) {
     const num = generateRandomInt(1, 1000);
@@ -22,5 +20,6 @@ process.on("message", (cant) => {
       });
     }
   }
-  process.send(result);
-});
+  return result;
+}
+module.exports = { getRandomsService };

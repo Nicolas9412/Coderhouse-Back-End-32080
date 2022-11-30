@@ -30,20 +30,11 @@ async function getSignup(req, res) {
 }
 
 async function postLogin(req, res) {
-  const { username, password } = req.user;
-  console.log("vista de usuario", username);
-  const user = { username, password };
-  const productos = await getProducts();
-  const chat = await getChat();
-  res.render("pages/form-list-chat.ejs", { user, productos, chat });
+  res.redirect("/home");
 }
 
 async function postSignup(req, res) {
-  const { username, password } = req.user;
-  const user = { username, password };
-  const productos = await getProducts();
-  const chat = await getChat();
-  res.render("pages/form-list-chat.ejs", { user, productos, chat });
+  res.redirect("/home");
 }
 
 function getFaillogin(req, res) {

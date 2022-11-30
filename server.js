@@ -1,17 +1,23 @@
 const express = require("express");
 const compression = require("compression");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
-const passport = require("passport");
 require("dotenv").config();
 const parseArgs = require("minimist");
+//
+const MongoStore = require("connect-mongo");
+const { connectMDB } = require("./config");
+//
 const log4js = require("./logger");
 const logger = log4js.getLogger();
 const loggerArchivoError = log4js.getLogger("archivoError");
+//
+const routerApp = require("./src/routes/app");
 const routerAuth = require("./src/routes/auth");
 const routerInfo = require("./src/routes/info");
+const routerRandoms = require("./src/routes/randoms");
+//
 const initializeAuth = require("./src/config/auth");
-const { connectMDB } = require("./config");
+const passport = require("passport");
+const session = require("express-session");
 
 const options = { default: { port: 8080 } };
 const args = parseArgs(process.argv.slice(2), options);
@@ -59,8 +65,10 @@ initializeAuth(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use("/", routerApp);
 app.use("/auth", routerAuth);
 app.use("/api/info", routerInfo);
+app.use("/api/randoms", routerRandoms);
 
 app.set("view engine", "ejs");
 
@@ -74,8 +82,6 @@ httpServer.listen(process.env.PORT || PORT, () => {
 httpServer.on("error", (error) =>
   loggerArchivoError.error(`Error en el servidor ${error}`)
 );
-
-//app.get("/api/randoms", checkAuthentication, routes.getRandoms);
 
 //app.all("*", routes.failRoute);
 

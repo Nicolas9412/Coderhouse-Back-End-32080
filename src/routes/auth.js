@@ -13,7 +13,6 @@ const {
 
 const routerAuth = new Router();
 
-//routerAuth.get("/", isNotAuthenticated, getRoot);
 routerAuth.get("/login", isNotAuthenticated, getLogin);
 routerAuth.post(
   "/login",
