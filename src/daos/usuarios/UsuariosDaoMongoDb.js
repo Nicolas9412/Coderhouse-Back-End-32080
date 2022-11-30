@@ -7,12 +7,10 @@ class UsuariosDaoMongoDb extends ContenedorMongoDb {
   }
   async getByEmail(username) {
     try {
-      await connectMDB();
       const user = await this.name.findOne({ username });
-      disconnectMDB();
       return user;
     } catch (error) {
-      loggerArchivoError.error(error);
+      console.error(error);
     }
   }
 }

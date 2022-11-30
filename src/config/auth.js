@@ -17,7 +17,7 @@ const initializeAuth = (passport) => {
             message: "Usuario no encontrado",
           });
 
-        if (!isValidPassword(password, user))
+        if (!isValidPassword(user, password))
           return done(null, false, {
             message: "Password incorrecto",
           });
@@ -60,8 +60,9 @@ const initializeAuth = (passport) => {
     done(null, user._id);
   });
 
-  passport.deserializeUser((id, done) => {
-    Usuarios.findById(id, done);
+  passport.deserializeUser(async (id, done) => {
+    const user = await usuariosBD.getById(id);
+    done(null, user);
   });
 };
 

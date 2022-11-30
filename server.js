@@ -50,15 +50,15 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(express.static("public"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 initializeAuth(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/auth", routerAuth);
-
-app.use(express.static("public"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.set("view engine", "ejs");
 
