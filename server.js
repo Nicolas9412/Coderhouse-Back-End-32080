@@ -9,6 +9,7 @@ const log4js = require("./logger");
 const logger = log4js.getLogger();
 const loggerArchivoError = log4js.getLogger("archivoError");
 const routerAuth = require("./src/routes/auth");
+const routerInfo = require("./src/routes/info");
 const initializeAuth = require("./src/config/auth");
 const { connectMDB } = require("./config");
 
@@ -59,6 +60,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/auth", routerAuth);
+app.use("/api/info", routerInfo);
 
 app.set("view engine", "ejs");
 
@@ -73,24 +75,7 @@ httpServer.on("error", (error) =>
   loggerArchivoError.error(`Error en el servidor ${error}`)
 );
 
-function checkAuthentication(req, res, next) {
-  if (req.isAuthenticated()) {
-    next();
-  } else {
-    res.redirect("/auth/login");
-  }
-}
-
-//app.get("/api/info/Bloq", routes.getInfoProcessBloq);
-//app.get("/api/info/Nobloq", routes.getInfoProcessNoBloq);
-
 //app.get("/api/randoms", checkAuthentication, routes.getRandoms);
-
-app.get("/ruta-protegida", checkAuthentication, (req, res) => {
-  const { username, password } = req.user;
-  const user = { username, password };
-  res.send("<h1>Ruta ok!</h1>");
-});
 
 //app.all("*", routes.failRoute);
 

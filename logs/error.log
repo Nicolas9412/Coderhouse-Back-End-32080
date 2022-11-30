@@ -1,0 +1,23 @@
+[2022-11-29T15:51:08.543] [ERROR] archivoError - Error en el servidor Error: listen EADDRINUSE: address already in use :::8080
+[2022-11-29T19:22:45.298] [ERROR] archivoError - Error en el servidor Error: listen EADDRINUSE: address already in use :::8080
+[2022-11-29T19:39:01.187] [ERROR] archivoError - MongoNotConnectedError: Client must be connected before running operations
+    at executeOperationAsync (C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\execute_operation.js:24:19)
+    at C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\execute_operation.js:12:45
+    at maybeCallback (C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\utils.js:337:21)
+    at executeOperation (C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\operations\execute_operation.js:12:38)
+    at FindCursor._initialize (C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cursor\find_cursor.js:54:50)
+    at FindCursor.[kInit] (C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cursor\abstract_cursor.js:403:14)
+    at next (C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongodb\lib\cursor\abstract_cursor.js:475:22)
+    at node:internal/util:360:7
+    at new Promise (<anonymous>)
+    at next (node:internal/util:346:12) {
+  [Symbol(errorLabels)]: Set(0) {}
+}
+[2022-11-29T19:47:16.203] [ERROR] archivoError - Error en el servidor Error: listen EADDRINUSE: address already in use :::8080
+[2022-11-29T19:57:26.689] [ERROR] archivoError - Error en el servidor Error: listen EADDRINUSE: address already in use :::8080
+[2022-11-29T21:27:17.965] [ERROR] archivoError - Error en el servidor Error: listen EADDRINUSE: address already in use :::8080
+[2022-11-30T12:04:04.511] [ERROR] archivoError - Error en el servidor Error: listen EADDRINUSE: address already in use :::8080
+[2022-11-30T12:07:18.420] [ERROR] archivoError - Error en el servidor Error: listen EADDRINUSE: address already in use :::8080
+[2022-11-30T12:07:26.020] [ERROR] archivoError - Error en el servidor Error: listen EADDRINUSE: address already in use :::8080
+[2022-11-30T12:07:45.051] [ERROR] archivoError - Error en el servidor Error: listen EADDRINUSE: address already in use :::8080
+[2022-11-30T12:07:53.276] [ERROR] archivoError - Error en el servidor Error: listen EADDRINUSE: address already in use :::8080
