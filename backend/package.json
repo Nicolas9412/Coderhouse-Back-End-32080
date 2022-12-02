@@ -1,0 +1,25 @@
+{
+  "name": "Proyecto_Final",
+  "version": "1.0.0",
+  "description": "Aquí estoy desarrollando mis desafíos y proyecto final del curso de back-end, utilizando las herramientas de expo, nodejs, mongoDB y javascript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nicolas9412/Coderhouse-Back-End-32080.git"
+  },
+  "keywords": [],
+  "author": "Leandro Nicolas Olmos Gomez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nicolas9412/Coderhouse-Back-End-32080/issues"
+  },
+  "homepage": "https://github.com/Nicolas9412/Coderhouse-Back-End-32080#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1"
+  }
+}
