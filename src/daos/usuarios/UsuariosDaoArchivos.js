@@ -1,9 +1,9 @@
 const ContenedorArchivos = require("../../Contenedores/ContenedorArchivos");
 
-class UsuariosDaoArchivo extends ContenedorArchivos {
+class UsuariosDaoArchivos extends ContenedorArchivos {
   constructor() {
     super("./db/usuarios.json");
   }
 }
 
-module.exports = UsuariosDaoArchivo;
+module.exports = UsuariosDaoArchivos;
