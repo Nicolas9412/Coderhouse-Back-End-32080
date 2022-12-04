@@ -8,6 +8,9 @@ async function postLogin(request, response) {
   const { body } = request;
   const { email, password } = body;
 
+  console.log("email", email);
+  console.log("pass", password);
+
   const user = await User.findOne({ email });
 
   const passwordCorrect =

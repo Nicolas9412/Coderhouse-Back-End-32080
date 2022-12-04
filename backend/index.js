@@ -4,12 +4,14 @@ const app = express();
 const routerAuth = require("./src/routes/auth");
 const { connectMDB } = require("./src/config/mongo");
 const { auth } = require("./src/middlewares/auth");
+const cors = require("cors");
 
 connectMDB();
 
 app.use("/public", express.static(__dirname + "/public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 app.use("/auth", routerAuth);
 
