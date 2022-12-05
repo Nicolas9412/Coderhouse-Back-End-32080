@@ -1,6 +1,7 @@
-const { productosDaos: Productos } = require("../daos/mainDaos");
+//const { productosDaos: Productos } = require("../daos/mainDaos");
+const ProductosFactoryDAO = require("../daos/productos/ProductosFactory");
 
-const productosBD = new Productos();
+const productosBD = ProductosFactoryDAO.get(process.env.TYPE_PERSIST);
 
 async function getProducts() {
   const products = await productosBD.getAll();

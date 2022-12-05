@@ -85,11 +85,14 @@ httpServer.on("error", (error) =>
 
 //app.all("*", routes.failRoute);
 
-const { mensajesDaos: Mensajes } = require("./src/daos/mainDaos");
-const { productosDaos: Productos } = require("./src/daos/mainDaos");
+//const { mensajesDaos: Mensajes } = require("./src/daos/mainDaos");
+//const { productosDaos: Productos } = require("./src/daos/mainDaos");
 
-const chatBD = new Mensajes();
-const productosBD = new Productos();
+const MensajesFactoryDAO = require("./src/daos/mensajes/MensajesFactory");
+const ProductosFactoryDAO = require("./src/daos/productos/ProductosFactory");
+
+const chatBD = MensajesFactoryDAO.get(process.env.TYPE_PERSIST);
+const productosBD = ProductosFactoryDAO.get(process.env.TYPE_PERSIST);
 
 io.on("connection", (socket) => {
   logger.info(`Usuario Conectado ${socket.id}`);

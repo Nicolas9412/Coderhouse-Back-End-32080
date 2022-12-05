@@ -11,20 +11,21 @@ class ContenedorArchivos {
       productos = JSON.parse(productos);
       if (productos.length !== 0) {
         productos.sort((a, b) => {
-          return b.id - a.id;
+          return b._id - a._id;
         });
-        const idAsignado = productos[0].id + 1;
-        productos.push({ ...obj, id: idAsignado });
+        const idAsignado = productos[0]._id + 1;
+        productos.push({ ...obj, _id: idAsignado });
         productos.sort((a, b) => {
-          return a.id - b.id;
+          return a._id - b._id;
         });
         await fs.promises.writeFile(
           this.name,
           JSON.stringify(productos, null, 2)
         );
+        console.log("id asignadoo", idAsignado);
         return idAsignado;
       } else {
-        productos.push({ ...obj, id: 1 });
+        productos.push({ ...obj, _id: 1 });
         await fs.promises.writeFile(
           this.name,
           JSON.stringify(productos, null, 2)
@@ -41,7 +42,7 @@ class ContenedorArchivos {
       let productos = await fs.promises.readFile(this.name, "utf-8");
       productos = JSON.parse(productos);
       productos.forEach((prod) => {
-        if (prod.id === parseInt(id)) {
+        if (prod._id === parseInt(id)) {
           productoCapturado = prod;
         }
       });
@@ -55,7 +56,7 @@ class ContenedorArchivos {
       let productos = await fs.promises.readFile(this.name, "utf-8");
       productos = JSON.parse(productos);
       productos.sort((a, b) => {
-        return a.id - b.id;
+        return a._id - b._id;
       });
       return productos;
     } catch (error) {
@@ -71,7 +72,7 @@ class ContenedorArchivos {
         let productos = await fs.promises.readFile(this.name, "utf-8");
         productos = JSON.parse(productos);
         productos.forEach((prod) => {
-          if (prod.id !== parseInt(id)) {
+          if (prod._id !== parseInt(id)) {
             newProducts.push(prod);
           }
         });
@@ -99,7 +100,7 @@ class ContenedorArchivos {
         productos = JSON.parse(productos);
         const newProduct = { ...productoAModificar, ...reemplazo };
         productos.push(newProduct);
-        productos.sort((a, b) => a.id - b.id);
+        productos.sort((a, b) => a._id - b._id);
         await fs.promises.writeFile(
           this.name,
           JSON.stringify(productos, null, 2)

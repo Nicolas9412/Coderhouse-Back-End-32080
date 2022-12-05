@@ -1,15 +1,15 @@
 const { Strategy: LocalStrategy } = require("passport-local");
-const { usuariosDaos: Usuario } = require("../daos/mainDaos");
+//const { usuariosDaos: Usuario } = require("../daos/mainDaos");
 const { createHash, isValidPassword } = require("../helpers/auth/helperAuth");
 
-const usuariosBD = new Usuario();
+const UsuariosFactoryDAO = require("../daos/usuarios/UsuariosFactory");
+const usuariosBD = UsuariosFactoryDAO.get(process.env.TYPE_PERSIST);
 
 const initializeAuth = (passport) => {
   passport.use(
     "login",
     new LocalStrategy(async (username, password, done) => {
       try {
-        console.log(username);
         const user = await usuariosBD.getByEmail(username);
         console.log("El usuario encontrado es ", user);
         if (!user)
@@ -48,6 +48,7 @@ const initializeAuth = (passport) => {
             password: createHash(password),
           };
           const response = await usuariosBD.save(newUser);
+          console.log("respuesta", response);
           return done(null, response);
         } catch (err) {
           return done(err);
@@ -57,12 +58,13 @@ const initializeAuth = (passport) => {
   );
 
   passport.serializeUser((user, done) => {
-    done(null, user._id);
+    console.log("useerr", user);
+    done(null, user._id || user);
   });
 
   passport.deserializeUser(async (id, done) => {
     const user = await usuariosBD.getById(id);
-    done(null, user);
+    done(null, user || id._id);
   });
 };
 
