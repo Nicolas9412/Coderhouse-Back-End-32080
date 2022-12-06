@@ -1,6 +1,8 @@
 const ContenedorArchivos = require("../../Contenedores/ContenedorArchivos");
 const fs = require("fs");
 
+let instance = null;
+
 class UsuariosDaoArchivos extends ContenedorArchivos {
   constructor() {
     super("./db/usuarios.json");
@@ -20,6 +22,12 @@ class UsuariosDaoArchivos extends ContenedorArchivos {
     } catch (error) {
       console.log("Algo salió mal!");
     }
+  }
+  static getInstance() {
+    if (!instance) {
+      instance = new UsuariosDaoArchivos();
+    }
+    return instance;
   }
 }
 

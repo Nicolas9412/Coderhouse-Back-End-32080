@@ -1,11 +1,15 @@
 {
-  "name": "Desafio_logger_compress",
+  "name": "16-Mejorar-Arquitectura-De-Nuestra-Api",
   "version": "1.0.0",
-  "description": "Optimizando el proyecto en producción con compress y logger, sacando estadísticas de rendimiento con artillerym autocannon, 0x",
+  "description": "Patrón factory, singleton y repository",
   "main": "index.js",
   "scripts": {
     "test": "node benchmark.js",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "MONGO": "nodemon server.js -p MONGO",
+    "FIREBASE": "nodemon server.js -p FIREBASE",
+    "FILE": "nodemon server.js -p FILE",
+    "MEM": "nodemon server.js -p MEM"
   },
   "repository": {
     "type": "git",

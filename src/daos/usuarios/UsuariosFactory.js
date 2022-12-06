@@ -7,15 +7,15 @@ class UsuariosFactoryDAO {
   static get(tipo) {
     switch (tipo) {
       case "MEM":
-        return new UsuariosDaoMemoria();
+        return UsuariosDaoMemoria.getInstance();
       case "FILE":
-        return new UsuariosDaoArchivos();
+        return UsuariosDaoArchivos.getInstance();
       case "MONGO":
-        return new UsuariosDaoMongoDb();
+        return UsuariosDaoMongoDb.getInstance();
       case "FIREBASE":
-        return new UsuariosDaoFirebase();
+        return UsuariosDaoFirebase.getInstance();
       default:
-        return new UsuariosDaoMemoria();
+        return UsuariosDaoMemoria.getInstance();
     }
   }
 }

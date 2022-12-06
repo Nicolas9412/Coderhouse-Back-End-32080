@@ -105,3 +105,4 @@
       at model.Query.Query.cast (C:\Users\nicol\Coderhouse-Back-End-32080\node_modules\mongoose\lib\query.js:5325:12),
   valueType: 'number'
 }
+[2022-12-06T15:48:59.804] [ERROR] archivoError - Error en el servidor Error: listen EADDRINUSE: address already in use :::8080

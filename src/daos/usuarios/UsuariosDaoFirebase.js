@@ -1,6 +1,8 @@
 const ContenedorFirebase = require("../../Contenedores/ContenedorFirebase");
 const { DB_FIREBASE: db } = require("../../../config");
 
+let instance = null;
+
 class UsuariosDaoFirebase extends ContenedorFirebase {
   constructor() {
     super("usuarios");
@@ -24,6 +26,12 @@ class UsuariosDaoFirebase extends ContenedorFirebase {
     } catch (error) {
       console.log(error);
     }
+  }
+  static getInstance() {
+    if (!instance) {
+      instance = new UsuariosDaoFirebase();
+    }
+    return instance;
   }
 }
 

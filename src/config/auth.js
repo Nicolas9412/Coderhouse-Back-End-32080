@@ -1,9 +1,11 @@
 const { Strategy: LocalStrategy } = require("passport-local");
-//const { usuariosDaos: Usuario } = require("../daos/mainDaos");
+const parseArgs = require("minimist");
+const args = parseArgs(process.argv.slice(2));
 const { createHash, isValidPassword } = require("../helpers/auth/helperAuth");
 
 const UsuariosFactoryDAO = require("../daos/usuarios/UsuariosFactory");
-const usuariosBD = UsuariosFactoryDAO.get(process.env.TYPE_PERSIST);
+
+const usuariosBD = UsuariosFactoryDAO.get(args.p || process.env.TYPE_PERSIST);
 
 const initializeAuth = (passport) => {
   passport.use(

@@ -1,6 +1,8 @@
 const schemaUsuario = require("../../models/schemaUsuario");
 const ContenedorMongoDb = require("../../contenedores/ContenedorMongoDb");
 
+let instance = null;
+
 class UsuariosDaoMongoDb extends ContenedorMongoDb {
   constructor() {
     super(schemaUsuario);
@@ -12,6 +14,12 @@ class UsuariosDaoMongoDb extends ContenedorMongoDb {
     } catch (error) {
       console.error(error);
     }
+  }
+  static getInstance() {
+    if (!instance) {
+      instance = new UsuariosDaoMongoDb();
+    }
+    return instance;
   }
 }
 

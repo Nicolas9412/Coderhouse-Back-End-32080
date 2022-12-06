@@ -7,15 +7,15 @@ class ProductosFactoryDAO {
   static get(tipo) {
     switch (tipo) {
       case "MEM":
-        return new ProductosDaoMemoria();
+        return ProductosDaoMemoria.getInstance();
       case "FILE":
-        return new ProductosDaoArchivos();
+        return ProductosDaoArchivos.getInstance();
       case "MONGO":
-        return new ProductosDaoMongoDb();
+        return ProductosDaoMongoDb.getInstance();
       case "FIREBASE":
-        return new ProductosDaoFirebase();
+        return ProductosDaoFirebase.getInstance();
       default:
-        return new ProductosDaoMemoria();
+        return ProductosDaoMemoria.getInstance();
     }
   }
 }

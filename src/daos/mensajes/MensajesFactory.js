@@ -7,15 +7,15 @@ class MensajesFactoryDAO {
   static get(tipo) {
     switch (tipo) {
       case "MEM":
-        return new MensajesDaoMemoria();
+        return MensajesDaoMemoria.getInstance();
       case "FILE":
-        return new MensajesDaoArchivos();
+        return MensajesDaoArchivos.getInstance();
       case "MONGO":
-        return new MensajesDaoMongoDb();
+        return MensajesDaoMongoDb.getInstance();
       case "FIREBASE":
-        return new MensajesDaoFirebase();
+        return MensajesDaoFirebase.getInstance();
       default:
-        return new MensajesDaoMemoria();
+        return MensajesDaoMemoria.getInstance();
     }
   }
 }

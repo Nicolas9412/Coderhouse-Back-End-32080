@@ -19,7 +19,7 @@ class ContenedorFirebase {
       const res = await db.collection(this.name).doc(id).get();
       if (res.data()) {
         const objFormateado = {
-          id: res.id,
+          _id: res.id,
           ...res.data(),
         };
         return objFormateado;
@@ -32,7 +32,7 @@ class ContenedorFirebase {
     try {
       const res = await db.collection(this.name).get();
       const objsFormateado = res.docs.map((doc) => ({
-        id: doc.id,
+        _id: doc.id,
         ...doc.data(),
       }));
       return objsFormateado;

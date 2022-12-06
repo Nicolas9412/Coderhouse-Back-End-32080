@@ -1,10 +1,12 @@
-//const { productosDaos: Productos } = require("../daos/mainDaos");
-const ProductosFactoryDAO = require("../daos/productos/ProductosFactory");
+const ProductoRepo = require("../repositories/products");
 
-const productosBD = ProductosFactoryDAO.get(process.env.TYPE_PERSIST);
+const productosBD1 = ProductoRepo.getInstance();
+const productosBD2 = ProductoRepo.getInstance();
+
+console.log("Equals BDProd 1 and BDProd 2: ", productosBD1 == productosBD2);
 
 async function getProducts() {
-  const products = await productosBD.getAll();
+  const products = await productosBD1.getAll();
   return products;
 }
 

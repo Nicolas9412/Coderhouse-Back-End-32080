@@ -1,5 +1,7 @@
 const ContenedorMemoria = require("../../Contenedores/ContenedorMemoria");
 
+let instance = null;
+
 class UsuariosDaoMemoria extends ContenedorMemoria {
   constructor() {
     super("usuarios");
@@ -11,6 +13,12 @@ class UsuariosDaoMemoria extends ContenedorMemoria {
     } catch (error) {
       console.error(error);
     }
+  }
+  static getInstance() {
+    if (!instance) {
+      instance = new UsuariosDaoMemoria();
+    }
+    return instance;
   }
 }
 
