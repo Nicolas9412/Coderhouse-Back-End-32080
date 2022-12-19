@@ -57,40 +57,52 @@ function App() {
 
   return (
     <>
-      <div>
-        <h1>Autogestion de productos</h1>
-        <button onClick={() => setModal(true)}>Añadir producto</button>
+      <h1 className="text-center my-3">Autogestion de productos</h1>
+      <div className="d-flex justify-content-center align-items-center">
+        <button className="btn btn-primary" onClick={() => setModal(true)}>
+          Añadir producto
+        </button>
       </div>
-      {modal && (
-        <Modal
-          setModal={setModal}
-          selectedProduct={selectedProduct}
-          setSelectedProduct={setSelectedProduct}
-          getProducts={getProducts}
-        />
-      )}
-      {products.map((element) => (
-        <div key={element.id}>
-          <p>{element.title}</p>
-          <p>{element.price}</p>
-          <img src={element.thumbnail} alt={element.title} />
-          <button
-            onClick={() => {
-              onHandleDeleteProduct(element.id);
-            }}
-          >
-            Eliminar
-          </button>
-          <button
-            onClick={() => {
-              setModal(true);
-              setSelectedProduct(element);
-            }}
-          >
-            Actualizar
-          </button>
-        </div>
-      ))}
+      <div className="row">
+        {modal && (
+          <Modal
+            setModal={setModal}
+            selectedProduct={selectedProduct}
+            setSelectedProduct={setSelectedProduct}
+            getProducts={getProducts}
+          />
+        )}
+        {products.map((element) => (
+          <div className="card col-2 m-3" key={element.id}>
+            <img
+              className="thumbnail m-auto"
+              src={element.thumbnail}
+              alt={element.title}
+            />
+            <div className="card-body">
+              <h5 className="card-title fs-4">{element.title}</h5>
+              <p className="card-text fw-bold fs-4">${element.price}</p>
+              <button
+                className="btn btn-success me-2"
+                onClick={() => {
+                  setModal(true);
+                  setSelectedProduct(element);
+                }}
+              >
+                Actualizar
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => {
+                  onHandleDeleteProduct(element.id);
+                }}
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </>
   );
 }
