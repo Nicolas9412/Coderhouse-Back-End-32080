@@ -8,27 +8,15 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const getProducts = () => {
-    fetch("http://localhost:8080/graphql", {
-      method: "POST",
+    fetch("http://localhost:8080/products", {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        query: `
-        query{
-          getProducts{
-            id,
-            title,
-            price,
-            thumbnail
-          }
-        }
-        `,
-      }),
     })
       .then((res) => res.json())
       .then((result) => {
-        setProducts(result.data.getProducts);
+        setProducts(result);
       });
   };
 
@@ -37,24 +25,14 @@ function App() {
   }, []);
 
   const onHandleDeleteProduct = (id) => {
-    fetch("http://localhost:8080/graphql", {
-      method: "POST",
+    fetch(`http://localhost:8080/products/${id}`, {
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        query: `
-        mutation{
-          deleteProduct(id:"${id}"){
-            id
-          }
-        }
-        `,
-      }),
     });
     getProducts();
   };
-
   return (
     <>
       <h1 className="text-center my-3">Autogestion de productos</h1>

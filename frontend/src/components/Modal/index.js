@@ -20,28 +20,26 @@ const Modal = ({
 
   const onHandleSaveProduct = (event) => {
     event.preventDefault();
-    const queryCreate = `
-    mutation{
-        createProduct(datos: {title:"${title}",price:${price},thumbnail:"${thumbnail}"}){
-          id
-        }
-      }
-      `;
-    const queryUpdate = `
-    mutation{
-        updateProduct(id: "${selectedProduct?.id}",datos:{title:"${title}",price:${price},thumbnail:"${thumbnail}"}){
-          id
-        }
-      }`;
-    fetch("http://localhost:8080/graphql", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: selectedProduct ? queryUpdate : queryCreate,
-      }),
-    });
+    selectedProduct
+      ? fetch(`http://localhost:8080/products/${selectedProduct?.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: selectedProduct?.id,
+            title,
+            price: parseInt(price),
+            thumbnail,
+          }),
+        })
+      : fetch("http://localhost:8080/products", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ title, price: parseInt(price), thumbnail }),
+        });
     limpiarCampos();
     getProducts();
   };
