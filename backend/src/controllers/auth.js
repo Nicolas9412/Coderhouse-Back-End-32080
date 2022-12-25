@@ -1,65 +1,35 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/schemas/user");
-const { isValidPassword } = require("../utils/isValidPassword");
-const { generateToken } = require("../utils/generateToken");
-const { generateHash } = require("../utils/generateHash");
+const { registerUser, loginUser } = require("../services/auth");
 
 async function postLogin(request, response) {
   const { body } = request;
   const { email, password } = body;
 
-  console.log("email", email);
-  console.log("pass", password);
-
-  const user = await User.findOne({ email });
-
-  const passwordCorrect =
-    user == null ? false : await isValidPassword(password, user);
-
-  if (!(user && passwordCorrect)) {
-    response.status(401).json({
-      error: "invalid user or password",
-    });
+  const result = await loginUser(email, password);
+  if (!result.error) {
+    response.setHeader("Set-Cookie", result.serialized);
   }
-
-  const userForToken = {
-    id: user._id,
-    username: user.email,
-  };
-
-  const token = generateToken(userForToken);
-
-  response.json({
-    id: user._id,
-    username: user.email,
-    token,
-  });
+  return response.json(result);
 }
 
 async function postRegister(request, response) {
   const { body } = request;
-  const { fullname, phoneNumber, email, password } = body;
+  const { fullname, phoneNumber, email, password, confirmPassword } = body;
 
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-    return response.json({ error: "This user already exists" });
-  }
-
-  const user = {
+  const result = await registerUser(
     fullname,
     phoneNumber,
     email,
-    password: generateHash(password),
-  };
+    password,
+    confirmPassword
+  );
 
-  const userCreated = await User.create(user);
-
-  const token = generateToken(userCreated);
-
-  response.json({
-    id: userCreated._id,
-    username: userCreated.email,
-    token,
+  if (!result.error) {
+    response.append("Set-Cookie", result.serialized);
+  }
+  return response.json({
+    id: result.id,
+    username: result.username,
+    token: result.serialized,
   });
 }
 

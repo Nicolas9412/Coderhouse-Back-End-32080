@@ -1,7 +1,8 @@
 import Head from "next/head";
 import styles from "./Login.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import axios from "axios";
 
 const index = () => {
   const [credentials, setCredentials] = useState({
@@ -9,9 +10,20 @@ const index = () => {
     password: "",
   });
 
+  const [result, setResult] = useState(null);
+
+  const getData = async () => {
+    const resultado = await axios.get(`${process.env.URL_BACK}`);
+    console.log(resultado);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   const handleChangeInputs = (e) => {
     let { name, value } = e.target;
-    setCredentials({ ...datos, [name]: value });
+    setCredentials({ ...credentials, [name]: value });
   };
 
   const handleSubmit = async (e) => {
