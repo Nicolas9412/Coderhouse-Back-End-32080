@@ -3,9 +3,10 @@ const { auth } = require("../middlewares/auth");
 const Cart = require("../models/cart");
 const Product = require("../models/product");
 
-cartRouter.get("/", auth, async (req, res) => {
+cartRouter.get("/:email", auth, async (req, res) => {
   try {
-    const cart = await Cart.findOne({ email: req.body.email });
+    const { email } = req.params;
+    const cart = await Cart.findOne({ email });
     res.status(200).json({ status: "OK", data: cart });
   } catch (error) {
     res.status(400).json({ status: "FAILED", data: { error } });
@@ -35,13 +36,15 @@ cartRouter.post("/", auth, async (req, res) => {
         if (productAlreadyCart) cart.products.splice(productIndexCart, 1);
         const cartUpdated = {
           _id: cart._id,
-          email: req.body.email,
+          email: cart.email,
           datetime: Date.now(),
           products: [...cart.products, productAdd],
-          address: req.body.address,
+          address: cart.address,
         };
         await Cart.findByIdAndUpdate(cart._id, cartUpdated);
-        res.status(200).json({ status: "OK", data: cartUpdated });
+        res
+          .status(200)
+          .json({ status: "OK", data: { cartUpdated, productAdd } });
       } else {
         const newCart = new Cart({
           email: req.body.email,
@@ -51,7 +54,9 @@ cartRouter.post("/", auth, async (req, res) => {
         });
         const result = await newCart.save();
         const { ...data } = await result.toJSON();
-        res.status(200).json({ status: "OK", data });
+        res
+          .status(200)
+          .json({ status: "OK", data: { cart: data, productAdd } });
       }
     } else {
       res.status(400).json({
@@ -72,17 +77,17 @@ cartRouter.delete("/:idProduct", auth, async (req, res) => {
       const productIndexCart = cart.products.findIndex(
         (item) => item._id == idProduct
       );
-      if (productIndexCart) {
+      if (cart.products[productIndexCart]) {
         cart.products.splice(productIndexCart, 1);
         const cartUpdated = {
           _id: cart._id,
-          email: req.body.email,
+          email: cart.email,
           datetime: Date.now(),
           products: [...cart.products],
-          address: req.body.address,
+          address: cart.address,
         };
-        const result = await Cart.findByIdAndUpdate(cart._id, cartUpdated);
-        res.status(200).json({ status: "OK", data: result });
+        await Cart.findByIdAndUpdate(cart._id, cartUpdated);
+        res.status(200).json({ status: "OK", data: cartUpdated });
       } else {
         res
           .status(400)
@@ -114,10 +119,10 @@ cartRouter.put("/:idProduct", auth, async (req, res) => {
         if (productAlreadyCart) cart.products.splice(productIndexCart, 1);
         const cartUpdated = {
           _id: cart._id,
-          email: req.body.email,
+          email: cart.email,
           datetime: Date.now(),
           products: [...cart.products, productAdd],
-          address: req.body.address,
+          address: cart.address,
         };
         await Cart.findByIdAndUpdate(cart._id, cartUpdated);
         res.status(200).json({ status: "OK", data: cartUpdated });

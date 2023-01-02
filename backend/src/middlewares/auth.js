@@ -3,9 +3,7 @@ const jwt = require("jsonwebtoken");
 function auth(req, res, next) {
   try {
     const cookie = req.cookies["jwt"];
-
     const claims = jwt.verify(cookie, process.env.SECRET);
-
     if (!claims) {
       return res
         .status(401)
@@ -23,7 +21,7 @@ function authAdmin(req, res, next) {
   try {
     const cookie = req.cookies["jwt"];
     const claims = jwt.verify(cookie, process.env.SECRET);
-    console.log(claims);
+
     if (!claims) {
       return res
         .status(401)

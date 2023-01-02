@@ -1,25 +1,31 @@
-import React from "react";
 import Link from "next/link";
 import styles from "./Layout.module.css";
 import Image from "next/Image";
 import { useRouter } from "next/router";
-import { BootToast } from "../components";
+import { CartBadge } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../src/features/auth/authSlice";
+import { getCart } from "../src/features/cart/cartSlice";
+import { useEffect } from "react";
 
 const Layout = ({ children, auth }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.products);
+  useEffect(() => {
+    dispatch(getCart({ email: auth?.user?.email }));
+  }, [cart]);
 
-  const logout = async () => {
-    await fetch("http://localhost:8080/api/auth/logout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    });
-    await router.push("/login");
+  const onHandleLogout = () => {
+    dispatch(logout());
+    setTimeout(() => {
+      router.push("/login");
+    }, 250);
   };
 
   let menu = null;
 
-  if (!auth) {
+  if (!auth?.auth) {
     menu = (
       <>
         <li className="nav-item">
@@ -36,11 +42,42 @@ const Layout = ({ children, auth }) => {
     );
   } else {
     menu = (
-      <li className="nav-item">
-        <a className="nav-link" onClick={logout}>
-          Logout
-        </a>
-      </li>
+      <>
+        <li className="nav-item">
+          <a className="nav-link" onClick={onHandleLogout}>
+            Logout
+          </a>
+        </li>
+        {cart.length > 0 && (
+          <li className="nav-item">
+            <Link className="nav-link" href={"/cart"}>
+              <CartBadge cart={cart} />
+            </Link>
+          </li>
+        )}
+      </>
+    );
+  }
+
+  if (auth?.user.isAdmin) {
+    menu = (
+      <>
+        <li className="nav-item">
+          <a className="nav-link" onClick={onHandleLogout}>
+            Logout
+          </a>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" href={"/admin/products"}>
+            Products
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" href={"/admin/orders"}>
+            Orders
+          </Link>
+        </li>
+      </>
     );
   }
 

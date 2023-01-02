@@ -1,6 +1,10 @@
 .formSize {
   width: 400px;
 }
+.loginScreen {
+  width: 100vw;
+  height: 100vh;
+}
 
 @media (max-width: 1400px) {
 }

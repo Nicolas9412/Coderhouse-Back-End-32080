@@ -52,7 +52,8 @@ authRouter.post("/login", async (req, res) => {
   );
   res.cookie("jwt", token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
 
-  res.status(200).json({ status: "OK" });
+  const { password, ...data } = await user.toJSON();
+  res.status(200).json({ status: "OK", data });
 });
 
 authRouter.get("/user", async (req, res) => {

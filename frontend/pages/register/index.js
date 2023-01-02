@@ -12,7 +12,6 @@ const index = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
-  const [content, setContent] = useState(null);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -48,8 +47,9 @@ const index = () => {
 
   return (
     <>
-      <Layout>
-        {content}
+      <div
+        className={`${styles.registerScreen} d-flex justify-content-center align-items-center`}
+      >
         <form
           className={`${styles.formSize} shadow-lg p-5 mb-5 bg-body rounded`}
           onSubmit={submit}
@@ -119,7 +119,7 @@ const index = () => {
             </button>
           </div>
         </form>
-      </Layout>
+      </div>
     </>
   );
 };

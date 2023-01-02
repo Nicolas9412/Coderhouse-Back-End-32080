@@ -34,9 +34,13 @@ app.use(
 const authRouter = require("./routes/auth");
 const productRouter = require("./routes/products");
 const cartRouter = require("./routes/cart");
+const categoryRouter = require("./routes/category");
+const ordersRouter = require("./routes/orders");
 app.use("/api/auth", authRouter);
 app.use("/productos", productRouter);
 app.use("/carrito", cartRouter);
+app.use("/categorias", categoryRouter);
+app.use("/ordenes", ordersRouter);
 
 app.get("/api/datos", auth, (req, res) => {
   res.json({ msg: "El ingrediente secreto es pimienta..." });

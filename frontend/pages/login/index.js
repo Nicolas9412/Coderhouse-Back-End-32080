@@ -1,18 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../../layouts/Layout";
 import styles from "./Login.module.css";
 import Image from "next/Image";
 import Link from "next/Link";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { autentication } from "../../src/features/auth/authSlice";
+import { getProducts } from "../../src/features/products/productsSlice";
 
 const index = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(autentication());
+  }, []);
+
+  if (auth.auth) {
+    router.push("/");
+  }
 
   const submit = async (e) => {
     e.preventDefault();
-    await fetch("http://localhost:8080/api/auth/login", {
+    fetch("http://localhost:8080/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -20,12 +33,20 @@ const index = () => {
         email,
         password,
       }),
-    });
-    await router.push("/");
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.data?.error) return;
+        setTimeout(() => {
+          router.push("/");
+        }, 500);
+      });
   };
 
   return (
-    <Layout>
+    <div
+      className={`${styles.loginScreen} d-flex justify-content-center align-items-center`}
+    >
       <form
         className={`${styles.formSize} shadow-lg p-5 mb-5 bg-body rounded`}
         onSubmit={submit}
@@ -67,7 +88,7 @@ const index = () => {
           </Link>
         </div>
       </form>
-    </Layout>
+    </div>
   );
 };
 

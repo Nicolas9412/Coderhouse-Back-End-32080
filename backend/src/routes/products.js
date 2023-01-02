@@ -34,7 +34,7 @@ productAuth.put("/:id", authAdmin, async (req, res) => {
   try {
     await Product.findByIdAndDelete(id);
   } catch (error) {
-    res.status(400).json({ status: "FAILED", data: { error } });
+    res.status(500).json({ status: "FAILED", data: { error } });
   }
   const result = await product.save();
   const { ...data } = await result.toJSON();
