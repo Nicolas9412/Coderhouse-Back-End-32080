@@ -6,9 +6,9 @@ const index = ({ order }) => {
   return (
     <div
       className={
-        (order.state = "generada"
+        order.state == "generada"
           ? `${styles.itemContainerGenerada} my-2`
-          : `${styles.itemContainerFinalizada} my-2`)
+          : `${styles.itemContainerFinalizada} my-2`
       }
       onClick={() => {
         router.push(`/admin/orders/${order._id}`);

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { autentication } from "../../../src/features/auth/authSlice";
 import Layout from "../../../layouts/Layout";
 import { ItemDetailOrder } from "../../../components";
+import { getOrders } from "../../../src/features/orders/ordersSlice";
 
 const order = () => {
   const auth = useSelector((state) => state.auth);
@@ -33,6 +34,21 @@ const order = () => {
     }
   }, [id]);
 
+  const onHandleFinishOrder = async () => {
+    await fetch("http://localhost:8080/ordenes/finalizar", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        idOrder: order._id,
+      }),
+    });
+    dispatch(getOrders());
+    router.back();
+  };
+
   const onHandleDelete = () => {
     return null;
   };
@@ -54,12 +70,14 @@ const order = () => {
                       Actions
                     </p>
                     <button className="btn btn-danger">Remover</button>
-                    <button
-                      className="btn btn-success ms-3"
-                      onClick={() => null}
-                    >
-                      Finalizar
-                    </button>
+                    {order.state == "generada" && (
+                      <button
+                        className="btn btn-success ms-3"
+                        onClick={() => onHandleFinishOrder()}
+                      >
+                        Finalizar
+                      </button>
+                    )}
                   </div>
                   <div className="d-flex justify-content-center align-items-center me-5 ">
                     <p className="fs-3 fw-bolder">

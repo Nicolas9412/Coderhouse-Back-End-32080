@@ -62,9 +62,6 @@ const index = ({ product }) => {
           >
             Agregar
           </button>
-          {cart.products.find((item) => item._id == product._id) && (
-            <button className="btn btn-danger ms-2">Quitar del carrito</button>
-          )}
         </div>
       </div>
       <div className="w-50 d-flex justify-content-center items-align-center">

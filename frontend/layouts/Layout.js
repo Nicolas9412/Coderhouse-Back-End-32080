@@ -7,14 +7,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../src/features/auth/authSlice";
 import { getCart } from "../src/features/cart/cartSlice";
 import { useEffect } from "react";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Navbar from "react-bootstrap/Navbar";
+import { getCategories } from "../src/features/categories/categoriesSlice";
 
 const Layout = ({ children, auth }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.products);
+  const categories = useSelector((state) => state.category.categories);
   useEffect(() => {
     dispatch(getCart({ email: auth?.user?.email }));
   }, [cart]);
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
 
   const onHandleLogout = () => {
     dispatch(logout());
@@ -43,17 +53,34 @@ const Layout = ({ children, auth }) => {
   } else {
     menu = (
       <>
-        <li className="nav-item">
-          <a className="nav-link" onClick={onHandleLogout}>
-            Logout
-          </a>
-        </li>
+        <Link className="nav-link " href={"#"}>
+          <NavDropdown
+            id="nav-dropdown-dark-example"
+            title="Categories"
+            menuVariant="dark"
+          >
+            {categories.map((item) => (
+              <Link
+                href={`/products/categories/${item.name}`}
+                className={styles.link}
+              >
+                <NavDropdown.Item href={`/products/categories/${item.name}`}>
+                  {item.name}
+                </NavDropdown.Item>
+              </Link>
+            ))}
+          </NavDropdown>
+        </Link>
+        <Link className="nav-link" href={"#"}>
+          <Nav.Link onClick={onHandleLogout}>Logout</Nav.Link>
+        </Link>
+
         {cart.length > 0 && (
-          <li className="nav-item">
-            <Link className="nav-link" href={"/cart"}>
+          <Nav.Link className="nav-link">
+            <Link href={"/cart"}>
               <CartBadge cart={cart} />
             </Link>
-          </li>
+          </Nav.Link>
         )}
       </>
     );
@@ -83,41 +110,31 @@ const Layout = ({ children, auth }) => {
 
   return (
     <>
-      <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div className="container-fluid">
-          <Image
-            className="me-2"
-            src={"/shopping-bag.png"}
-            width={32}
-            height={32}
-            alt="shopping-bag"
-          />
-          <Link className="navbar-brand" href="/">
-            Ecommerce
-          </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarCollapse"
-            aria-controls="navbarCollapse"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarCollapse">
-            <ul className="navbar-nav me-auto mb-2 mb-md-0">
-              <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" href="/">
-                  Home
-                </Link>
-              </li>
+      <Navbar variant="dark" bg="dark" expand="lg">
+        <Container fluid>
+          <Navbar.Brand href="#home">
+            <Image
+              className="me-2"
+              src={"/shopping-bag.png"}
+              width={32}
+              height={32}
+              alt="shopping-bag"
+            />
+            <Link className="navbar-brand" href="/">
+              Ecommerce
+            </Link>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbar-dark-example" />
+          <Navbar.Collapse id="navbar-dark-example">
+            <Nav className="me-auto">
+              <Link className="nav-link active" aria-current="page" href="/">
+                <Nav.Link href="/">Home</Nav.Link>
+              </Link>
               {menu}
-            </ul>
-          </div>
-        </div>
-      </nav>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
       <main className={styles.container}>{children}</main>
     </>
   );
