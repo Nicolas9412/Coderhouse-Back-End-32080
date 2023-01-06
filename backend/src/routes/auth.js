@@ -2,6 +2,26 @@ const authRouter = require("express").Router();
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { authAdmin } = require("../middlewares/auth");
+
+authRouter.get("/users/", authAdmin, async (req, res) => {
+  const user = await User.find({}, "-password");
+  const usersNotAdmin = user.filter((item) => item.isAdmin != true);
+  res.status(200).json({ status: "OK", data: usersNotAdmin });
+});
+
+authRouter.get("/users/:id", authAdmin, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id, "-password");
+    res.status(200).json({ status: "OK", data: user });
+  } catch (error) {
+    res.status(404).json({
+      status: "NOT FOUND",
+      data: { error: "this product not exists" },
+    });
+  }
+});
 
 authRouter.post("/register", async (req, res) => {
   const salt = await bcrypt.genSalt(10);
@@ -50,7 +70,10 @@ authRouter.post("/login", async (req, res) => {
     { _id: user._id, isAdmin: user.isAdmin ? user.isAdmin : false },
     process.env.SECRET
   );
-  res.cookie("jwt", token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+  res.cookie("jwt", token, {
+    httpOnly: true,
+    maxAge: process.env.TIME_SESSION,
+  });
 
   const { password, ...data } = await user.toJSON();
   res.status(200).json({ status: "OK", data });

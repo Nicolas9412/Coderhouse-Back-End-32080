@@ -57,8 +57,8 @@ productAuth.get("/:id", auth, async (req, res) => {
     const product = await Product.findById(id);
     res.status(200).json({ status: "OK", data: product });
   } catch (error) {
-    res.status(400).json({
-      status: "FAILED",
+    res.status(404).json({
+      status: "NOT FOUND",
       data: { error: "this product not exists" },
     });
   }

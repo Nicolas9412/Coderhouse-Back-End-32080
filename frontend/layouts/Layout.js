@@ -20,7 +20,7 @@ const Layout = ({ children, auth }) => {
   const categories = useSelector((state) => state.category.categories);
   useEffect(() => {
     dispatch(getCart({ email: auth?.user?.email }));
-  }, [cart]);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getCategories());
@@ -74,6 +74,9 @@ const Layout = ({ children, auth }) => {
         <Link className="nav-link" href={"#"}>
           <Nav.Link onClick={onHandleLogout}>Logout</Nav.Link>
         </Link>
+        <Link className="nav-link" href="/chat">
+          <Nav.Link href="/chat">Chat</Nav.Link>
+        </Link>
 
         {cart.length > 0 && (
           <Nav.Link className="nav-link">
@@ -89,21 +92,18 @@ const Layout = ({ children, auth }) => {
   if (auth?.user.isAdmin) {
     menu = (
       <>
-        <li className="nav-item">
-          <a className="nav-link" onClick={onHandleLogout}>
-            Logout
-          </a>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" href={"/admin/products"}>
-            Products
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" href={"/admin/orders"}>
-            Orders
-          </Link>
-        </li>
+        <Link className="nav-link" href={"#"}>
+          <Nav.Link onClick={onHandleLogout}>Logout</Nav.Link>
+        </Link>
+        <Link className="nav-link" href="/admin/products">
+          <Nav.Link href="/admin/products">Products</Nav.Link>
+        </Link>
+        <Link className="nav-link" href="/admin/orders">
+          <Nav.Link href="/admin/orders">Orders</Nav.Link>
+        </Link>
+        <Link className="nav-link" href="/admin/chat">
+          <Nav.Link href="/admin/chat">Chat</Nav.Link>
+        </Link>
       </>
     );
   }

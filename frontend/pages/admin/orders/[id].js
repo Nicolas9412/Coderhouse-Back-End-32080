@@ -27,8 +27,8 @@ const order = () => {
       })
         .then((response) => response.json())
         .then((result) => {
-          setOrder(result.data);
           if (result.data?.error) router.push("/login");
+          setOrder(result.data);
         })
         .catch(() => router.reload());
     }
@@ -49,9 +49,6 @@ const order = () => {
     router.back();
   };
 
-  const onHandleDelete = () => {
-    return null;
-  };
   return (
     <>
       {auth.user.isAdmin && (
