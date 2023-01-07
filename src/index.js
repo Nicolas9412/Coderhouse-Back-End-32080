@@ -30,7 +30,9 @@ mongoose.connect(
 const app = express();
 const server = http.createServer(app);
 const io = new SocketServer(server, {
-  cors,
+  cors: {
+    origin: "*",
+  },
 });
 
 const PORT = process.env.PORT;
@@ -43,6 +45,7 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(
   cors({
+    origin: "*",
     credentials: true,
   })
 );
