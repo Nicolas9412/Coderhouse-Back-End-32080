@@ -61,7 +61,7 @@ const index = () => {
             <h1 className={`${styles.title} mb-4 pb-3`}>List's {categoria}</h1>
             <div className="d-flex gap-5 px-5">
               {products.map((item) => (
-                <BootCard key={item._id} product={item} />
+                <BootCard key={item._id} product={item} auth={auth} />
               ))}
             </div>
           </div>
