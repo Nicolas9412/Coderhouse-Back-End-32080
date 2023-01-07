@@ -31,7 +31,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new SocketServer(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://frontend-proyecto-final-32080.vercel.app/",
   },
 });
 
@@ -46,7 +46,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3000"],
+    origin: ["https://frontend-proyecto-final-32080.vercel.app/"],
   })
 );
 
