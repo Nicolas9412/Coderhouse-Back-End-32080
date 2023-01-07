@@ -10,7 +10,7 @@ import { formatDate } from "../../src/utils/formatDate";
 import EmojiPicker from "emoji-picker-react";
 import { error } from "../../src/utils/toast";
 
-const socket = io("http://localhost:8080");
+const socket = io(`${process.env.NEXT_PUBLIC_URL_BACKEND}`);
 
 const index = () => {
   const chat = useSelector((state) => state.chat.messages);
