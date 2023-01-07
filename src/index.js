@@ -30,9 +30,7 @@ mongoose.connect(
 const app = express();
 const server = http.createServer(app);
 const io = new SocketServer(server, {
-  cors: {
-    origin: "https://frontend-proyecto-final-32080.vercel.app",
-  },
+  cors,
 });
 
 const PORT = process.env.PORT;
@@ -46,7 +44,6 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: "https://frontend-proyecto-final-32080.vercel.app",
   })
 );
 
