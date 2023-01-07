@@ -3,6 +3,8 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { authAdmin } = require("../middlewares/auth");
+const { sendMail } = require("../utils/sendMail");
+const { validateRegister, validateLogin } = require("../validators/auth");
 
 authRouter.get("/users/", authAdmin, async (req, res) => {
   const user = await User.find({}, "-password");
@@ -23,7 +25,7 @@ authRouter.get("/users/:id", authAdmin, async (req, res) => {
   }
 });
 
-authRouter.post("/register", async (req, res) => {
+authRouter.post("/register", validateRegister, async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const userExists = await User.findOne({ email: req.body.email });
 
@@ -49,10 +51,20 @@ authRouter.post("/register", async (req, res) => {
   });
   const result = await user.save();
   const { password, ...data } = await result.toJSON();
+  await sendMail(
+    process.env.ADMIN_EMAIL,
+    "User created",
+    `<h1 style="font-weight:bold;">User created!</h1>
+    <div style="width:fit-content;background-color:#C6e5b1;padding:20px;border-radius:10px">
+    <div style="font-weight:bold;font-size:18px;">Fullname: ${data.fullname}</div>
+    <div style="font-weight:bold;font-size:18px;">Email: ${data.email}</div>
+    <div style="font-weight:bold;font-size:18px;">Phone number: ${data.phoneNumber}</div>
+    <div>`
+  );
   res.status(200).json({ status: "OK", data });
 });
 
-authRouter.post("/login", async (req, res) => {
+authRouter.post("/login", validateLogin, async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {

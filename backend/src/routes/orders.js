@@ -4,6 +4,19 @@ const Cart = require("../models/cart");
 const Product = require("../models/product");
 const { sendMail } = require("../utils/sendMail");
 
+ordersRouter.get("/orden/:email", async (req, res) => {
+  const { email } = req.params;
+  try {
+    const orders = await Order.find({ email: email });
+    res.status(200).json({ status: "OK", data: orders });
+  } catch (error) {
+    res.status(400).json({
+      status: "FAILED",
+      data: { error: "these orders not exists" },
+    });
+  }
+});
+
 ordersRouter.get("/", async (req, res) => {
   const orders = await Order.find();
   res.status(200).json({ status: "OK", data: orders });
@@ -64,6 +77,48 @@ ordersRouter.post("/generar", async (req, res) => {
         email: req.body.email,
       });
       const result = await order.save();
+      await sendMail(
+        process.env.ADMIN_EMAIL,
+        "Order Generate",
+        `<div>
+            <p style="font-size:32px;font-weight:800;">#${order.numberOrder}</p>
+            <p style="font-size:16px;font-weight:500;">User: ${order.email}</p>
+            <p style="font-size:16px;font-weight:500;">Date order
+              ${new Date(order.datetime).toLocaleDateString()}
+              ${new Date(order.datetime).toLocaleTimeString()}
+            </p>
+            ${order.products.map(
+              (item) => `
+              <div style="width:100%;display:flex;justify-content:space-evenly;">
+                <div style="width:100px">
+                  <img width=60 height=60 src="${item.thumbnail}"/>
+                </div>
+                <div style="width:200px">
+                  <p>Name</p>
+                  <p>${item.title}</p>
+                </div>
+                <div style="width:150px">
+                  <p>Price</p>
+                  <p>${item.price}</p>
+                </div>
+                <div style="width:150px">
+                  <p>Quantity</p>
+                  <p>${item.quantity}</p>
+                </div>
+                <div style="width:150px">
+                  <p>Total</p>
+                  <p>${item.price * item.quantity}</p>
+                </div>
+              </div>`
+            )}
+            <div style="display:flex;justify-content:end;">
+                <p style="width:150px;font-size:20px;font-weight:800;">Total $ ${order.products
+                  .map((item) => item.price * item.quantity)
+                  .reduce((acc, current) => acc + current, 0)}
+                </p>
+            </div>
+        </div>`
+      );
       await Cart.findByIdAndDelete(cart._id);
       const { ...data } = await result.toJSON();
       res.status(200).json({ status: "OK", data });

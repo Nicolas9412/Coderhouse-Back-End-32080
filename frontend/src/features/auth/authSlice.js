@@ -10,6 +10,9 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    clearError: (state, action) => {
+      return { ...state, error: null };
+    },
     catchError: (state, action) => {
       return {
         ...state,
@@ -37,12 +40,12 @@ export const authSlice = createSlice({
   },
 });
 
-export const { loadAutentication, removeSession, catchError } =
+export const { loadAutentication, removeSession, catchError, clearError } =
   authSlice.actions;
 
 export const autentication = () => {
   return async (dispatch) => {
-    fetch("http://localhost:8080/api/auth/user", {
+    fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/api/auth/user`, {
       credentials: "include",
     })
       .then((response) => response.json())
@@ -57,7 +60,7 @@ export const autentication = () => {
 export const logout = () => {
   return async (dispatch) => {
     try {
-      await fetch("http://localhost:8080/api/auth/logout", {
+      await fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/api/auth/logout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

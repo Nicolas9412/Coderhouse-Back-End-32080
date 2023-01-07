@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./Register.module.css";
-import Layout from "../../layouts/Layout";
 import Image from "next/Image";
 import { useRouter } from "next/router";
-import { BootToast } from "../../components";
+import { error, success } from "../../src/utils/toast";
+import Link from "next/link";
 
 const index = () => {
   const [email, setEmail] = useState("");
@@ -16,7 +16,7 @@ const index = () => {
   const submit = async (e) => {
     e.preventDefault();
 
-    await fetch("http://localhost:8080/api/auth/register", {
+    await fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -29,18 +29,22 @@ const index = () => {
     })
       .then((response) => response.json())
       .then((result) => {
-        if (result.data.error) {
-          console.log(result.data.error);
-          setContent(
-            <BootToast title={result.status} message={result.data.error} />
-          );
+        console.log(result);
+        if (result.errors) {
+          for (const err of result.errors) {
+            error(err.msg);
+            break;
+          }
+          return;
+        }
+        if (result.data?.error) {
+          error(result.data?.error);
+          return;
         } else {
-          setContent(
-            <BootToast title={result.data.status} message={"User created !"} />
-          );
+          success("user created!");
           setTimeout(() => {
             router.push("/login");
-          }, 2000);
+          }, 500);
         }
       });
   };
@@ -117,6 +121,11 @@ const index = () => {
             <button type="submit" className="btn btn-primary w-50 fs-5 ">
               Register
             </button>
+          </div>
+          <div className="d-flex justify-content-center mt-3">
+            <Link className="btn" href={"/login"}>
+              Do you already have an account?
+            </Link>
           </div>
         </form>
       </div>

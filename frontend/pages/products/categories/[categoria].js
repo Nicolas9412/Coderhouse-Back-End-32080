@@ -2,9 +2,13 @@ import { useRouter } from "next/router";
 import { BootCard } from "../../../components";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { autentication } from "../../../src/features/auth/authSlice";
+import {
+  autentication,
+  clearError,
+} from "../../../src/features/auth/authSlice";
 import Layout from "../../../layouts/Layout";
 import styles from "./Categoria.module.css";
+import { error } from "../../../src/utils/toast";
 
 const index = () => {
   const router = useRouter();
@@ -14,24 +18,38 @@ const index = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/api/auth/user`, {
+      credentials: "include",
+    }).catch((err) => {
+      error(err);
+      router.push("/login");
+      return;
+    });
     dispatch(autentication());
   }, [dispatch]);
 
-  if (auth.error) {
-    router.push("/login");
-  }
-
   useEffect(() => {
     if (categoria) {
-      fetch(`http://localhost:8080/productos/categoria/${categoria}`, {
-        credentials: "include",
-      })
+      fetch(
+        `${process.env.NEXT_PUBLIC_URL_BACKEND}/productos/categoria/${categoria}`,
+        {
+          credentials: "include",
+        }
+      )
         .then((response) => response.json())
         .then((result) => {
-          if (result.data?.error) return router.push("/login");
+          if (result.data?.error) {
+            error(result.data?.error);
+            router.push("/login");
+            return;
+          }
           setProducts(result.data);
         })
-        .catch(() => router.reload());
+        .catch((err) => {
+          error(err);
+          router.reload();
+          return;
+        });
     }
   }, [categoria]);
 

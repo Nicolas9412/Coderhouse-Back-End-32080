@@ -25,7 +25,7 @@ export const { loadCategories } = categoriesSlice.actions;
 export const getCategories = () => {
   return async (dispatch) => {
     try {
-      fetch("http://localhost:8080/categorias", {
+      fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/categorias`, {
         credentials: "include",
       })
         .then((response) => response.json())

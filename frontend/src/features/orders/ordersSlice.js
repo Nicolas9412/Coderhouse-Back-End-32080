@@ -33,9 +33,12 @@ export const { loadOrders } = ordersSlice.actions;
 export const getOrders = () => {
   return async (dispatch) => {
     try {
-      const response = await fetch("http://localhost:8080/ordenes", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_BACKEND}/ordenes`,
+        {
+          credentials: "include",
+        }
+      );
       const result = await response.json();
       if (result.data?.error) throw result.data?.error;
       const orders = result.data;

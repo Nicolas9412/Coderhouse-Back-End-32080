@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { useRouter } from "next/router";
 
-function BootCard({ product }) {
+function BootCard({ product, auth }) {
   const router = useRouter();
   return (
     <Card style={{ width: "20rem", height: "30rem" }}>
@@ -26,16 +26,18 @@ function BootCard({ product }) {
         <Card.Text style={{ fontSize: "24px", fontWeight: "bold" }}>
           $ {product.price}
         </Card.Text>
-        <div>
-          <Button
-            variant="success"
-            onClick={() => {
-              router.push(`/products/${product._id}`);
-            }}
-          >
-            Ver detalle
-          </Button>
-        </div>
+        {!auth.user?.isAdmin && (
+          <div>
+            <Button
+              variant="success"
+              onClick={() => {
+                router.push(`/products/${product._id}`);
+              }}
+            >
+              Ver detalle
+            </Button>
+          </div>
+        )}
       </Card.Body>
     </Card>
   );

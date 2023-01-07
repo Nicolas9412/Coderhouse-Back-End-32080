@@ -6,6 +6,7 @@ import { autentication } from "../../../src/features/auth/authSlice";
 import Layout from "../../../layouts/Layout";
 import { ItemDetailOrder } from "../../../components";
 import { getOrders } from "../../../src/features/orders/ordersSlice";
+import { error } from "../../../src/utils/toast";
 
 const order = () => {
   const auth = useSelector((state) => state.auth);
@@ -16,26 +17,33 @@ const order = () => {
   useEffect(() => {
     dispatch(autentication());
     if (!auth.user.isAdmin) {
+      error("authentication admin");
       router.push("/login");
     }
   }, []);
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:8080/ordenes/${id}`, {
+      fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/ordenes/${id}`, {
         credentials: "include",
       })
         .then((response) => response.json())
         .then((result) => {
-          if (result.data?.error) router.push("/login");
+          if (result.data?.error) {
+            error(result.data?.error);
+            router.push("/login");
+          }
           setOrder(result.data);
         })
-        .catch(() => router.reload());
+        .catch((err) => {
+          error(err);
+          router.reload();
+        });
     }
   }, [id]);
 
   const onHandleFinishOrder = async () => {
-    await fetch("http://localhost:8080/ordenes/finalizar", {
+    await fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/ordenes/finalizar`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -44,7 +52,7 @@ const order = () => {
       body: JSON.stringify({
         idOrder: order._id,
       }),
-    });
+    }).catch((err) => error(err));
     dispatch(getOrders());
     router.back();
   };

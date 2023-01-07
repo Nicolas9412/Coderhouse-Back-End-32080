@@ -50,9 +50,12 @@ export const { loadMessages, loadLastMessages } = chatSlice.actions;
 export const getMessages = ({ email }) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(`http://localhost:8080/chat/${email}`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_BACKEND}/chat/${email}`,
+        {
+          credentials: "include",
+        }
+      );
       const result = await response.json();
       if (result.data?.error) throw result.data?.error;
       const chat = result.data;
@@ -66,9 +69,12 @@ export const getMessages = ({ email }) => {
 export const getLastMessages = () => {
   return async (dispatch) => {
     try {
-      const response = await fetch(`http://localhost:8080/chat/messages/last`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_BACKEND}/chat/messages/last`,
+        {
+          credentials: "include",
+        }
+      );
       const result = await response.json();
       if (result.data?.error) throw result.data?.error;
       const lastMessages = result.data.messages;

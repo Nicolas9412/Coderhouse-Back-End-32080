@@ -6,6 +6,7 @@ import { autentication } from "../../../src/features/auth/authSlice";
 import { useRouter } from "next/router";
 import { getProducts } from "../../../src/features/products/productsSlice";
 import { InputPrice, InputStock, AddProductForm } from "../../../components";
+import { error, success } from "../../../src/utils/toast";
 
 const index = () => {
   const auth = useSelector((state) => state.auth);
@@ -20,6 +21,7 @@ const index = () => {
   useEffect(() => {
     dispatch(autentication());
     if (!auth.user.isAdmin) {
+      error("authentication admin");
       router.push("/login");
     }
     dispatch(getProducts());
@@ -27,16 +29,18 @@ const index = () => {
 
   const onRemoveProduct = async (id) => {
     try {
-      await fetch(`http://localhost:8080/productos/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/productos/${id}`, {
         method: "DELETE",
         headers: {
           "Content-type": "application/json",
         },
         credentials: "include",
       });
+      success("Product deleted!");
       dispatch(getProducts());
-    } catch (error) {
-      throw error;
+    } catch (err) {
+      error(err);
+      return;
     }
   };
 

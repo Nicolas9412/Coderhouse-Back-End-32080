@@ -34,7 +34,7 @@ export const { loadProducts } = productsSlice.actions;
 export const getProducts = () => {
   return async (dispatch) => {
     try {
-      fetch("http://localhost:8080/productos", {
+      fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/productos`, {
         credentials: "include",
       })
         .then((response) => response.json())

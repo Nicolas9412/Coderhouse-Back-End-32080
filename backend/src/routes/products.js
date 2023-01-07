@@ -1,13 +1,14 @@
 const productAuth = require("express").Router();
 const Product = require("../models/product");
 const { auth, authAdmin } = require("../middlewares/auth");
+const { validateProduct } = require("../validators/products");
 
 productAuth.get("/", auth, async (req, res) => {
   const products = await Product.find();
   res.status(200).json({ status: "OK", data: products });
 });
 
-productAuth.post("/", authAdmin, async (req, res) => {
+productAuth.post("/", authAdmin, validateProduct, async (req, res) => {
   const product = new Product({
     title: req.body.title,
     description: req.body.description,
@@ -21,24 +22,22 @@ productAuth.post("/", authAdmin, async (req, res) => {
   res.status(200).json({ status: "OK", data });
 });
 
-productAuth.put("/:id", authAdmin, async (req, res) => {
+productAuth.put("/:id", authAdmin, validateProduct, async (req, res) => {
   const { id } = req.params;
-  const product = new Product({
-    title: req.body.title,
-    description: req.body.description,
-    price: req.body.price,
-    thumbnail: req.body.thumbnail,
-    stock: req.body.stock,
-    category: req.body.category,
-  });
   try {
-    await Product.findByIdAndDelete(id);
+    const result = await Product.findByIdAndUpdate(id, {
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+      thumbnail: req.body.thumbnail,
+      stock: req.body.stock,
+      category: req.body.category,
+    });
+    const { ...data } = await result.toJSON();
+    res.status(200).json({ status: "OK", data });
   } catch (error) {
     res.status(500).json({ status: "FAILED", data: { error } });
   }
-  const result = await product.save();
-  const { ...data } = await result.toJSON();
-  res.status(200).json({ status: "OK", data });
 });
 
 productAuth.delete("/:id", authAdmin, async (req, res) => {

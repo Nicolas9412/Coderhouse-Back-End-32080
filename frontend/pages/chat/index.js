@@ -8,6 +8,7 @@ import io from "socket.io-client";
 import Layout from "../../layouts/Layout";
 import { formatDate } from "../../src/utils/formatDate";
 import EmojiPicker from "emoji-picker-react";
+import { error } from "../../src/utils/toast";
 
 const socket = io("http://localhost:8080");
 
@@ -21,19 +22,39 @@ const index = () => {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/api/auth/user`, {
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.data?.error) {
+          error(result.data?.error);
+          router.push("/login");
+          return;
+        }
+        if (result.isAdmin) {
+          error("Admin not access");
+          router.back();
+          return;
+        }
+      });
+
     dispatch(autentication());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     dispatch(getMessages({ email: auth.user.email }));
-    fetch("http://localhost:8080/chat/checkClient", {
+    fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/chat/checkClient`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         email: auth.user.email,
       }),
-    }).catch(() => router.reload());
+    }).catch((err) => {
+      error(err);
+      router.reload();
+    });
   }, [auth]);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import styles from "./ItemOrder.module.css";
 import { useRouter } from "next/router";
 
-const index = ({ order }) => {
+const index = ({ order, routePush }) => {
   const router = useRouter();
   return (
     <div
@@ -10,9 +10,7 @@ const index = ({ order }) => {
           ? `${styles.itemContainerGenerada} my-2`
           : `${styles.itemContainerFinalizada} my-2`
       }
-      onClick={() => {
-        router.push(`/admin/orders/${order._id}`);
-      }}
+      onClick={() => router.push(routePush)}
     >
       <div className="d-flex justify-content-between">
         <p className="fs-2 fw-bold">#{order.numberOrder}</p>

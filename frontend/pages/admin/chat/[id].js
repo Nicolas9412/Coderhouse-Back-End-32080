@@ -8,8 +8,9 @@ import Layout from "../../../layouts/Layout";
 import io from "socket.io-client";
 import { formatDate } from "../../../src/utils/formatDate";
 import EmojiPicker from "emoji-picker-react";
+import { error, sucess } from "../../../src/utils/toast";
 
-const socket = io("http://localhost:8080");
+const socket = io(`${process.env.NEXT_PUBLIC_URL_BACKEND}`);
 
 const index = () => {
   const chat = useSelector((state) => state.chat.messages);
@@ -31,14 +32,17 @@ const index = () => {
 
   useEffect(() => {
     dispatch(getMessages({ email: user?.email }));
-    fetch("http://localhost:8080/chat/checkSystem", {
+    fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/chat/checkSystem`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         email: user?.email,
       }),
-    }).catch(() => router.reload());
+    }).catch((err) => {
+      error(err);
+      router.reload();
+    });
   }, [user]);
 
   useEffect(() => {
@@ -47,15 +51,21 @@ const index = () => {
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:8080/api/auth/users/${id}`, {
+      fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/api/auth/users/${id}`, {
         credentials: "include",
       })
         .then((response) => response.json())
         .then((result) => {
-          if (result.data?.error) router.push("/login");
+          if (result.data?.error) {
+            error(result.data?.error);
+            router.push("/login");
+          }
           setUser(result.data);
         })
-        .catch(() => router.reload());
+        .catch((err) => {
+          error(err);
+          router.reload();
+        });
     }
   }, [id]);
 

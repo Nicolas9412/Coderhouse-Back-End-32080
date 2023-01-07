@@ -6,7 +6,7 @@ import Link from "next/Link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { autentication } from "../../src/features/auth/authSlice";
-import { getProducts } from "../../src/features/products/productsSlice";
+import { error, success } from "../../src/utils/toast";
 
 const index = () => {
   const [email, setEmail] = useState("");
@@ -25,7 +25,7 @@ const index = () => {
 
   const submit = async (e) => {
     e.preventDefault();
-    fetch("http://localhost:8080/api/auth/login", {
+    fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -36,7 +36,18 @@ const index = () => {
     })
       .then((response) => response.json())
       .then((result) => {
-        if (result.data?.error) return;
+        if (result.errors) {
+          for (const err of result.errors) {
+            error(err.msg);
+            break;
+          }
+          return;
+        }
+        if (result.data?.error) {
+          error(result.data?.error);
+          return;
+        }
+        success("login successful");
         setTimeout(() => {
           router.push("/");
         }, 500);

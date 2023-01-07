@@ -12,6 +12,7 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Navbar from "react-bootstrap/Navbar";
 import { getCategories } from "../src/features/categories/categoriesSlice";
+import { success } from "../src/utils/toast";
 
 const Layout = ({ children, auth }) => {
   const router = useRouter();
@@ -28,6 +29,7 @@ const Layout = ({ children, auth }) => {
 
   const onHandleLogout = () => {
     dispatch(logout());
+    success("logout successful!");
     setTimeout(() => {
       router.push("/login");
     }, 250);
@@ -76,6 +78,9 @@ const Layout = ({ children, auth }) => {
         </Link>
         <Link className="nav-link" href="/chat">
           <Nav.Link href="/chat">Chat</Nav.Link>
+        </Link>
+        <Link className="nav-link" href={`/orders/${auth.user.email}`}>
+          <Nav.Link href={`/orders/${auth.user.email}`}>Ordenes</Nav.Link>
         </Link>
 
         {cart.length > 0 && (

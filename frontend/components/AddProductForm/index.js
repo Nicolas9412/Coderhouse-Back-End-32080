@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getCategories } from "../../src/features/categories/categoriesSlice";
 import { getProducts } from "../../src/features/products/productsSlice";
+import { error, success } from "../../src/utils/toast";
 
 const index = ({ show, handleClose, productEdit, setProductEdit }) => {
   const [title, setTitle] = useState("");
@@ -43,9 +44,24 @@ const index = ({ show, handleClose, productEdit, setProductEdit }) => {
         thumbnail,
         category,
       }),
-    });
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.errors) {
+          for (const err of result.errors) {
+            error(err.msg);
+            break;
+          }
+          return;
+        }
+        if (result.data?.error) {
+          error(result.data?.error);
+          return;
+        }
+        success("product created!");
+        handleClose();
+      });
     dispatch(getProducts());
-    handleClose();
   };
 
   const onHandleSubmitUpdate = async () => {
@@ -63,10 +79,25 @@ const index = ({ show, handleClose, productEdit, setProductEdit }) => {
         thumbnail,
         category,
       }),
-    });
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.errors) {
+          for (const err of result.errors) {
+            error(err.msg);
+            break;
+          }
+          return;
+        }
+        if (result.data?.error) {
+          error(result.data?.error);
+          return;
+        }
+        success("product updated!");
+        handleClose();
+      });
     dispatch(getProducts());
     setProductEdit(null);
-    handleClose();
   };
 
   return (

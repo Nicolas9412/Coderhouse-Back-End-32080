@@ -69,16 +69,19 @@ export const { addCart, createCart, loadCart, modifyQuantity, deleteProduct } =
 
 export const removeProduct = ({ idProduct, email }) => {
   return async (dispatch) => {
-    const response = await fetch(`http://localhost:8080/carrito/${idProduct}`, {
-      method: "DELETE",
-      headers: {
-        "Content-type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        email,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_BACKEND}/carrito/${idProduct}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email,
+        }),
+      }
+    );
     const result = await response.json();
     if (result.data.error) {
       return;
@@ -92,17 +95,20 @@ export const removeProduct = ({ idProduct, email }) => {
 
 export const updatedQuantity = ({ idProduct, email, quantity }) => {
   return async (dispatch) => {
-    const response = await fetch(`http://localhost:8080/carrito/${idProduct}`, {
-      method: "PUT",
-      headers: {
-        "Content-type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        email,
-        quantity,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_BACKEND}/carrito/${idProduct}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email,
+          quantity,
+        }),
+      }
+    );
     const result = await response.json();
     if (result.data?.error) {
       throw result.data?.error;
@@ -117,12 +123,15 @@ export const updatedQuantity = ({ idProduct, email, quantity }) => {
 export const getCart = ({ email }) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(`http://localhost:8080/carrito/${email}`, {
-        credentials: "include",
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_BACKEND}/carrito/${email}`,
+        {
+          credentials: "include",
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
       const result = await response.json();
       if (result.data?.error) {
         throw result.data?.error;
@@ -147,14 +156,17 @@ export const saveCart = ({ idProduct, quantity, email, address }) => {
   });
   return async (dispatch) => {
     try {
-      const response = await fetch("http://localhost:8080/carrito", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        credentials: "include",
-        body: bodyString,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_BACKEND}/carrito`,
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          credentials: "include",
+          body: bodyString,
+        }
+      );
       const result = await response.json();
       if (result.data?.error) {
         throw result.data?.error;
@@ -173,18 +185,21 @@ export const saveCart = ({ idProduct, quantity, email, address }) => {
 export const saveProduct = ({ idProduct, quantity, email }) => {
   return async (dispatch) => {
     try {
-      const response = await fetch("http://localhost:8080/carrito", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          email,
-          idProduct,
-          quantity,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_BACKEND}/carrito`,
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            email,
+            idProduct,
+            quantity,
+          }),
+        }
+      );
       const result = await response.json();
       const { productAdd } = result.data;
       dispatch(createCart({ product: { ...productAdd } }));

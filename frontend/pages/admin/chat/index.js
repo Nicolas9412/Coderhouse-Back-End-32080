@@ -7,6 +7,7 @@ import Layout from "../../../layouts/Layout";
 import { faker } from "@faker-js/faker";
 import { getLastMessages } from "../../../src/features/chat/chatSlice";
 import { formatDate } from "../../../src/utils/formatDate";
+import { error, sucess } from "../../../src/utils/toast";
 
 const index = () => {
   const auth = useSelector((state) => state.auth);
@@ -18,17 +19,18 @@ const index = () => {
   useEffect(() => {
     dispatch(autentication());
     dispatch(getLastMessages());
-
-    /*if (!auth.user.isAdmin) {
-      router.push("/login");
-    }*/
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/auth/users", { credentials: "include" })
+    fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/api/auth/users`, {
+      credentials: "include",
+    })
       .then((response) => response.json())
       .then((result) => {
-        if (result.data?.error) router.push("/login");
+        if (result.data?.error) {
+          error(result.data?.error);
+          router.push("/login");
+        }
         setUsers(result.data);
       });
   }, []);

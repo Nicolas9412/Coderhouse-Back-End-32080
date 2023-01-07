@@ -6,6 +6,7 @@ import { getCart, removeProduct } from "../../src/features/cart/cartSlice";
 import { useEffect } from "react";
 import { ItemCart } from "../../components";
 import { useRouter } from "next/router";
+import { error } from "../../src/utils/toast";
 
 const index = () => {
   const cart = useSelector((state) => state.cart);
@@ -14,26 +15,39 @@ const index = () => {
   const router = useRouter();
 
   useEffect(() => {
-    dispatch(autentication());
-    if (!auth.auth) {
-      router.push("/login");
-    }
-  }, []);
+    fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/api/auth/user`, {
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.data?.error) {
+          error(result.data?.error);
+          router.push("/login");
+          return;
+        }
+        if (result.isAdmin) {
+          error("Admin not access");
+          router.back();
+          return;
+        }
+      });
 
+    dispatch(autentication());
+  }, []);
   const onHandleDelete = (idProduct, email) => {
     dispatch(removeProduct({ idProduct, email }));
     dispatch(getCart({ email }));
   };
 
   const onHandleGenerateOrder = async () => {
-    await fetch("http://localhost:8080/ordenes/generar", {
+    await fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/ordenes/generar`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: cart.email,
       }),
-    });
+    }).catch((err) => error(err));
     router.reload();
   };
 
