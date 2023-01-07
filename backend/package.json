@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "set MODO=prod&& node ./src/index.js",
     "dev": "set MODO=dev&& nodemon ./src/index.js",
-    "prod": "set MODO=prod&& nodemon ./src/index.js"
+    "prod": "set MODO=prod&& node ./src/index.js"
   },
   "keywords": [],
   "author": "",
