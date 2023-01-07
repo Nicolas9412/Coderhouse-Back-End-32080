@@ -85,6 +85,8 @@ authRouter.post("/login", validateLogin, async (req, res) => {
   res.cookie("jwt", token, {
     httpOnly: true,
     maxAge: process.env.TIME_SESSION,
+    secure: true,
+    sameSite: "None",
   });
   console.log("req.cookie", req.cookies["jwt"]);
   const { password, ...data } = await user.toJSON();
